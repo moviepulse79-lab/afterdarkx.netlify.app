@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Categories | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Explore AfterDarkX categories and discover premium 18+ entertainment."
+    >
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #08090b;
+            color: #f5f5f5;
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 6%;
+
+            background: rgba(8, 9, 11, 0.88);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .header-inner {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px rgba(255, 47, 104, 0.18);
+
+            font-size: 14px;
+        }
+
+        .logo em {
+            color: #ff3d73;
+            font-style: normal;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #a9abb2;
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffffff;
+        }
+
+        .nav-search {
+            width: 38px;
+            height: 38px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #bbb;
+
+            transition: 0.25s ease;
+        }
+
+        .nav-search:hover {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+        .menu-button {
+            display: none;
+
+            border: 0;
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .page-hero {
+            position: relative;
+
+            padding:
+                95px
+                6%
+                70px;
+
+            overflow: hidden;
+
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .page-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            top: -180px;
+            right: -100px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 38, 105, 0.17),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+        }
+
+        .page-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            bottom: -220px;
+            left: 5%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(120, 50, 255, 0.13),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 22px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
+
+            background: rgba(255,255,255,0.035);
+
+            color: #c6c7cc;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .hero-label i {
+            color: #ff3f74;
+        }
+
+        .page-hero h1 {
+            position: relative;
+            z-index: 1;
+
+            max-width: 800px;
+
+            font-size: clamp(38px, 6vw, 72px);
+
+            line-height: 0.98;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 25px;
+        }
+
+        .page-hero h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a35cff
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .page-hero p {
+            position: relative;
+            z-index: 1;
+
+            max-width: 620px;
+
+            color: #94969e;
+
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        /* =========================
+           CATEGORY SECTION
+        ========================= */
+
+        .categories-section {
+            padding: 75px 6% 100px;
+        }
+
+        .section-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 25px;
+            letter-spacing: -0.7px;
+        }
+
+        .section-subtitle {
+            margin-top: 8px;
+
+            color: #858790;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .category-count {
+            color: #777983;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           CATEGORY GRID
+        ========================= */
+
+        .category-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(12, 1fr);
+
+            gap: 18px;
+        }
+
+        .category-card {
+            position: relative;
+
+            min-height: 260px;
+
+            grid-column: span 4;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111318,
+                    #0c0d10
+                );
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .category-card.large {
+            grid-column: span 8;
+            min-height: 330px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(255, 63, 116, 0.3);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.3);
+        }
+
+        .category-bg {
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(255, 45, 110, 0.2),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(123, 48, 255, 0.15),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(2) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(87, 125, 255, 0.22),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(160, 60, 255, 0.14),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(3) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(255, 100, 45, 0.2),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(255, 35, 110, 0.12),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(4) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(42, 190, 165, 0.18),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(62, 100, 255, 0.12),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(5) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(255, 45, 80, 0.2),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(255, 170, 50, 0.12),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(6) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(160, 75, 255, 0.22),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(55, 120, 255, 0.12),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(7) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(255, 60, 150, 0.18),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(80, 220, 190, 0.1),
+                    transparent 45%
+                );
+        }
+
+        .category-card:nth-child(8) .category-bg {
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(240, 180, 55, 0.18),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(255, 50, 100, 0.1),
+                    transparent 45%
+                );
+        }
+
+        .category-content {
+            position: absolute;
+            inset: 0;
+
+            z-index: 2;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            padding: 28px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(4,5,7,0.96),
+                    rgba(4,5,7,0.25) 65%,
+                    transparent
+                );
+        }
+
+        .category-icon {
+            position: absolute;
+
+            top: 25px;
+            right: 25px;
+
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            color: #fff;
+
+            font-size: 18px;
+        }
+
+        .category-content h3 {
+            font-size: 23px;
+            letter-spacing: -0.7px;
+
+            margin-bottom: 8px;
+        }
+
+        .category-card.large .category-content h3 {
+            font-size: 31px;
+        }
+
+        .category-content p {
+            max-width: 430px;
+
+            color: #999ba3;
+
+            font-size: 13px;
+            line-height: 1.6;
+
+            margin-bottom: 16px;
+        }
+
+        .category-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .video-count {
+            color: #777983;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .explore {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: gap 0.25s ease;
+        }
+
+        .category-card:hover .explore {
+            gap: 12px;
+        }
+
+        .explore i {
+            color: #ff3f74;
+        }
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info-box {
+            margin-top: 25px;
+
+            padding: 22px 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            border-radius: 16px;
+
+            background: rgba(255,255,255,0.025);
+        }
+
+        .info-box i {
+            color: #ff3f74;
+            font-size: 18px;
+        }
+
+        .info-box p {
+            color: #80828b;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            padding: 55px 6% 35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .footer-description {
+            max-width: 360px;
+
+            margin-top: 15px;
+
+            color: #73757e;
+
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 25px;
+        }
+
+        .footer-links a {
+            color: #777983;
+            font-size: 12px;
+
+            transition: 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            padding-top: 25px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #555761;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+            position: fixed;
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.96);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .age-box {
+            width: 100%;
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+        .age-icon {
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+        .age-box h2 {
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+        .age-box p {
+            color: #888b94;
+
+            font-size: 13px;
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+        .age-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .enter-button,
+        .leave-button {
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .enter-button {
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+        .leave-button {
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            header {
+                height: 68px;
+                padding: 0 5%;
+            }
+
+            nav {
+                position: absolute;
+
+                top: 68px;
+                left: 0;
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+                align-items: stretch;
+
+                padding: 18px 5% 25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            nav a {
+                padding: 12px 0;
+            }
+
+            .nav-search {
+                display: none;
+            }
+
+            .menu-button {
+                display: block;
+            }
+
+            .page-hero {
+                padding:
+                    70px
+                    5%
+                    55px;
+            }
+
+            .page-hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .categories-section {
+                padding:
+                    55px
+                    5%
+                    75px;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-card,
+            .category-card.large {
+                grid-column: span 1;
+                min-height: 270px;
+            }
+
+            .category-card.large {
+                min-height: 300px;
+            }
+
+            .section-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .logo-mark {
+                width: 31px;
+                height: 31px;
+            }
+
+            .age-box {
+                padding: 32px 23px;
+            }
+
+            .age-actions {
+                flex-direction: column;
+            }
+
+            .category-content {
+                padding: 23px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+            <a href="index.html" class="logo">
+
+                <div class="logo-mark">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html" class="active">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="nav-search"
+                    aria-label="Search"
+                >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+
+            </nav>
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE HERO
+    ========================= -->
+
+    <section class="page-hero">
+
+        <div class="hero-label">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+            Explore the collection
+
+        </div>
+
+        <h1>
+            Find your <span>kind</span> of experience.
+        </h1>
+
+        <p>
+            Explore carefully organized collections and discover
+            entertainment that matches your mood.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================= -->
+
+    <main>
+
+        <section class="categories-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2 class="section-title">
+                        Browse categories
+                    </h2>
+
+                    <p class="section-subtitle">
+                        Choose a collection and start exploring.
+                    </p>
+
+                </div>
+
+                <div class="category-count">
+                    8 collections
+                </div>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <!-- CATEGORY 1 -->
+
+                <a
+                    href="category.html?category=featured"
+                    class="category-card large"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Featured
+                        </h3>
+
+                        <p>
+                            A hand-picked selection of standout
+                            entertainment and fresh discoveries.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Featured collection
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 2 -->
+
+                <a
+                    href="category.html?category=trending"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Trending
+                        </h3>
+
+                        <p>
+                            See what's getting attention right now.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Updated regularly
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 3 -->
+
+                <a
+                    href="category.html?category=popular"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Popular
+                        </h3>
+
+                        <p>
+                            Discover the most watched collections.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Popular picks
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 4 -->
+
+                <a
+                    href="category.html?category=new"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            New
+                        </h3>
+
+                        <p>
+                            Fresh additions to the platform.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Recently added
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 5 -->
+
+                <a
+                    href="category.html?category=collections"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Collections
+                        </h3>
+
+                        <p>
+                            Curated groups built around different themes.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Curated
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 6 -->
+
+                <a
+                    href="category.html?category=creators"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Creators
+                        </h3>
+
+                        <p>
+                            Explore content from featured creators.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Creator library
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 7 -->
+
+                <a
+                    href="category.html?category=most-viewed"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Most Viewed
+                        </h3>
+
+                        <p>
+                            Browse content receiving the most attention.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Popular library
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CATEGORY 8 -->
+
+                <a
+                    href="category.html?category=latest"
+                    class="category-card"
+                >
+
+                    <div class="category-bg"></div>
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div class="category-content">
+
+                        <h3>
+                            Latest
+                        </h3>
+
+                        <p>
+                            The newest additions available on AfterDarkX.
+                        </p>
+
+                        <div class="category-meta">
+
+                            <span class="video-count">
+                                Latest releases
+                            </span>
+
+                            <span class="explore">
+                                Explore
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+            <div class="info-box">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <p>
+                    AfterDarkX is an 18+ platform. Content access is
+                    restricted to adults and availability may vary
+                    depending on your location.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+                <p class="footer-description">
+                    A premium 18+ entertainment platform built
+                    around discovery, creators and curated video.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+            <div class="age-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h2>
+                Adults only
+            </h2>
+
+            <p>
+                This website contains content intended exclusively
+                for adults aged 18 and over. By entering, you confirm
+                that you are at least 18 years old and legally permitted
+                to access adult content in your location.
+            </p>
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+                    I'm 18 or older
+                </button>
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+                    Leave
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+            document.getElementById(
+                "ageGate"
+            ).style.display = "none";
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+                if (verified === "true") {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display = "none";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

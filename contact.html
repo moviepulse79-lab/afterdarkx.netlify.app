@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Contact AfterDarkX for support, content reports, copyright matters, legal notices, and business inquiries."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <title>Contact | AfterDarkX</title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #08090b;
+            color: #f5f5f7;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(8, 9, 11, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .header-inner {
+            max-width: 1240px;
+            margin: auto;
+            height: 78px;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .logo-mark {
+            width: 37px;
+            height: 37px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+            box-shadow:
+                0 8px 28px rgba(255, 48, 107, 0.22);
+        }
+
+        .logo-mark i {
+            font-size: 16px;
+            color: white;
+        }
+
+        .logo em {
+            color: #ff4778;
+            font-style: normal;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #a8a9ae;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: white;
+        }
+
+        .search-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .search-link i {
+            font-size: 14px;
+        }
+
+        .menu-button {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 105px 24px 80px;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 320px;
+            top: -130px;
+            left: 50%;
+            transform: translateX(-50%);
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(145,58,255,0.18),
+                    transparent 70%
+                );
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 780px;
+            margin: auto;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #c7c7cc;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin-bottom: 24px;
+        }
+
+        .hero-label span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ff3d73;
+            box-shadow: 0 0 12px rgba(255,61,115,0.7);
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 70px);
+            line-height: 1.02;
+            letter-spacing: -3px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            background:
+                linear-gradient(
+                    100deg,
+                    #ff4778,
+                    #a05cff
+                );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 640px;
+            margin: auto;
+            color: #999ba2;
+            font-size: 16px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px 24px 100px;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* =========================
+           CONTACT INFO
+        ========================= */
+
+        .info-panel,
+        .form-panel {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.018)
+                );
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+        }
+
+        .info-panel {
+            padding: 30px;
+        }
+
+        .section-kicker {
+            color: #ff4778;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .info-panel h2,
+        .form-panel h2 {
+            font-size: 24px;
+            letter-spacing: -0.8px;
+            margin-bottom: 10px;
+        }
+
+        .info-intro {
+            color: #94969d;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .reason-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reason {
+            display: flex;
+            gap: 15px;
+            padding: 16px;
+            border-radius: 17px;
+            border: 1px solid rgba(255,255,255,0.055);
+            background: rgba(255,255,255,0.025);
+        }
+
+        .reason-icon {
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,48,107,0.14),
+                    rgba(145,58,255,0.14)
+                );
+            color: #ff5682;
+        }
+
+        .reason h3 {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .reason p {
+            color: #8e9097;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-panel {
+            padding: 34px;
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header p {
+            color: #92949b;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #d5d5d9;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 13px;
+            background: rgba(0,0,0,0.24);
+            color: white;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        input,
+        select {
+            height: 49px;
+            padding: 0 15px;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            padding: 14px 15px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #606269;
+        }
+
+        select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(255,71,120,0.6);
+            box-shadow:
+                0 0 0 3px rgba(255,71,120,0.08);
+        }
+
+        .select-wrap {
+            position: relative;
+        }
+
+        .select-wrap i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777980;
+            pointer-events: none;
+            font-size: 12px;
+        }
+
+        .submit-row {
+            margin-top: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .form-note {
+            color: #6f7178;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .submit-button {
+            flex-shrink: 0;
+            min-width: 150px;
+            height: 49px;
+            border: 0;
+            border-radius: 13px;
+            cursor: pointer;
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            background:
+                linear-gradient(
+                    110deg,
+                    #ff306b,
+                    #913aff
+                );
+            box-shadow:
+                0 10px 28px rgba(255,48,107,0.18);
+            transition: 0.25s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 14px 34px rgba(255,48,107,0.26);
+        }
+
+        .submit-button i {
+            margin-right: 7px;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 13px;
+            border: 1px solid rgba(72, 220, 150, 0.2);
+            background: rgba(72,220,150,0.06);
+            color: #8ce5bc;
+            font-size: 13px;
+        }
+
+        .success-message i {
+            margin-right: 8px;
+        }
+
+        /* =========================
+           NOTICE
+        ========================= */
+
+        .notice {
+            margin-top: 24px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            border-radius: 17px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .notice i {
+            color: #ff4778;
+            margin-top: 3px;
+        }
+
+        .notice p {
+            color: #888a91;
+            font-size: 12px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            background: #060709;
+        }
+
+        .footer-inner {
+            max-width: 1240px;
+            margin: auto;
+            padding: 48px 28px 30px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            padding-bottom: 35px;
+        }
+
+        .footer-brand {
+            max-width: 360px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 14px;
+        }
+
+        .footer-brand p {
+            color: #71737a;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-content: flex-start;
+            justify-content: flex-end;
+        }
+
+        .footer-links a {
+            color: #808289;
+            font-size: 12px;
+            transition: 0.2s ease;
+        }
+
+        .footer-links a:hover,
+        .footer-links a.active {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: #55575d;
+            font-size: 11px;
+        }
+
+        .age-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #696b72;
+            font-size: 11px;
+        }
+
+        .age-label i {
+            color: #ff4778;
+        }
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background:
+                rgba(3,4,6,0.96);
+            backdrop-filter: blur(16px);
+        }
+
+        .age-box {
+            width: min(470px, 100%);
+            padding: 38px;
+            text-align: center;
+            border-radius: 25px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #121318,
+                    #0b0c0f
+                );
+            border: 1px solid rgba(255,255,255,0.09);
+            box-shadow:
+                0 30px 100px rgba(0,0,0,0.55);
+        }
+
+        .age-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+            box-shadow:
+                0 12px 35px rgba(255,48,107,0.2);
+        }
+
+        .age-icon i {
+            font-size: 21px;
+        }
+
+        .age-box h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .age-box > p {
+            color: #898b92;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .age-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .enter-button,
+        .leave-button {
+            height: 47px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .enter-button {
+            border: 0;
+            color: white;
+            background:
+                linear-gradient(
+                    110deg,
+                    #ff306b,
+                    #913aff
+                );
+        }
+
+        .leave-button {
+            color: #b7b8bd;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            nav {
+                position: absolute;
+                top: 78px;
+                left: 18px;
+                right: 18px;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 10px;
+                border-radius: 18px;
+                background: rgba(12,13,16,0.97);
+                border: 1px solid rgba(255,255,255,0.08);
+                box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            nav a {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            nav a:hover {
+                background: rgba(255,255,255,0.04);
+            }
+
+            .search-link {
+                width: auto;
+                justify-content: flex-start;
+                height: auto;
+                background: transparent;
+                border: 0;
+            }
+
+            .menu-button {
+                display: block;
+            }
+
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header-inner {
+                padding: 0 18px;
+            }
+
+            .hero {
+                padding: 80px 20px 55px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .main {
+                padding: 10px 16px 70px;
+            }
+
+            .info-panel,
+            .form-panel {
+                padding: 23px;
+                border-radius: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .submit-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .submit-button {
+                width: 100%;
+            }
+
+            .footer-inner {
+                padding: 40px 18px 25px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .age-box {
+                padding: 28px 22px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     AGE GATE
+========================= -->
+
+<div
+    class="age-gate"
+    id="ageGate"
+>
+
+    <div class="age-box">
+
+        <div class="age-icon">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+
+        <h2>Adults only</h2>
+
+        <p>
+            This website contains content intended exclusively
+            for adults aged 18 and over. By entering, you confirm
+            that you are at least 18 years old and legally permitted
+            to access adult content in your location.
+        </p>
+
+        <div class="age-actions">
+
+            <button
+                class="enter-button"
+                onclick="enterSite()"
+            >
+                I'm 18 or older
+            </button>
+
+            <button
+                class="leave-button"
+                onclick="leaveSite()"
+            >
+                Leave
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="header-inner">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+
+            <div class="logo-mark">
+                <i class="fa-solid fa-moon"></i>
+            </div>
+
+            <span>
+                AfterDark<em>X</em>
+            </span>
+
+        </a>
+
+
+        <nav id="mainNav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <a href="trending.html">
+                Trending
+            </a>
+
+            <a href="latest.html">
+                Latest
+            </a>
+
+            <a
+                href="search.html"
+                class="search-link"
+                aria-label="Search"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+
+        </nav>
+
+
+        <button
+            class="menu-button"
+            onclick="toggleMenu()"
+            aria-label="Open menu"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            <span></span>
+            AfterDarkX Support
+        </div>
+
+        <h1>
+            Get in <span>touch.</span>
+        </h1>
+
+        <p>
+            Questions, reports, partnership inquiries, or something
+            that needs attention? Reach out to the AfterDarkX team.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+    <div class="contact-layout">
+
+
+        <!-- CONTACT REASONS -->
+
+        <section class="info-panel">
+
+            <div class="section-kicker">
+                Contact
+            </div>
+
+            <h2>
+                How can we help?
+            </h2>
+
+            <p class="info-intro">
+                Choose the reason that best matches your message.
+                This helps us understand what you need.
+            </p>
+
+
+            <div class="reason-list">
+
+
+                <div class="reason">
+
+                    <div class="reason-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Technical Support
+                        </h3>
+
+                        <p>
+                            Problems with pages, videos,
+                            navigation, or site functionality.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="reason">
+
+                    <div class="reason-icon">
+                        <i class="fa-solid fa-flag"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Content Report
+                        </h3>
+
+                        <p>
+                            Report content that appears to
+                            violate platform rules or policies.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="reason">
+
+                    <div class="reason-icon">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Copyright / Legal
+                        </h3>
+
+                        <p>
+                            Copyright concerns, legal notices,
+                            or removal requests.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="reason">
+
+                    <div class="reason-icon">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Business & Partnerships
+                        </h3>
+
+                        <p>
+                            Advertising, partnerships, or
+                            other business-related inquiries.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTACT FORM -->
+
+        <section class="form-panel">
+
+            <div class="form-header">
+
+                <div class="section-kicker">
+                    Message us
+                </div>
+
+                <h2>
+                    Send a message
+                </h2>
+
+                <p>
+                    Fill out the form below and provide enough
+                    detail for us to understand your request.
+                </p>
+
+            </div>
+
+
+            <form
+                id="contactForm"
+                onsubmit="submitForm(event)"
+            >
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label for="name">
+                            Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label for="reason">
+                            Reason
+                        </label>
+
+                        <div class="select-wrap">
+
+                            <select
+                                id="reason"
+                                name="reason"
+                                required
+                            >
+
+                                <option
+                                    value=""
+                                    selected
+                                    disabled
+                                >
+                                    Select a reason
+                                </option>
+
+                                <option value="support">
+                                    Technical Support
+                                </option>
+
+                                <option value="content-report">
+                                    Content Report
+                                </option>
+
+                                <option value="copyright">
+                                    Copyright / Legal
+                                </option>
+
+                                <option value="business">
+                                    Business & Partnerships
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label for="message">
+                            Message
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder="Write your message..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="submit-row">
+
+                    <p class="form-note">
+                        Please do not submit illegal, exploitative,
+                        or prohibited material through this form.
+                    </p>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Send Message
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="success-message"
+                    id="successMessage"
+                >
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Your message has been prepared successfully.
+                    This form will be connected to the support
+                    system when the contact backend is enabled.
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <!-- NOTICE -->
+
+    <div class="notice">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <p>
+            AfterDarkX is an 18+ platform. Please use the contact
+            form responsibly and do not submit illegal, exploitative,
+            or prohibited content.
+        </p>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-top">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+
+                    <div class="logo-mark">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </a>
+
+                <p>
+                    Entertainment after dark. Discover a modern,
+                    curated 18+ entertainment experience built
+                    around simple discovery and a premium interface.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a
+                    href="contact.html"
+                    class="active"
+                >
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 AfterDarkX. All rights reserved.
+            </p>
+
+            <div class="age-label">
+
+                <i class="fa-solid fa-circle-18"></i>
+
+                18+ Adults only
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =========================
+       AGE VERIFICATION
+    ========================= */
+
+    function enterSite() {
+
+        localStorage.setItem(
+            "afterDarkXAgeVerified",
+            "true"
+        );
+
+        document.getElementById("ageGate").style.display = "none";
+
+    }
+
+
+    function leaveSite() {
+
+        window.location.href = "https://www.google.com/";
+
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const verified =
+                localStorage.getItem(
+                    "afterDarkXAgeVerified"
+                );
+
+            if (verified === "true") {
+
+                document.getElementById(
+                    "ageGate"
+                ).style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    function toggleMenu() {
+
+        const nav =
+            document.getElementById("mainNav");
+
+        nav.classList.toggle("open");
+
+    }
+
+
+    /* =========================
+       CONTACT FORM
+    ========================= */
+
+    function submitForm(event) {
+
+        event.preventDefault();
+
+        const form =
+            document.getElementById("contactForm");
+
+        const success =
+            document.getElementById("successMessage");
+
+        if (!form.checkValidity()) {
+
+            form.reportValidity();
+
+            return;
+
+        }
+
+        success.style.display = "block";
+
+        form.reset();
+
+        success.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+
+    }
+
+
+    /* =========================
+       CLOSE MOBILE MENU
+       WHEN LINK IS CLICKED
+    ========================= */
+
+    document.querySelectorAll(
+        "#mainNav a"
+    ).forEach(function(link) {
+
+        link.addEventListener(
+            "click",
+            function() {
+
+                document
+                    .getElementById("mainNav")
+                    .classList.remove("open");
+
+            }
+        );
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

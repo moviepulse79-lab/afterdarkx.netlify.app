@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Search | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Search and discover content on AfterDarkX."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            background: #08090b;
+
+            color: #f5f5f5;
+
+            font-family: "Inter", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 6%;
+
+            background:
+                rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .header-inner {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo-mark {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+
+        .logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        nav {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        nav a {
+
+            color: #a9abb2;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        nav a:hover,
+        nav a.active {
+
+            color: #fff;
+        }
+
+
+        .search-nav {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: #fff;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           SEARCH HERO
+        ========================= */
+
+        .search-hero {
+
+            position: relative;
+
+            padding:
+                85px 6%
+                75px;
+
+            overflow: hidden;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .search-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 650px;
+
+            height: 650px;
+
+            right: -220px;
+
+            top: -390px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,45,110,0.19),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .search-hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            left: 15%;
+
+            bottom: -410px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(125,55,255,0.15),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .search-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            text-align: center;
+        }
+
+
+        .search-label {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 19px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #c5c7cd;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .search-label i {
+
+            color: #ff3f74;
+        }
+
+
+        .search-content h1 {
+
+            font-size:
+                clamp(40px, 6vw, 67px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .search-content h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a25cff
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .search-content p {
+
+            max-width: 570px;
+
+            margin: auto;
+
+            color: #858891;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           SEARCH BOX
+        ========================= */
+
+        .search-box {
+
+            position: relative;
+
+            max-width: 780px;
+
+            margin:
+                34px auto 0;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 7px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            border-radius: 15px;
+
+            background:
+                rgba(17,18,22,0.9);
+
+            box-shadow:
+                0 20px 70px
+                rgba(0,0,0,0.28);
+        }
+
+
+        .search-icon {
+
+            width: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #6e717a;
+
+            font-size: 15px;
+        }
+
+
+        .search-input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            height: 48px;
+
+            border: 0;
+
+            outline: none;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 14px;
+        }
+
+
+        .search-input::placeholder {
+
+            color: #5f626a;
+        }
+
+
+        .clear-button {
+
+            width: 35px;
+
+            height: 35px;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 0;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            color: #858891;
+
+            cursor: pointer;
+        }
+
+
+        .clear-button:hover {
+
+            color: #fff;
+
+            background:
+                rgba(255,255,255,0.09);
+        }
+
+
+        .search-submit {
+
+            height: 48px;
+
+            padding:
+                0 22px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+
+            color: #fff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+
+        .search-submit:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 10px 28px
+                rgba(255,48,107,0.22);
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding:
+                55px 6%
+                90px;
+        }
+
+
+        .results-header {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .results-header h2 {
+
+            font-size: 22px;
+
+            letter-spacing: -0.6px;
+        }
+
+
+        .results-header p {
+
+            margin-top: 7px;
+
+            color: #666971;
+
+            font-size: 10px;
+        }
+
+
+        .result-count {
+
+            color: #686b74;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           QUICK SEARCHES
+        ========================= */
+
+        .quick-searches {
+
+            margin-bottom: 48px;
+        }
+
+
+        .quick-searches h3 {
+
+            margin-bottom: 15px;
+
+            color: #858891;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .quick-list {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+
+        .quick-list button {
+
+            padding:
+                9px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: #858891;
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .quick-list button:hover {
+
+            border-color:
+                rgba(255,65,120,0.3);
+
+            color: #fff;
+
+            background:
+                rgba(255,48,107,0.07);
+        }
+
+
+        /* =========================
+           RESULTS GRID
+        ========================= */
+
+        .results-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .result-card {
+
+            min-width: 0;
+
+            cursor: pointer;
+        }
+
+
+        .thumbnail {
+
+            position: relative;
+
+            aspect-ratio: 16 / 10;
+
+            overflow: hidden;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17191f,
+                    #0e1013
+                );
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        .thumbnail::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 72% 25%,
+                    var(--glow),
+                    transparent 46%
+                ),
+                radial-gradient(
+                    circle at 20% 90%,
+                    rgba(110,50,255,0.2),
+                    transparent 45%
+                );
+        }
+
+
+        .thumbnail-pattern {
+
+            position: absolute;
+
+            inset: 0;
+
+            opacity: 0.18;
+
+            background-image:
+                linear-gradient(
+                    120deg,
+                    transparent 47%,
+                    rgba(255,255,255,0.1) 49%,
+                    transparent 51%
+                );
+
+            background-size: 30px 30px;
+        }
+
+
+        .result-card:hover .thumbnail {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,60,120,0.3);
+        }
+
+
+        .play {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.8);
+
+            opacity: 0;
+
+            border-radius: 50%;
+
+            background: #fff;
+
+            color: #111;
+
+            font-size: 11px;
+
+            transition: 0.25s ease;
+        }
+
+
+        .result-card:hover .play {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+        }
+
+
+        .duration {
+
+            position: absolute;
+
+            right: 9px;
+
+            bottom: 9px;
+
+            padding:
+                5px 7px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(0,0,0,0.75);
+
+            color: #fff;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+
+        .result-type {
+
+            position: absolute;
+
+            left: 9px;
+
+            top: 9px;
+
+            padding:
+                5px 7px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(5,6,8,0.7);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            color: #ddd;
+
+            font-size: 7px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .result-info {
+
+            padding:
+                12px 2px 5px;
+        }
+
+
+        .result-info h3 {
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+
+            color: #e3e4e7;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .result-info p {
+
+            margin-top: 7px;
+
+            color: #62656d;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+
+            display: none;
+
+            padding:
+                85px 25px;
+
+            text-align: center;
+
+            border:
+                1px dashed
+                rgba(255,255,255,0.08);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,0.015);
+        }
+
+
+        .empty-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            margin:
+                0 auto 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            color: #62656d;
+
+            font-size: 20px;
+        }
+
+
+        .empty-state h3 {
+
+            margin-bottom: 8px;
+
+            font-size: 19px;
+        }
+
+
+        .empty-state p {
+
+            max-width: 400px;
+
+            margin: auto;
+
+            color: #70727b;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .footer-inner {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+
+        .footer-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .footer-description {
+
+            max-width: 350px;
+
+            margin-top: 14px;
+
+            color: #6e7179;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 23px;
+        }
+
+
+        .footer-links a {
+
+            color: #71747d;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #fff;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #50535b;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.97);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .age-box {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+
+        .age-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+
+        .age-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+
+        .age-box p {
+
+            color: #888b94;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+
+        .age-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .enter-button,
+        .leave-button {
+
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .enter-button {
+
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+
+        .leave-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .results-grid {
+
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            header {
+
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+
+            nav {
+
+                position: absolute;
+
+                top: 68px;
+
+                left: 0;
+
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+
+            nav.open {
+
+                display: flex;
+            }
+
+
+            nav a {
+
+                padding: 11px 0;
+            }
+
+
+            .search-nav {
+
+                display: none;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
+
+            .search-hero {
+
+                padding:
+                    65px 5%
+                    55px;
+            }
+
+
+            main {
+
+                padding:
+                    45px 5%
+                    70px;
+            }
+
+
+            .results-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .footer-inner {
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 560px) {
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .logo-mark {
+
+                width: 31px;
+
+                height: 31px;
+            }
+
+
+            .search-content h1 {
+
+                letter-spacing: -2.4px;
+            }
+
+
+            .search-box {
+
+                padding: 6px;
+
+                border-radius: 13px;
+            }
+
+
+            .search-icon {
+
+                width: 38px;
+            }
+
+
+            .search-input {
+
+                height: 44px;
+
+                font-size: 12px;
+            }
+
+
+            .search-submit {
+
+                height: 44px;
+
+                padding:
+                    0 14px;
+            }
+
+
+            .results-header {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .results-grid {
+
+                gap: 12px;
+            }
+
+
+            .result-info h3 {
+
+                font-size: 11px;
+            }
+
+
+            .age-box {
+
+                padding:
+                    32px 23px;
+            }
+
+
+            .age-actions {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="search-nav active"
+                    aria-label="Search"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         SEARCH HERO
+    ========================= -->
+
+    <section class="search-hero">
+
+        <div class="search-content">
+
+
+            <div class="search-label">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Discover
+
+            </div>
+
+
+            <h1>
+
+                Find what
+                <span>you're looking for.</span>
+
+            </h1>
+
+
+            <p>
+
+                Search across the AfterDarkX collection
+                and discover entertainment that matches
+                your interests.
+
+            </p>
+
+
+            <form
+                class="search-box"
+                id="searchForm"
+            >
+
+                <div class="search-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Search the collection..."
+                    autocomplete="off"
+                    aria-label="Search"
+                >
+
+
+                <button
+                    type="button"
+                    class="clear-button"
+                    id="clearButton"
+                    onclick="clearSearch()"
+                    aria-label="Clear search"
+                >
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="search-submit"
+                >
+
+                    Search
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main>
+
+
+        <div
+            class="results-header"
+            id="resultsHeader"
+        >
+
+            <div>
+
+                <h2 id="resultsTitle">
+
+                    Explore the collection
+
+                </h2>
+
+                <p id="resultsDescription">
+
+                    Search results will appear here.
+
+                </p>
+
+            </div>
+
+
+            <div
+                class="result-count"
+                id="resultCount"
+            ></div>
+
+        </div>
+
+
+        <!-- QUICK SEARCH -->
+
+        <section
+            class="quick-searches"
+            id="quickSearches"
+        >
+
+            <h3>
+                Popular searches
+            </h3>
+
+
+            <div class="quick-list">
+
+                <button onclick="quickSearch('Featured')">
+                    Featured
+                </button>
+
+                <button onclick="quickSearch('Trending')">
+                    Trending
+                </button>
+
+                <button onclick="quickSearch('New')">
+                    New
+                </button>
+
+                <button onclick="quickSearch('Popular')">
+                    Popular
+                </button>
+
+                <button onclick="quickSearch('Collections')">
+                    Collections
+                </button>
+
+                <button onclick="quickSearch('Creators')">
+                    Creators
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTS -->
+
+        <section>
+
+            <div
+                class="results-grid"
+                id="resultsGrid"
+            ></div>
+
+
+            <div
+                class="empty-state"
+                id="emptyState"
+            >
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <h3>
+                    Nothing found
+                </h3>
+
+
+                <p>
+
+                    Try another search term or explore
+                    one of the popular searches above.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+
+                <p class="footer-description">
+
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+
+            <div class="age-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Adults only
+            </h2>
+
+
+            <p>
+
+                This website contains content intended
+                exclusively for adults aged 18 and over.
+                By entering, you confirm that you are at
+                least 18 years old and legally permitted
+                to access adult content in your location.
+
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+
+                    I'm 18 or older
+
+                </button>
+
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+
+                    Leave
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+        /* =========================
+           DEMO SEARCH DATA
+        ========================= */
+
+        const videos = [
+
+            {
+                id: "search-01",
+                title: "Featured Collection",
+                duration: "18:42",
+                type: "Featured",
+                views: "—",
+                color: "rgba(255,45,110,0.32)"
+            },
+
+
+            {
+                id: "search-02",
+                title: "Trending Selection",
+                duration: "14:25",
+                type: "Trending",
+                views: "—",
+                color: "rgba(125,55,255,0.32)"
+            },
+
+
+            {
+                id: "search-03",
+                title: "New Arrival",
+                duration: "21:08",
+                type: "New",
+                views: "—",
+                color: "rgba(50,150,255,0.28)"
+            },
+
+
+            {
+                id: "search-04",
+                title: "Popular Collection",
+                duration: "16:37",
+                type: "Popular",
+                views: "—",
+                color: "rgba(255,95,45,0.28)"
+            },
+
+
+            {
+                id: "search-05",
+                title: "Curated Collection",
+                duration: "12:54",
+                type: "Collection",
+                views: "—",
+                color: "rgba(50,210,175,0.28)"
+            },
+
+
+            {
+                id: "search-06",
+                title: "Creator Selection",
+                duration: "24:16",
+                type: "Creator",
+                views: "—",
+                color: "rgba(220,70,145,0.28)"
+            },
+
+
+            {
+                id: "search-07",
+                title: "Latest Feature",
+                duration: "17:22",
+                type: "Latest",
+                views: "—",
+                color: "rgba(240,175,50,0.28)"
+            },
+
+
+            {
+                id: "search-08",
+                title: "Most Viewed Selection",
+                duration: "19:44",
+                type: "Popular",
+                views: "—",
+                color: "rgba(80,220,190,0.28)"
+            }
+
+        ];
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        const clearButton =
+            document.getElementById(
+                "clearButton"
+            );
+
+
+        const searchForm =
+            document.getElementById(
+                "searchForm"
+            );
+
+
+        const resultsGrid =
+            document.getElementById(
+                "resultsGrid"
+            );
+
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        const resultsTitle =
+            document.getElementById(
+                "resultsTitle"
+            );
+
+
+        const resultsDescription =
+            document.getElementById(
+                "resultsDescription"
+            );
+
+
+        const resultCount =
+            document.getElementById(
+                "resultCount"
+            );
+
+
+        /* =========================
+           RENDER
+        ========================= */
+
+        function renderResults(list) {
+
+            resultsGrid.innerHTML = "";
+
+
+            if (!list.length) {
+
+                emptyState.style.display =
+                    "block";
+
+                resultCount.textContent =
+                    "0 results";
+
+                return;
+
+            }
+
+
+            emptyState.style.display =
+                "none";
+
+
+            resultCount.textContent =
+                `${list.length} results`;
+
+
+            resultsGrid.innerHTML =
+                list.map(
+                    video => `
+
+                        <article
+                            class="result-card"
+                            onclick="openVideo('${video.id}')"
+                        >
+
+                            <div
+                                class="thumbnail"
+                                style="--glow:${video.color};"
+                            >
+
+                                <div
+                                    class="thumbnail-pattern"
+                                ></div>
+
+
+                                <span class="result-type">
+
+                                    ${video.type}
+
+                                </span>
+
+
+                                <div class="play">
+
+                                    <i
+                                        class="fa-solid fa-play"
+                                    ></i>
+
+                                </div>
+
+
+                                <span class="duration">
+
+                                    ${video.duration}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="result-info">
+
+                                <h3>
+
+                                    ${video.title}
+
+                                </h3>
+
+
+                                <p>
+
+                                    ${video.views} views
+                                    · ${video.type}
+
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    `
+                ).join("");
+
+        }
+
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        function performSearch(query) {
+
+            const value =
+                query.trim().toLowerCase();
+
+
+            if (!value) {
+
+                resultsTitle.textContent =
+                    "Explore the collection";
+
+                resultsDescription.textContent =
+                    "Search results will appear here.";
+
+                renderResults(videos);
+
+                clearButton.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            const results =
+                videos.filter(
+                    video =>
+                        video.title
+                            .toLowerCase()
+                            .includes(value)
+                        ||
+                        video.type
+                            .toLowerCase()
+                            .includes(value)
+                );
+
+
+            resultsTitle.textContent =
+                `Results for "${query.trim()}"`;
+
+
+            resultsDescription.textContent =
+                "Matching content from the current collection.";
+
+
+            renderResults(results);
+
+
+            clearButton.style.display =
+                "flex";
+
+        }
+
+
+        searchForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                performSearch(
+                    searchInput.value
+                );
+
+                const query =
+                    searchInput.value.trim();
+
+
+                if (query) {
+
+                    const newUrl =
+                        `${window.location.pathname}?q=${encodeURIComponent(query)}`;
+
+                    window.history.replaceState(
+                        {},
+                        "",
+                        newUrl
+                    );
+
+                }
+
+            }
+        );
+
+
+        searchInput.addEventListener(
+            "input",
+            function() {
+
+                clearButton.style.display =
+                    this.value
+                        ? "flex"
+                        : "none";
+
+            }
+        );
+
+
+        /* =========================
+           QUICK SEARCH
+        ========================= */
+
+        function quickSearch(value) {
+
+            searchInput.value =
+                value;
+
+            performSearch(value);
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* =========================
+           CLEAR
+        ========================= */
+
+        function clearSearch() {
+
+            searchInput.value = "";
+
+            window.history.replaceState(
+                {},
+                "",
+                window.location.pathname
+            );
+
+            performSearch("");
+
+            searchInput.focus();
+
+        }
+
+
+        /* =========================
+           OPEN VIDEO
+        ========================= */
+
+        function openVideo(id) {
+
+            window.location.href =
+                `watch.html?id=${encodeURIComponent(id)}`;
+
+        }
+
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+
+            document.getElementById(
+                "ageGate"
+            ).style.display =
+                "none";
+
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        /* =========================
+           INITIALIZE
+        ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+
+                const query =
+                    params.get("q");
+
+
+                if (query) {
+
+                    searchInput.value =
+                        query;
+
+                    performSearch(query);
+
+                } else {
+
+                    renderResults(videos);
+
+                }
+
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display =
+                        "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

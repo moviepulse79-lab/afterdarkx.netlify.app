@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Watch | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Watch premium 18+ entertainment on AfterDarkX."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            background: #08090b;
+            color: #f5f5f5;
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+        }
+
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 6%;
+
+            background:
+                rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .header-inner {
+
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo-mark {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+
+        .logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        /* =========================
+           NAV
+        ========================= */
+
+        nav {
+
+            display: flex;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        nav a {
+
+            color: #a9abb2;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        nav a:hover,
+        nav a.active {
+
+            color: #fff;
+        }
+
+
+        .search-button {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            color: #bbb;
+        }
+
+
+        .search-button:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #fff;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            width: 100%;
+
+            max-width: 1500px;
+
+            margin: 0 auto;
+
+            padding:
+                35px 6%
+                90px;
+        }
+
+
+        /* =========================
+           BREADCRUMB
+        ========================= */
+
+        .breadcrumb {
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 22px;
+
+            color: #666a73;
+
+            font-size: 11px;
+        }
+
+
+        .breadcrumb a:hover {
+
+            color: #fff;
+        }
+
+
+        .breadcrumb i {
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           PLAYER
+        ========================= */
+
+        .player-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #101116,
+                    #0a0b0e
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            box-shadow:
+                0 30px 90px
+                rgba(0,0,0,0.35);
+        }
+
+
+        .player-placeholder {
+
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+
+        .player-glow {
+
+            position: absolute;
+
+            width: 600px;
+            height: 600px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,48,108,0.15),
+                    transparent 68%
+                );
+        }
+
+
+        .player-glow-two {
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            right: -200px;
+            bottom: -250px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(120,50,255,0.16),
+                    transparent 68%
+                );
+        }
+
+
+        .player-content {
+
+            position: relative;
+            z-index: 2;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        .player-icon {
+
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+
+            box-shadow:
+                0 15px 45px
+                rgba(255,48,107,0.2);
+
+            font-size: 23px;
+        }
+
+
+        .player-content h2 {
+
+            margin-bottom: 10px;
+
+            font-size: 22px;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .player-content p {
+
+            max-width: 460px;
+
+            margin: 0 auto;
+
+            color: #777a83;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .player-status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 18px;
+
+            padding: 7px 11px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #777a83;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+        }
+
+
+        .status-dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #ff3d73;
+
+            box-shadow:
+                0 0 10px
+                rgba(255,61,115,0.7);
+        }
+
+
+        /* =========================
+           VIDEO DETAILS
+        ========================= */
+
+        .video-details {
+
+            padding-top: 27px;
+        }
+
+
+        .video-category {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 13px;
+
+            color: #ff4779;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .video-title {
+
+            max-width: 950px;
+
+            font-size:
+                clamp(25px, 4vw, 42px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.7px;
+        }
+
+
+        .video-meta-row {
+
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 15px;
+
+            color: #73767f;
+
+            font-size: 11px;
+        }
+
+
+        .meta-item {
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 6px;
+        }
+
+
+        .meta-item i {
+
+            color: #9a9da5;
+
+            font-size: 10px;
+        }
+
+
+        .meta-separator {
+
+            width: 3px;
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: #4e5058;
+        }
+
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .actions {
+
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .action-button {
+
+            height: 40px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding:
+                0 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: #b5b7bd;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .action-button:hover {
+
+            background:
+                rgba(255,255,255,0.07);
+
+            border-color:
+                rgba(255,255,255,0.14);
+
+            color: #fff;
+        }
+
+
+        .action-button.active {
+
+            color: #ff4779;
+
+            border-color:
+                rgba(255,71,121,0.25);
+
+            background:
+                rgba(255,71,121,0.07);
+        }
+
+
+        .primary-action {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+
+            border: 0;
+
+            color: #fff;
+        }
+
+
+        .primary-action:hover {
+
+            box-shadow:
+                0 10px 28px
+                rgba(255,48,107,0.2);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .description-box {
+
+            margin-top: 32px;
+
+            padding: 25px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.018);
+        }
+
+
+        .description-header {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 13px;
+        }
+
+
+        .description-header h3 {
+
+            font-size: 14px;
+        }
+
+
+        .description-header span {
+
+            color: #5f626b;
+
+            font-size: 10px;
+        }
+
+
+        .description-box p {
+
+            max-width: 900px;
+
+            color: #777a83;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           CONTENT GRID
+        ========================= */
+
+        .below-player {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                320px;
+
+            gap: 35px;
+
+            margin-top: 55px;
+        }
+
+
+        .section-title {
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+
+        .section-title h2 {
+
+            font-size: 20px;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .section-title a {
+
+            color: #777a83;
+
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+
+        .section-title a:hover {
+
+            color: #fff;
+        }
+
+
+        /* =========================
+           RELATED GRID
+        ========================= */
+
+        .related-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+
+        .related-card {
+
+            cursor: pointer;
+
+            min-width: 0;
+        }
+
+
+        .related-thumb {
+
+            position: relative;
+
+            aspect-ratio: 16 / 10;
+
+            overflow: hidden;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17191f,
+                    #0e1013
+                );
+
+            transition: 0.25s ease;
+        }
+
+
+        .related-thumb::before {
+
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 75% 25%,
+                    var(--glow),
+                    transparent 48%
+                ),
+                radial-gradient(
+                    circle at 20% 90%,
+                    rgba(110,50,255,0.22),
+                    transparent 45%
+                );
+        }
+
+
+        .related-pattern {
+
+            position: absolute;
+            inset: 0;
+
+            opacity: 0.18;
+
+            background-image:
+                linear-gradient(
+                    120deg,
+                    transparent 47%,
+                    rgba(255,255,255,0.1) 49%,
+                    transparent 51%
+                );
+
+            background-size: 27px 27px;
+        }
+
+
+        .related-card:hover .related-thumb {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                rgba(255,60,120,0.3);
+        }
+
+
+        .related-duration {
+
+            position: absolute;
+
+            right: 8px;
+            bottom: 8px;
+
+            padding: 4px 6px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(0,0,0,0.72);
+
+            color: #fff;
+
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+
+        .related-play {
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.8);
+
+            opacity: 0;
+
+            border-radius: 50%;
+
+            background: #fff;
+
+            color: #111;
+
+            font-size: 10px;
+
+            transition: 0.25s ease;
+        }
+
+
+        .related-card:hover .related-play {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+        }
+
+
+        .related-info {
+
+            padding-top: 10px;
+        }
+
+
+        .related-info h3 {
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+
+            color: #dddfe3;
+
+            font-size: 11px;
+
+            line-height: 1.45;
+        }
+
+
+        .related-info p {
+
+            margin-top: 6px;
+
+            color: #5f626a;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           UP NEXT
+        ========================= */
+
+        .up-next {
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.018);
+        }
+
+
+        .up-next-title {
+
+            margin-bottom: 17px;
+
+            font-size: 14px;
+        }
+
+
+        .next-item {
+
+            display: grid;
+
+            grid-template-columns: 105px 1fr;
+
+            gap: 12px;
+
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            cursor: pointer;
+        }
+
+
+        .next-item:last-child {
+
+            margin-bottom: 0;
+            padding-bottom: 0;
+
+            border-bottom: 0;
+        }
+
+
+        .next-thumb {
+
+            position: relative;
+
+            aspect-ratio: 16 / 10;
+
+            overflow: hidden;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b1d23,
+                    #0f1013
+                );
+        }
+
+
+        .next-thumb::before {
+
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 75% 25%,
+                    var(--glow),
+                    transparent 50%
+                );
+        }
+
+
+        .next-info h4 {
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+
+            color: #d5d7db;
+
+            font-size: 10px;
+
+            line-height: 1.45;
+        }
+
+
+        .next-info p {
+
+            margin-top: 7px;
+
+            color: #5e6169;
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           NOTICE
+        ========================= */
+
+        .adult-notice {
+
+            display: flex;
+            align-items: flex-start;
+
+            gap: 13px;
+
+            margin-top: 35px;
+
+            padding: 17px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.015);
+        }
+
+
+        .adult-notice i {
+
+            margin-top: 2px;
+
+            color: #ff4779;
+
+            font-size: 13px;
+        }
+
+
+        .adult-notice p {
+
+            color: #666972;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .footer-inner {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+
+        .footer-brand {
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+
+        .footer-description {
+
+            max-width: 350px;
+
+            margin-top: 14px;
+
+            color: #6e7179;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 23px;
+        }
+
+
+        .footer-links a {
+
+            color: #71747d;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #fff;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #50535b;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+
+            position: fixed;
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.97);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .age-box {
+
+            width: 100%;
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+
+        .age-icon {
+
+            width: 62px;
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+
+        .age-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+
+        .age-box p {
+
+            color: #888b94;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+
+        .age-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .enter-button,
+        .leave-button {
+
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .enter-button {
+
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+
+        .leave-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .below-player {
+
+                grid-template-columns: 1fr;
+            }
+
+            .up-next {
+
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            header {
+
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+
+            nav {
+
+                position: absolute;
+
+                top: 68px;
+
+                left: 0;
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+
+            nav.open {
+
+                display: flex;
+            }
+
+
+            nav a {
+
+                padding: 11px 0;
+            }
+
+
+            .search-button {
+
+                display: none;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
+
+            main {
+
+                padding:
+                    25px 5%
+                    70px;
+            }
+
+
+            .player-wrapper {
+
+                border-radius: 14px;
+            }
+
+
+            .related-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 13px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .logo-mark {
+
+                width: 31px;
+                height: 31px;
+            }
+
+
+            .player-content h2 {
+
+                font-size: 18px;
+            }
+
+
+            .player-icon {
+
+                width: 60px;
+                height: 60px;
+
+                font-size: 18px;
+            }
+
+
+            .video-title {
+
+                font-size: 25px;
+
+                letter-spacing: -1px;
+            }
+
+
+            .description-box {
+
+                padding: 20px;
+            }
+
+
+            .related-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .age-box {
+
+                padding:
+                    32px 23px;
+            }
+
+
+            .age-actions {
+
+                flex-direction: column;
+            }
+
+
+            .footer-inner {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="search-button"
+                    aria-label="Search"
+                >
+
+                    <i
+                        class="fa-solid fa-magnifying-glass"
+                    ></i>
+
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main>
+
+
+        <!-- BREADCRUMB -->
+
+        <div class="breadcrumb">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <span id="breadcrumbTitle">
+                Watch
+            </span>
+
+        </div>
+
+
+        <!-- =========================
+             PLAYER
+        ========================= -->
+
+        <section
+            class="player-wrapper"
+            id="player"
+        >
+
+            <!--
+                TUBECORPORATE EMBED GOES HERE
+
+                Example structure later:
+
+                <div id="tubeCorporatePlayer">
+                    AUTHORIZED EMBED CODE
+                </div>
+
+                Do not add a random iframe here.
+            -->
+
+
+            <div
+                class="player-placeholder"
+                id="playerPlaceholder"
+            >
+
+                <div class="player-glow"></div>
+
+                <div class="player-glow-two"></div>
+
+
+                <div class="player-content">
+
+                    <div class="player-icon">
+
+                        <i class="fa-solid fa-play"></i>
+
+                    </div>
+
+
+                    <h2>
+                        Video player
+                    </h2>
+
+
+                    <p>
+                        Your authorized video player will
+                        appear here once the content feed
+                        is connected.
+                    </p>
+
+
+                    <div class="player-status">
+
+                        <span class="status-dot"></span>
+
+                        Player ready
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             VIDEO INFORMATION
+        ========================= -->
+
+        <section class="video-details">
+
+
+            <div class="video-category">
+
+                <i class="fa-solid fa-circle-play"></i>
+
+                <span id="videoCategory">
+                    Featured
+                </span>
+
+            </div>
+
+
+            <h1
+                class="video-title"
+                id="videoTitle"
+            >
+                Your next AfterDarkX experience
+            </h1>
+
+
+            <div class="video-meta-row">
+
+                <span class="meta-item">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    <span id="videoViews">
+                        — views
+                    </span>
+
+                </span>
+
+
+                <span class="meta-separator"></span>
+
+
+                <span class="meta-item">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <span id="videoDuration">
+                        — duration
+                    </span>
+
+                </span>
+
+
+                <span class="meta-separator"></span>
+
+
+                <span class="meta-item">
+
+                    <i class="fa-solid fa-calendar"></i>
+
+                    <span id="videoDate">
+                        Recently added
+                    </span>
+
+                </span>
+
+
+                <span class="meta-separator"></span>
+
+
+                <span class="meta-item">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    18+
+
+                </span>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+
+                <button
+                    class="action-button primary-action"
+                    onclick="scrollToPlayer()"
+                >
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Watch
+
+                </button>
+
+
+                <button
+                    class="action-button"
+                    id="likeButton"
+                    onclick="toggleLike()"
+                >
+
+                    <i class="fa-regular fa-heart"></i>
+
+                    Like
+
+                </button>
+
+
+                <button
+                    class="action-button"
+                    onclick="shareVideo()"
+                >
+
+                    <i class="fa-solid fa-share-nodes"></i>
+
+                    Share
+
+                </button>
+
+
+                <button
+                    class="action-button"
+                    id="saveButton"
+                    onclick="toggleSave()"
+                >
+
+                    <i class="fa-regular fa-bookmark"></i>
+
+                    Save
+
+                </button>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="description-box">
+
+                <div class="description-header">
+
+                    <h3>
+                        About this video
+                    </h3>
+
+                    <span>
+                        18+ content
+                    </span>
+
+                </div>
+
+
+                <p id="videoDescription">
+
+                    This video will display its description,
+                    category information, creator details and
+                    other metadata once the authorized content
+                    feed is connected.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RELATED + UP NEXT
+        ========================= -->
+
+        <section class="below-player">
+
+
+            <div>
+
+
+                <div class="section-title">
+
+                    <h2>
+                        You may also like
+                    </h2>
+
+                    <a href="categories.html">
+                        Browse all
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="related-grid"
+                    id="relatedGrid"
+                ></div>
+
+
+            </div>
+
+
+            <!-- UP NEXT -->
+
+            <aside class="up-next">
+
+                <h3 class="up-next-title">
+                    Up next
+                </h3>
+
+
+                <div id="nextList"></div>
+
+            </aside>
+
+
+        </section>
+
+
+        <!-- NOTICE -->
+
+        <div class="adult-notice">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            <p>
+                AfterDarkX is an 18+ platform. Content displayed
+                on this page is intended for adults only. Content
+                providers and publishers are responsible for
+                ensuring that their material complies with applicable
+                laws, platform requirements and applicable rights.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+
+                <p class="footer-description">
+
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+            <div class="age-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Adults only
+            </h2>
+
+
+            <p>
+
+                This website contains content intended
+                exclusively for adults aged 18 and over.
+                By entering, you confirm that you are at
+                least 18 years old and legally permitted
+                to access adult content in your location.
+
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+                    I'm 18 or older
+                </button>
+
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+                    Leave
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================
+           DEMO VIDEO DATA
+        ========================= */
+
+        /*
+            Temporary records only.
+
+            Later these will be populated from
+            the authorized TubeCorporate feed.
+        */
+
+        const videos = [
+
+            {
+                id: "demo-01",
+                title: "Featured Collection",
+                category: "Featured",
+                duration: "12:42",
+                views: "—",
+                description:
+                    "A featured collection prepared for the authorized AfterDarkX video feed.",
+                color: "rgba(255,50,110,0.28)"
+            },
+
+            {
+                id: "demo-02",
+                title: "Trending Selection",
+                category: "Trending",
+                duration: "18:25",
+                views: "—",
+                description:
+                    "A trending selection from the AfterDarkX collection.",
+                color: "rgba(120,50,255,0.28)"
+            },
+
+            {
+                id: "demo-03",
+                title: "Latest Collection",
+                category: "Latest",
+                duration: "21:08",
+                views: "—",
+                description:
+                    "One of the latest additions prepared for the platform.",
+                color: "rgba(50,150,255,0.28)"
+            },
+
+            {
+                id: "demo-04",
+                title: "Popular Selection",
+                category: "Popular",
+                duration: "15:37",
+                views: "—",
+                description:
+                    "A popular selection from the current collection.",
+                color: "rgba(255,95,45,0.28)"
+            },
+
+            {
+                id: "demo-05",
+                title: "Creator Collection",
+                category: "Creators",
+                duration: "09:54",
+                views: "—",
+                description:
+                    "Explore creator-focused entertainment.",
+                color: "rgba(60,210,175,0.28)"
+            },
+
+            {
+                id: "demo-06",
+                title: "Most Viewed Collection",
+                category: "Most Viewed",
+                duration: "24:16",
+                views: "—",
+                description:
+                    "A collection based around viewer activity.",
+                color: "rgba(220,70,145,0.28)"
+            }
+
+        ];
+
+
+        /* =========================
+           GET VIDEO ID
+        ========================= */
+
+        function getVideoId() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            return params.get("id");
+
+        }
+
+
+        /* =========================
+           FIND VIDEO
+        ========================= */
+
+        function getCurrentVideo() {
+
+            const id =
+                getVideoId();
+
+            if (!id) {
+
+                return videos[0];
+
+            }
+
+
+            const found =
+                videos.find(
+                    video =>
+                        video.id === id
+                );
+
+
+            return found || videos[0];
+
+        }
+
+
+        /* =========================
+           LOAD VIDEO
+        ========================= */
+
+        function loadVideo() {
+
+            const video =
+                getCurrentVideo();
+
+
+            document.title =
+                `${video.title} | AfterDarkX`;
+
+
+            document.getElementById(
+                "breadcrumbTitle"
+            ).textContent =
+                video.title;
+
+
+            document.getElementById(
+                "videoCategory"
+            ).textContent =
+                video.category;
+
+
+            document.getElementById(
+                "videoTitle"
+            ).textContent =
+                video.title;
+
+
+            document.getElementById(
+                "videoViews"
+            ).textContent =
+                `${video.views} views`;
+
+
+            document.getElementById(
+                "videoDuration"
+            ).textContent =
+                video.duration;
+
+
+            document.getElementById(
+                "videoDescription"
+            ).textContent =
+                video.description;
+
+        }
+
+
+        /* =========================
+           RELATED VIDEOS
+        ========================= */
+
+        function renderRelated() {
+
+            const current =
+                getCurrentVideo();
+
+
+            const related =
+                videos.filter(
+                    video =>
+                        video.id !== current.id
+                );
+
+
+            const grid =
+                document.getElementById(
+                    "relatedGrid"
+                );
+
+
+            grid.innerHTML =
+                related.map(
+                    video => `
+
+                        <article
+                            class="related-card"
+                            onclick="openVideo('${video.id}')"
+                        >
+
+                            <div
+                                class="related-thumb"
+                                style="--glow:${video.color};"
+                            >
+
+                                <div
+                                    class="related-pattern"
+                                ></div>
+
+
+                                <div class="related-play">
+
+                                    <i
+                                        class="fa-solid fa-play"
+                                    ></i>
+
+                                </div>
+
+
+                                <span
+                                    class="related-duration"
+                                >
+                                    ${video.duration}
+                                </span>
+
+                            </div>
+
+
+                            <div class="related-info">
+
+                                <h3>
+                                    ${video.title}
+                                </h3>
+
+                                <p>
+                                    ${video.category}
+                                    · ${video.views} views
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    `
+                )
+                .join("");
+
+        }
+
+
+        /* =========================
+           UP NEXT
+        ========================= */
+
+        function renderUpNext() {
+
+            const current =
+                getCurrentVideo();
+
+
+            const next =
+                videos
+                    .filter(
+                        video =>
+                            video.id !== current.id
+                    )
+                    .slice(0, 4);
+
+
+            const container =
+                document.getElementById(
+                    "nextList"
+                );
+
+
+            container.innerHTML =
+                next.map(
+                    video => `
+
+                        <article
+                            class="next-item"
+                            onclick="openVideo('${video.id}')"
+                        >
+
+                            <div
+                                class="next-thumb"
+                                style="--glow:${video.color};"
+                            ></div>
+
+
+                            <div class="next-info">
+
+                                <h4>
+                                    ${video.title}
+                                </h4>
+
+                                <p>
+                                    ${video.duration}
+                                    · ${video.category}
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    `
+                )
+                .join("");
+
+        }
+
+
+        /* =========================
+           OPEN VIDEO
+        ========================= */
+
+        function openVideo(id) {
+
+            window.location.href =
+                `watch.html?id=${encodeURIComponent(id)}`;
+
+        }
+
+
+        /* =========================
+           LIKE
+        ========================= */
+
+        function toggleLike() {
+
+            const button =
+                document.getElementById(
+                    "likeButton"
+                );
+
+
+            button.classList.toggle(
+                "active"
+            );
+
+
+            const icon =
+                button.querySelector("i");
+
+
+            if (
+                button.classList.contains(
+                    "active"
+                )
+            ) {
+
+                icon.className =
+                    "fa-solid fa-heart";
+
+                button.innerHTML =
+                    `
+                        <i class="fa-solid fa-heart"></i>
+                        Liked
+                    `;
+
+            } else {
+
+                button.innerHTML =
+                    `
+                        <i class="fa-regular fa-heart"></i>
+                        Like
+                    `;
+
+            }
+
+        }
+
+
+        /* =========================
+           SAVE
+        ========================= */
+
+        function toggleSave() {
+
+            const button =
+                document.getElementById(
+                    "saveButton"
+                );
+
+
+            button.classList.toggle(
+                "active"
+            );
+
+
+            if (
+                button.classList.contains(
+                    "active"
+                )
+            ) {
+
+                button.innerHTML =
+                    `
+                        <i class="fa-solid fa-bookmark"></i>
+                        Saved
+                    `;
+
+            } else {
+
+                button.innerHTML =
+                    `
+                        <i class="fa-regular fa-bookmark"></i>
+                        Save
+                    `;
+
+            }
+
+        }
+
+
+        /* =========================
+           SHARE
+        ========================= */
+
+        async function shareVideo() {
+
+            const url =
+                window.location.href;
+
+
+            if (
+                navigator.share
+            ) {
+
+                try {
+
+                    await navigator.share({
+
+                        title:
+                            document.title,
+
+                        url:
+                            url
+
+                    });
+
+                } catch (error) {
+
+                    // User cancelled share.
+
+                }
+
+                return;
+
+            }
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    url
+                );
+
+                alert(
+                    "Video link copied."
+                );
+
+            } catch (error) {
+
+                alert(
+                    "Copy this page URL to share the video."
+                );
+
+            }
+
+        }
+
+
+        /* =========================
+           SCROLL TO PLAYER
+        ========================= */
+
+        function scrollToPlayer() {
+
+            document.getElementById(
+                "player"
+            ).scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        function toggleMenu() {
+
+            document
+                .getElementById(
+                    "mainNav"
+                )
+                .classList.toggle(
+                    "open"
+                );
+
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+
+            document.getElementById(
+                "ageGate"
+            ).style.display =
+                "none";
+
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        /* =========================
+           INITIALIZE
+        ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadVideo();
+
+                renderRelated();
+
+                renderUpNext();
+
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display =
+                        "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

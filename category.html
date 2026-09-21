@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Category | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Explore AfterDarkX adult entertainment categories."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #08090b;
+            color: #f5f5f5;
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 6%;
+
+            background: rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .header-inner {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+        .logo em {
+            color: #ff3d73;
+            font-style: normal;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #a9abb2;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffffff;
+        }
+
+        .nav-search {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            color: #bbb;
+        }
+
+        .nav-search:hover {
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #fff;
+        }
+
+        .menu-button {
+            display: none;
+
+            border: 0;
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           PAGE HERO
+        ========================= */
+
+        .category-hero {
+            position: relative;
+
+            padding:
+                85px
+                6%
+                65px;
+
+            overflow: hidden;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+        .category-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 550px;
+            height: 550px;
+
+            top: -300px;
+            right: -100px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,38,105,0.16),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+        .category-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 400px;
+            height: 400px;
+
+            bottom: -320px;
+            left: 10%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(125,53,255,0.13),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+        .breadcrumb {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 22px;
+
+            color: #696c75;
+
+            font-size: 12px;
+        }
+
+        .breadcrumb a:hover {
+            color: #fff;
+        }
+
+        .breadcrumb i {
+            font-size: 9px;
+        }
+
+        .hero-label {
+            position: relative;
+            z-index: 2;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 18px;
+            padding: 8px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #c5c7cd;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .hero-label i {
+            color: #ff3f74;
+        }
+
+        .category-hero h1 {
+            position: relative;
+            z-index: 2;
+
+            font-size:
+                clamp(40px, 7vw, 78px);
+
+            line-height: 0.95;
+
+            letter-spacing: -3.5px;
+
+            margin-bottom: 22px;
+        }
+
+        .category-hero h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a25cff
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .category-description {
+            position: relative;
+            z-index: 2;
+
+            max-width: 650px;
+
+            color: #91939c;
+
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding:
+                55px 6%
+                90px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 30px;
+        }
+
+        .results-info h2 {
+            font-size: 22px;
+
+            letter-spacing: -0.6px;
+        }
+
+        .results-info p {
+            margin-top: 7px;
+
+            color: #70727b;
+
+            font-size: 12px;
+        }
+
+        .sort-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-label {
+            color: #70727b;
+            font-size: 12px;
+        }
+
+        .sort-select {
+            height: 40px;
+
+            padding: 0 36px 0 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            color: #ddd;
+
+            background: #111318;
+
+            font-size: 12px;
+
+            cursor: pointer;
+        }
+
+        .sort-select option {
+            background: #111318;
+            color: #fff;
+        }
+
+        /* =========================
+           FEATURED CARD
+        ========================= */
+
+        .featured-video {
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(300px, 1.45fr)
+                minmax(280px, 0.8fr);
+
+            min-height: 360px;
+
+            margin-bottom: 45px;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 22px;
+
+            background: #101116;
+        }
+
+        .featured-image {
+            position: relative;
+
+            min-height: 360px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b1621,
+                    #26121a 45%,
+                    #111318
+                );
+
+            overflow: hidden;
+        }
+
+        .featured-image::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 70% 30%,
+                    rgba(255,55,115,0.34),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 20% 80%,
+                    rgba(130,55,255,0.28),
+                    transparent 40%
+                );
+        }
+
+        .featured-pattern {
+            position: absolute;
+            inset: 0;
+
+            opacity: 0.22;
+
+            background-image:
+                linear-gradient(
+                    135deg,
+                    transparent 48%,
+                    rgba(255,255,255,0.08) 49%,
+                    transparent 50%
+                );
+
+            background-size: 35px 35px;
+        }
+
+        .featured-play {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 74px;
+            height: 74px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            border-radius: 50%;
+
+            background:
+                rgba(8,9,11,0.62);
+
+            backdrop-filter: blur(12px);
+
+            color: #fff;
+
+            font-size: 20px;
+
+            transition: 0.25s ease;
+        }
+
+        .featured-video:hover .featured-play {
+            transform:
+                translate(-50%, -50%)
+                scale(1.08);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #923aff
+                );
+        }
+
+        .featured-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding: 40px;
+        }
+
+        .featured-tag {
+            width: fit-content;
+
+            margin-bottom: 18px;
+            padding: 7px 10px;
+
+            border-radius: 7px;
+
+            background:
+                rgba(255,53,112,0.1);
+
+            color: #ff4c7e;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .featured-info h3 {
+            max-width: 500px;
+
+            font-size: 30px;
+            line-height: 1.1;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 14px;
+        }
+
+        .featured-info p {
+            max-width: 470px;
+
+            color: #858790;
+
+            font-size: 13px;
+            line-height: 1.7;
+
+            margin-bottom: 22px;
+        }
+
+        .featured-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-pill {
+            color: #73757e;
+            font-size: 11px;
+        }
+
+        .meta-pill i {
+            margin-right: 5px;
+
+            color: #ff4779;
+        }
+
+        .watch-featured {
+            width: fit-content;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8f38ff
+                );
+
+            color: #fff;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: 0.25s ease;
+        }
+
+        .watch-featured:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(255,48,107,0.2);
+        }
+
+        /* =========================
+           VIDEO GRID
+        ========================= */
+
+        .video-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .video-card {
+            min-width: 0;
+
+            cursor: pointer;
+        }
+
+        .thumbnail {
+            position: relative;
+
+            aspect-ratio: 16 / 10;
+
+            overflow: hidden;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17191e,
+                    #0f1013
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .thumbnail::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 75% 25%,
+                    var(--glow, rgba(255,50,110,0.28)),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 20% 85%,
+                    rgba(110,55,255,0.2),
+                    transparent 45%
+                );
+        }
+
+        .thumbnail-pattern {
+            position: absolute;
+            inset: 0;
+
+            opacity: 0.18;
+
+            background-image:
+                linear-gradient(
+                    120deg,
+                    transparent 46%,
+                    rgba(255,255,255,0.12) 48%,
+                    transparent 50%
+                );
+
+            background-size: 30px 30px;
+        }
+
+        .video-card:hover .thumbnail {
+            transform: translateY(-4px);
+
+            border-color:
+                rgba(255,60,120,0.3);
+        }
+
+        .duration {
+            position: absolute;
+
+            right: 10px;
+            bottom: 10px;
+
+            padding: 5px 7px;
+
+            border-radius: 6px;
+
+            background:
+                rgba(0,0,0,0.72);
+
+            color: #fff;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .quality {
+            position: absolute;
+
+            left: 10px;
+            bottom: 10px;
+
+            padding: 5px 7px;
+
+            border-radius: 6px;
+
+            background:
+                rgba(255,255,255,0.1);
+
+            color: #ddd;
+
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .play-small {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.8);
+
+            opacity: 0;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.94);
+
+            color: #111;
+
+            font-size: 12px;
+
+            transition: 0.25s ease;
+        }
+
+        .video-card:hover .play-small {
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+        }
+
+        .video-info {
+            padding: 13px 3px 5px;
+        }
+
+        .video-title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+
+            color: #e7e7e9;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            line-height: 1.45;
+        }
+
+        .video-sub {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 8px;
+
+            color: #656871;
+
+            font-size: 10px;
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .skeleton {
+            overflow: hidden;
+
+            border-radius: 15px;
+
+            background: #101116;
+        }
+
+        .skeleton-thumb {
+            aspect-ratio: 16 / 10;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #101116 25%,
+                    #181a20 50%,
+                    #101116 75%
+                );
+
+            background-size: 200% 100%;
+
+            animation:
+                shimmer 1.4s infinite;
+        }
+
+        .skeleton-line {
+            width: 75%;
+            height: 12px;
+
+            margin: 13px 12px 8px;
+
+            border-radius: 6px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #111217 25%,
+                    #191b21 50%,
+                    #111217 75%
+                );
+
+            background-size: 200% 100%;
+
+            animation:
+                shimmer 1.4s infinite;
+        }
+
+        .skeleton-line.short {
+            width: 45%;
+            margin-top: 0;
+            margin-bottom: 14px;
+        }
+
+        @keyframes shimmer {
+
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            display: none;
+
+            padding: 80px 20px;
+
+            text-align: center;
+
+            border:
+                1px dashed
+                rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.015);
+        }
+
+        .empty-state i {
+            margin-bottom: 18px;
+
+            color: #555862;
+
+            font-size: 30px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+
+            font-size: 20px;
+        }
+
+        .empty-state p {
+            color: #70727b;
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .footer-description {
+            max-width: 360px;
+
+            margin-top: 15px;
+
+            color: #73757e;
+
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .footer-links a {
+            color: #777983;
+
+            font-size: 12px;
+
+            transition: 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            padding-top: 25px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #555761;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+            position: fixed;
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.96);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .age-box {
+            width: 100%;
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+        .age-icon {
+            width: 62px;
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+        .age-box h2 {
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+        .age-box p {
+            color: #888b94;
+
+            font-size: 13px;
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+        .age-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .enter-button,
+        .leave-button {
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .enter-button {
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+        .leave-button {
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .video-grid,
+            .loading {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            header {
+                height: 68px;
+                padding: 0 5%;
+            }
+
+            nav {
+                position: absolute;
+
+                top: 68px;
+                left: 0;
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            nav a {
+                padding: 12px 0;
+            }
+
+            .nav-search {
+                display: none;
+            }
+
+            .menu-button {
+                display: block;
+            }
+
+            .category-hero {
+                padding:
+                    65px 5%
+                    50px;
+            }
+
+            .content {
+                padding:
+                    45px 5%
+                    70px;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .featured-video {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-image {
+                min-height: 300px;
+            }
+
+            .featured-info {
+                padding: 30px;
+            }
+
+            .video-grid,
+            .loading {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .logo-mark {
+                width: 31px;
+                height: 31px;
+            }
+
+            .category-hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .video-grid,
+            .loading {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 12px;
+            }
+
+            .video-title {
+                font-size: 11px;
+            }
+
+            .video-sub {
+                font-size: 9px;
+            }
+
+            .featured-info h3 {
+                font-size: 23px;
+            }
+
+            .age-box {
+                padding: 32px 23px;
+            }
+
+            .age-actions {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a
+                    href="categories.html"
+                    class="active"
+                >
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="nav-search"
+                    aria-label="Search"
+                >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         CATEGORY HERO
+    ========================= -->
+
+    <section class="category-hero">
+
+        <div class="breadcrumb">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <span id="breadcrumbName">
+                Featured
+            </span>
+
+        </div>
+
+
+        <div class="hero-label">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+            <span id="heroLabel">
+                Curated collection
+            </span>
+
+        </div>
+
+
+        <h1>
+            <span id="categoryName">
+                Featured
+            </span>
+        </h1>
+
+
+        <p
+            class="category-description"
+            id="categoryDescription"
+        >
+            Discover a carefully selected collection of
+            standout entertainment.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="content">
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <div class="results-info">
+
+                <h2>
+                    <span id="resultsTitle">
+                        Featured videos
+                    </span>
+                </h2>
+
+                <p id="resultsDescription">
+                    Fresh selections picked for discovery.
+                </p>
+
+            </div>
+
+
+            <div class="sort-area">
+
+                <span class="sort-label">
+                    Sort by
+                </span>
+
+                <select
+                    class="sort-select"
+                    id="sortSelect"
+                    onchange="sortVideos()"
+                >
+
+                    <option value="featured">
+                        Featured
+                    </option>
+
+                    <option value="latest">
+                        Latest
+                    </option>
+
+                    <option value="popular">
+                        Most viewed
+                    </option>
+
+                    <option value="rating">
+                        Top rated
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- FEATURED VIDEO -->
+
+        <article
+            class="featured-video"
+            id="featuredVideo"
+        >
+
+            <div class="featured-image">
+
+                <div class="featured-pattern"></div>
+
+                <div class="featured-play">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+
+            </div>
+
+
+            <div class="featured-info">
+
+                <div class="featured-tag">
+                    Editor's pick
+                </div>
+
+                <h3 id="featuredTitle">
+                    A featured experience awaits
+                </h3>
+
+                <p id="featuredDescription">
+                    This space is prepared for the first
+                    authorized video feed.
+                </p>
+
+
+                <div class="featured-meta">
+
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-clock"></i>
+                        Featured
+                    </span>
+
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-play"></i>
+                        HD
+                    </span>
+
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        18+
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="watch.html"
+                    class="watch-featured"
+                >
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Watch now
+
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- VIDEO AREA -->
+
+        <section id="videoSection">
+
+            <div
+                class="video-grid"
+                id="videoGrid"
+            ></div>
+
+
+            <!-- LOADING -->
+
+            <div
+                class="loading"
+                id="loadingGrid"
+            >
+
+                <div class="skeleton">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+
+                <div class="skeleton">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+
+                <div class="skeleton">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+
+                <div class="skeleton">
+                    <div class="skeleton-thumb"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+                class="empty-state"
+                id="emptyState"
+            >
+
+                <i class="fa-solid fa-film"></i>
+
+                <h3>
+                    Nothing here yet
+                </h3>
+
+                <p>
+                    This collection will appear here
+                    when content becomes available.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+                <p class="footer-description">
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+            <div class="age-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h2>
+                Adults only
+            </h2>
+
+            <p>
+                This website contains content intended exclusively
+                for adults aged 18 and over. By entering, you confirm
+                that you are at least 18 years old and legally permitted
+                to access adult content in your location.
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+                    I'm 18 or older
+                </button>
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+                    Leave
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================
+           CATEGORY DATA
+        ========================= */
+
+        const categories = {
+
+            featured: {
+                name: "Featured",
+                label: "Curated collection",
+                description:
+                    "Discover a carefully selected collection of standout entertainment and fresh discoveries.",
+                resultText:
+                    "Fresh selections picked for discovery."
+            },
+
+            trending: {
+                name: "Trending",
+                label: "What's getting attention",
+                description:
+                    "Explore the entertainment currently attracting the most attention across the platform.",
+                resultText:
+                    "See what's getting attention right now."
+            },
+
+            popular: {
+                name: "Popular",
+                label: "Most watched",
+                description:
+                    "Browse popular entertainment selected from the content receiving the most attention.",
+                resultText:
+                    "Popular picks from across the platform."
+            },
+
+            new: {
+                name: "New",
+                label: "Fresh arrivals",
+                description:
+                    "Discover the newest additions as they arrive on AfterDarkX.",
+                resultText:
+                    "Recently added entertainment."
+            },
+
+            collections: {
+                name: "Collections",
+                label: "Curated collections",
+                description:
+                    "Explore themed collections designed to make discovering something new easier.",
+                resultText:
+                    "Curated groups built around different themes."
+            },
+
+            creators: {
+                name: "Creators",
+                label: "Creator library",
+                description:
+                    "Explore content from creators featured across the AfterDarkX platform.",
+                resultText:
+                    "Discover creator-focused collections."
+            },
+
+            "most-viewed": {
+                name: "Most Viewed",
+                label: "Audience favorites",
+                description:
+                    "Browse content receiving the highest level of attention from viewers.",
+                resultText:
+                    "Popular entertainment by viewing activity."
+            },
+
+            latest: {
+                name: "Latest",
+                label: "Latest releases",
+                description:
+                    "Stay up to date with the newest entertainment added to the platform.",
+                resultText:
+                    "The newest additions to AfterDarkX."
+            }
+
+        };
+
+
+        /* =========================
+           DEMO DATA
+           ========================= */
+
+        /*
+            These are intentionally demo records.
+
+            Later, replace this array with the
+            authorized TubeCorporate feed data.
+        */
+
+        let videos = [
+
+            {
+                id: "demo-01",
+                title: "Featured Collection",
+                category: "featured",
+                duration: "12:42",
+                views: "—",
+                rating: "—",
+                color: "rgba(255,50,110,0.28)"
+            },
+
+            {
+                id: "demo-02",
+                title: "Latest Collection",
+                category: "latest",
+                duration: "18:25",
+                views: "—",
+                rating: "—",
+                color: "rgba(70,120,255,0.28)"
+            },
+
+            {
+                id: "demo-03",
+                title: "Popular Collection",
+                category: "popular",
+                duration: "21:08",
+                views: "—",
+                rating: "—",
+                color: "rgba(255,100,45,0.28)"
+            },
+
+            {
+                id: "demo-04",
+                title: "New Arrivals",
+                category: "new",
+                duration: "15:37",
+                views: "—",
+                rating: "—",
+                color: "rgba(40,190,165,0.28)"
+            },
+
+            {
+                id: "demo-05",
+                title: "Creator Collection",
+                category: "creators",
+                duration: "09:54",
+                views: "—",
+                rating: "—",
+                color: "rgba(155,70,255,0.28)"
+            },
+
+            {
+                id: "demo-06",
+                title: "Trending Selection",
+                category: "trending",
+                duration: "24:16",
+                views: "—",
+                rating: "—",
+                color: "rgba(255,50,80,0.28)"
+            },
+
+            {
+                id: "demo-07",
+                title: "Editor's Collection",
+                category: "collections",
+                duration: "17:22",
+                views: "—",
+                rating: "—",
+                color: "rgba(240,175,50,0.28)"
+            },
+
+            {
+                id: "demo-08",
+                title: "Most Viewed Collection",
+                category: "most-viewed",
+                duration: "19:44",
+                views: "—",
+                rating: "—",
+                color: "rgba(80,220,190,0.28)"
+            }
+
+        ];
+
+
+        /* =========================
+           GET CATEGORY
+        ========================= */
+
+        function getCategory() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const requested =
+                params.get("category");
+
+            if (
+                requested &&
+                categories[requested]
+            ) {
+                return requested;
+            }
+
+            return "featured";
+
+        }
+
+
+        /* =========================
+           UPDATE PAGE
+        ========================= */
+
+        function updateCategoryPage() {
+
+            const categoryKey =
+                getCategory();
+
+            const category =
+                categories[categoryKey];
+
+
+            document.title =
+                `${category.name} | AfterDarkX`;
+
+
+            document.getElementById(
+                "breadcrumbName"
+            ).textContent =
+                category.name;
+
+
+            document.getElementById(
+                "heroLabel"
+            ).textContent =
+                category.label;
+
+
+            document.getElementById(
+                "categoryName"
+            ).textContent =
+                category.name;
+
+
+            document.getElementById(
+                "categoryDescription"
+            ).textContent =
+                category.description;
+
+
+            document.getElementById(
+                "resultsTitle"
+            ).textContent =
+                `${category.name} videos`;
+
+
+            document.getElementById(
+                "resultsDescription"
+            ).textContent =
+                category.resultText;
+
+        }
+
+
+        /* =========================
+           RENDER VIDEOS
+        ========================= */
+
+        function renderVideos() {
+
+            const categoryKey =
+                getCategory();
+
+            const grid =
+                document.getElementById(
+                    "videoGrid"
+                );
+
+            const loading =
+                document.getElementById(
+                    "loadingGrid"
+                );
+
+            const empty =
+                document.getElementById(
+                    "emptyState"
+                );
+
+
+            loading.style.display =
+                "none";
+
+
+            let filtered =
+                videos.filter(
+                    video => {
+
+                        if (
+                            categoryKey ===
+                            "featured"
+                        ) {
+                            return true;
+                        }
+
+                        if (
+                            categoryKey ===
+                            "collections"
+                        ) {
+                            return true;
+                        }
+
+                        return (
+                            video.category ===
+                            categoryKey
+                        );
+
+                    }
+                );
+
+
+            if (!filtered.length) {
+
+                grid.innerHTML = "";
+
+                empty.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            empty.style.display =
+                "none";
+
+
+            grid.innerHTML =
+                filtered.map(
+                    createVideoCard
+                ).join("");
+
+        }
+
+
+        /* =========================
+           VIDEO CARD
+        ========================= */
+
+        function createVideoCard(video) {
+
+            return `
+
+                <article
+                    class="video-card"
+                    onclick="openVideo('${video.id}')"
+                >
+
+                    <div class="thumbnail"
+                        style="--glow:${video.color};"
+                    >
+
+                        <div
+                            class="thumbnail-pattern"
+                        ></div>
+
+
+                        <div class="play-small">
+
+                            <i
+                                class="fa-solid fa-play"
+                            ></i>
+
+                        </div>
+
+
+                        <span class="quality">
+                            HD
+                        </span>
+
+
+                        <span class="duration">
+                            ${video.duration}
+                        </span>
+
+                    </div>
+
+
+                    <div class="video-info">
+
+                        <div class="video-title">
+                            ${video.title}
+                        </div>
+
+
+                        <div class="video-sub">
+
+                            <span>
+                                ${video.views} views
+                            </span>
+
+                            <span>
+                                ${video.rating}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        }
+
+
+        /* =========================
+           FEATURED
+        ========================= */
+
+        function updateFeatured() {
+
+            const categoryKey =
+                getCategory();
+
+            const category =
+                categories[categoryKey];
+
+
+            document.getElementById(
+                "featuredTitle"
+            ).textContent =
+                `${category.name} collection`;
+
+
+            document.getElementById(
+                "featuredDescription"
+            ).textContent =
+                category.description;
+
+        }
+
+
+        /* =========================
+           SORT
+        ========================= */
+
+        function sortVideos() {
+
+            const select =
+                document.getElementById(
+                    "sortSelect"
+                );
+
+            const value =
+                select.value;
+
+
+            if (value === "latest") {
+
+                videos.reverse();
+
+            }
+
+            if (value === "popular") {
+
+                videos.sort(
+                    () => Math.random() - 0.5
+                );
+
+            }
+
+            if (value === "rating") {
+
+                videos.reverse();
+
+            }
+
+
+            renderVideos();
+
+        }
+
+
+        /* =========================
+           OPEN VIDEO
+        ========================= */
+
+        function openVideo(id) {
+
+            if (
+                id.startsWith("demo-")
+            ) {
+
+                alert(
+                    "The authorized video feed will be connected here."
+                );
+
+                return;
+
+            }
+
+            window.location.href =
+                `watch.html?id=${encodeURIComponent(id)}`;
+
+        }
+
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+            document.getElementById(
+                "ageGate"
+            ).style.display =
+                "none";
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        /* =========================
+           INITIALIZE
+        ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                updateCategoryPage();
+
+                updateFeatured();
+
+                renderVideos();
+
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display =
+                        "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

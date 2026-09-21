@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>About | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Learn more about AfterDarkX, a premium 18+ entertainment platform focused on discovery and curated experiences."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            background: #08090b;
+
+            color: #f5f5f5;
+
+            font-family: "Inter", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 6%;
+
+            background:
+                rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .header-inner {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo-mark {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+
+        .logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        nav {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        nav a {
+
+            color: #a9abb2;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        nav a:hover,
+        nav a.active {
+
+            color: #fff;
+        }
+
+
+        .search-button {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            color: #bbb;
+        }
+
+
+        .search-button:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #fff;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding:
+                90px 6%
+                80px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 650px;
+
+            height: 650px;
+
+            right: -200px;
+
+            top: -380px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,45,110,0.19),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            left: 8%;
+
+            bottom: -400px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(125,55,255,0.15),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 850px;
+
+            margin: auto;
+
+            text-align: center;
+        }
+
+
+        .hero-label {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #c5c7cd;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .hero-label i {
+
+            color: #ff3f74;
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(42px, 6vw, 72px);
+
+            line-height: 0.98;
+
+            letter-spacing: -3.5px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .hero h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a25cff
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            max-width: 670px;
+
+            margin: auto;
+
+            color: #858891;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding:
+                75px 6%
+                100px;
+        }
+
+
+        /* =========================
+           INTRO
+        ========================= */
+
+        .intro {
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr 0.9fr;
+
+            gap: 70px;
+
+            align-items: center;
+
+            margin-bottom: 90px;
+        }
+
+
+        .intro-copy h2 {
+
+            font-size: 34px;
+
+            line-height: 1.1;
+
+            letter-spacing: -1.4px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .intro-copy h2 span {
+
+            color: #ff4778;
+        }
+
+
+        .intro-copy p {
+
+            color: #7e818a;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+
+            margin-bottom: 15px;
+        }
+
+
+        .intro-visual {
+
+            position: relative;
+
+            min-height: 330px;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #17131d,
+                    #0c0e12
+                );
+        }
+
+
+        .intro-visual::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+
+            height: 300px;
+
+            top: -80px;
+
+            right: -50px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,45,110,0.35),
+                    transparent 68%
+                );
+        }
+
+
+        .intro-visual::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+
+            height: 260px;
+
+            left: -90px;
+
+            bottom: -90px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(125,55,255,0.32),
+                    transparent 68%
+                );
+        }
+
+
+        .visual-grid {
+
+            position: absolute;
+
+            inset: 0;
+
+            opacity: 0.17;
+
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,0.12) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.12) 1px,
+                    transparent 1px
+                );
+
+            background-size: 34px 34px;
+        }
+
+
+        .visual-logo {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 15px;
+
+            z-index: 2;
+        }
+
+
+        .visual-logo-mark {
+
+            width: 72px;
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+
+            box-shadow:
+                0 20px 60px
+                rgba(255,48,107,0.25);
+
+            font-size: 25px;
+        }
+
+
+        .visual-logo span {
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .visual-logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        /* =========================
+           VALUES
+        ========================= */
+
+        .section-title {
+
+            margin-bottom: 30px;
+        }
+
+
+        .section-title small {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #ff4778;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .section-title h2 {
+
+            font-size: 28px;
+
+            letter-spacing: -1px;
+        }
+
+
+        .values {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 17px;
+
+            margin-bottom: 90px;
+        }
+
+
+        .value-card {
+
+            padding: 28px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,0.018);
+
+            transition: 0.25s ease;
+        }
+
+
+        .value-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,60,120,0.22);
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        .value-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,48,107,0.08);
+
+            color: #ff4778;
+
+            font-size: 15px;
+        }
+
+
+        .value-card h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 15px;
+        }
+
+
+        .value-card p {
+
+            color: #70737c;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           HOW IT WORKS
+        ========================= */
+
+        .how-section {
+
+            margin-bottom: 90px;
+        }
+
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 25px;
+
+            counter-reset: steps;
+        }
+
+
+        .step {
+
+            position: relative;
+
+            padding:
+                30px 25px
+                25px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        .step-number {
+
+            margin-bottom: 18px;
+
+            color: #ff3f73;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .step h3 {
+
+            margin-bottom: 9px;
+
+            font-size: 15px;
+        }
+
+
+        .step p {
+
+            color: #70737c;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           18+ NOTICE
+        ========================= */
+
+        .notice {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 18px;
+
+            padding: 28px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,48,107,0.055),
+                    rgba(145,58,255,0.04)
+                );
+        }
+
+
+        .notice-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,48,107,0.1);
+
+            color: #ff4778;
+        }
+
+
+        .notice h3 {
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+        }
+
+
+        .notice p {
+
+            color: #73767f;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .footer-inner {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+
+        .footer-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .footer-description {
+
+            max-width: 350px;
+
+            margin-top: 14px;
+
+            color: #6e7179;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 23px;
+        }
+
+
+        .footer-links a {
+
+            color: #71747d;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #fff;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #50535b;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.97);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .age-box {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+
+        .age-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+
+        .age-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+
+        .age-box p {
+
+            color: #888b94;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+
+        .age-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .enter-button,
+        .leave-button {
+
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .enter-button {
+
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+
+        .leave-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            header {
+
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+
+            nav {
+
+                position: absolute;
+
+                top: 68px;
+
+                left: 0;
+
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+
+            nav.open {
+
+                display: flex;
+            }
+
+
+            nav a {
+
+                padding: 11px 0;
+            }
+
+
+            .search-button {
+
+                display: none;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
+
+            .hero {
+
+                padding:
+                    65px 5%
+                    55px;
+            }
+
+
+            main {
+
+                padding:
+                    60px 5%
+                    75px;
+            }
+
+
+            .intro {
+
+                grid-template-columns: 1fr;
+
+                gap: 35px;
+            }
+
+
+            .intro-visual {
+
+                min-height: 290px;
+            }
+
+
+            .values,
+            .steps {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .footer-inner {
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .logo-mark {
+
+                width: 31px;
+
+                height: 31px;
+            }
+
+
+            .hero h1 {
+
+                letter-spacing: -2.4px;
+            }
+
+
+            .intro-copy h2 {
+
+                font-size: 28px;
+            }
+
+
+            .age-box {
+
+                padding:
+                    32px 23px;
+            }
+
+
+            .age-actions {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="search-button"
+                    aria-label="Search"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="hero-label">
+
+                <i class="fa-solid fa-moon"></i>
+
+                About AfterDarkX
+
+            </div>
+
+
+            <h1>
+
+                Built for
+                <span>discovery.</span>
+
+            </h1>
+
+
+            <p>
+
+                AfterDarkX is a premium 18+ entertainment
+                platform designed around simple discovery,
+                curated collections and a modern viewing
+                experience.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main>
+
+
+        <!-- INTRO -->
+
+        <section class="intro">
+
+
+            <div class="intro-copy">
+
+                <h2>
+
+                    Entertainment,
+                    <span>after dark.</span>
+
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX was created with one simple
+                    idea: discovering entertainment should
+                    feel effortless.
+
+                </p>
+
+
+                <p>
+
+                    Instead of overwhelming visitors with
+                    endless clutter, the platform focuses
+                    on organized collections, trending
+                    discoveries and a clean viewing journey.
+
+                </p>
+
+
+                <p>
+
+                    The experience is designed for adults,
+                    with age awareness, clear navigation
+                    and a strong focus on responsible
+                    platform operation.
+
+                </p>
+
+            </div>
+
+
+            <div class="intro-visual">
+
+                <div class="visual-grid"></div>
+
+
+                <div class="visual-logo">
+
+                    <div class="visual-logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+
+                    <span>
+
+                        AfterDark<em>X</em>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- VALUES -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>
+                    The experience
+                </small>
+
+                <h2>
+                    What defines AfterDarkX
+                </h2>
+
+            </div>
+
+
+            <div class="values">
+
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-compass"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Easy discovery
+                    </h3>
+
+
+                    <p>
+
+                        Content is organized into clear
+                        collections so visitors can spend
+                        less time searching and more time
+                        discovering.
+
+                    </p>
+
+                </article>
+
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Curated experience
+                    </h3>
+
+
+                    <p>
+
+                        Categories, trending selections and
+                        latest additions create a structured
+                        experience instead of an endless wall
+                        of content.
+
+                    </p>
+
+                </article>
+
+
+                <article class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Responsible platform
+                    </h3>
+
+
+                    <p>
+
+                        Age awareness, platform policies and
+                        responsible content practices are
+                        part of the experience from the start.
+
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+
+        <section class="how-section">
+
+            <div class="section-title">
+
+                <small>
+                    How it works
+                </small>
+
+                <h2>
+                    A simpler way to discover
+                </h2>
+
+            </div>
+
+
+            <div class="steps">
+
+
+                <article class="step">
+
+                    <div class="step-number">
+                        01 / DISCOVER
+                    </div>
+
+
+                    <h3>
+                        Explore
+                    </h3>
+
+
+                    <p>
+
+                        Browse categories, latest additions
+                        and trending selections from one
+                        central experience.
+
+                    </p>
+
+                </article>
+
+
+                <article class="step">
+
+                    <div class="step-number">
+                        02 / CHOOSE
+                    </div>
+
+
+                    <h3>
+                        Find something interesting
+                    </h3>
+
+
+                    <p>
+
+                        Open a collection or search for
+                        something specific using the site's
+                        discovery tools.
+
+                    </p>
+
+                </article>
+
+
+                <article class="step">
+
+                    <div class="step-number">
+                        03 / WATCH
+                    </div>
+
+
+                    <h3>
+                        Enjoy the experience
+                    </h3>
+
+
+                    <p>
+
+                        Select available content and continue
+                        to the dedicated viewing experience.
+
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- 18+ -->
+
+        <section class="notice">
+
+
+            <div class="notice-icon">
+
+                <i class="fa-solid fa-18-plus"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Adults only
+                </h3>
+
+
+                <p>
+
+                    AfterDarkX is intended exclusively for
+                    adults aged 18 and over, or the applicable
+                    legal age in the visitor's jurisdiction.
+                    Visitors are responsible for complying
+                    with the laws applicable to them.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+
+                <p class="footer-description">
+
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+
+            <div class="age-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Adults only
+            </h2>
+
+
+            <p>
+
+                This website contains content intended
+                exclusively for adults aged 18 and over.
+                By entering, you confirm that you are at
+                least 18 years old and legally permitted
+                to access adult content in your location.
+
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+
+                    I'm 18 or older
+
+                </button>
+
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+
+                    Leave
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+
+            document.getElementById(
+                "ageGate"
+            ).style.display =
+                "none";
+
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        /* =========================
+           INITIALIZE
+        ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display =
+                        "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

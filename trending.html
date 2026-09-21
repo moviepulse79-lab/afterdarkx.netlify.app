@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Trending | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Discover what's trending on AfterDarkX."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            background: #08090b;
+
+            color: #f5f5f5;
+
+            font-family: "Inter", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button,
+        select {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 6%;
+
+            background:
+                rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .header-inner {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo-mark {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+
+        .logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        nav {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        nav a {
+
+            color: #a9abb2;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        nav a:hover,
+        nav a.active {
+
+            color: #fff;
+        }
+
+
+        .search-button {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            color: #bbb;
+        }
+
+
+        .search-button:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #fff;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            position: relative;
+
+            padding:
+                82px 6%
+                72px;
+
+            overflow: hidden;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 650px;
+
+            height: 650px;
+
+            right: -180px;
+
+            top: -360px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,45,110,0.2),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            left: 5%;
+
+            bottom: -390px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(115,50,255,0.16),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 800px;
+        }
+
+
+        .hero-label {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 18px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #c5c7cd;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .hero-label i {
+
+            color: #ff3f74;
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(44px, 7vw, 82px);
+
+            line-height: 0.95;
+
+            letter-spacing: -4px;
+
+            margin-bottom: 23px;
+        }
+
+
+        .hero h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a25cff
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            max-width: 650px;
+
+            color: #8b8e97;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            padding:
+                55px 6%
+                95px;
+        }
+
+
+        .section-heading {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .section-heading h2 {
+
+            font-size: 23px;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .section-heading p {
+
+            margin-top: 7px;
+
+            color: #686b74;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           PERIOD FILTER
+        ========================= */
+
+        .period-tabs {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 5px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        .period-tabs button {
+
+            height: 34px;
+
+            padding:
+                0 13px;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background: transparent;
+
+            color: #777a83;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .period-tabs button:hover {
+
+            color: #fff;
+        }
+
+
+        .period-tabs button.active {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,48,107,0.18),
+                    rgba(145,58,255,0.16)
+                );
+
+            color: #fff;
+        }
+
+
+        /* =========================
+           FEATURED TRENDING
+        ========================= */
+
+        .featured {
+
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns:
+                1.5fr 0.8fr;
+
+            min-height: 360px;
+
+            margin-bottom: 52px;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 22px;
+
+            background: #101116;
+        }
+
+
+        .featured-visual {
+
+            position: relative;
+
+            min-height: 360px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #24121d,
+                    #15101b,
+                    #0b0d11
+                );
+        }
+
+
+        .featured-visual::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 70% 28%,
+                    rgba(255,45,115,0.42),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 20% 90%,
+                    rgba(120,50,255,0.34),
+                    transparent 46%
+                );
+        }
+
+
+        .visual-lines {
+
+            position: absolute;
+
+            inset: 0;
+
+            opacity: 0.2;
+
+            background-image:
+                linear-gradient(
+                    135deg,
+                    transparent 47%,
+                    rgba(255,255,255,0.13) 49%,
+                    transparent 51%
+                );
+
+            background-size: 42px 42px;
+        }
+
+
+        .trend-number {
+
+            position: absolute;
+
+            left: 30px;
+
+            top: 25px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            color: rgba(255,255,255,0.55);
+
+            letter-spacing: 1px;
+        }
+
+
+        .trend-number strong {
+
+            color: #fff;
+
+            font-size: 17px;
+        }
+
+
+        .featured-play {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: 78px;
+
+            height: 78px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transform:
+                translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background:
+                rgba(8,9,11,0.62);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            backdrop-filter: blur(12px);
+
+            font-size: 20px;
+        }
+
+
+        .featured-content {
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            padding: 40px;
+        }
+
+
+        .trending-badge {
+
+            width: fit-content;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 17px;
+
+            padding:
+                7px 10px;
+
+            border-radius: 6px;
+
+            background:
+                rgba(255,48,107,0.1);
+
+            color: #ff4c7e;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .featured-content h3 {
+
+            font-size: 29px;
+
+            line-height: 1.08;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .featured-content p {
+
+            max-width: 440px;
+
+            color: #80838c;
+
+            font-size: 12px;
+
+            line-height: 1.75;
+
+            margin-bottom: 21px;
+        }
+
+
+        .featured-meta {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 15px;
+
+            margin-bottom: 24px;
+
+            color: #6f727b;
+
+            font-size: 10px;
+        }
+
+
+        .featured-meta i {
+
+            color: #ff4779;
+
+            margin-right: 5px;
+        }
+
+
+        .watch-button {
+
+            width: fit-content;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                11px 17px;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #913aff
+                );
+
+            color: #fff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition: 0.25s ease;
+        }
+
+
+        .watch-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(255,48,107,0.2);
+        }
+
+
+        /* =========================
+           TRENDING GRID
+        ========================= */
+
+        .trending-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .trend-card {
+
+            min-width: 0;
+
+            cursor: pointer;
+        }
+
+
+        .thumbnail {
+
+            position: relative;
+
+            aspect-ratio: 16 / 10;
+
+            overflow: hidden;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17191f,
+                    #0e1013
+                );
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        .thumbnail::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 72% 24%,
+                    var(--glow),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 20% 90%,
+                    rgba(110,50,255,0.2),
+                    transparent 45%
+                );
+        }
+
+
+        .thumbnail-pattern {
+
+            position: absolute;
+
+            inset: 0;
+
+            opacity: 0.18;
+
+            background-image:
+                linear-gradient(
+                    120deg,
+                    transparent 47%,
+                    rgba(255,255,255,0.1) 49%,
+                    transparent 51%
+                );
+
+            background-size: 30px 30px;
+        }
+
+
+        .trend-card:hover .thumbnail {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,60,120,0.3);
+        }
+
+
+        .rank {
+
+            position: absolute;
+
+            left: 10px;
+
+            top: 10px;
+
+            width: 30px;
+
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(5,6,8,0.78);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            color: #fff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            backdrop-filter: blur(10px);
+        }
+
+
+        .rank i {
+
+            color: #ff3e73;
+
+            font-size: 8px;
+
+            margin-right: 3px;
+        }
+
+
+        .play {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: 43px;
+
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.8);
+
+            opacity: 0;
+
+            border-radius: 50%;
+
+            background: #fff;
+
+            color: #111;
+
+            font-size: 11px;
+
+            transition: 0.25s ease;
+        }
+
+
+        .trend-card:hover .play {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+        }
+
+
+        .duration {
+
+            position: absolute;
+
+            right: 9px;
+
+            bottom: 9px;
+
+            padding:
+                5px 7px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(0,0,0,0.75);
+
+            color: #fff;
+
+            font-size: 8px;
+
+            font-weight: 700;
+        }
+
+
+        .trend-up {
+
+            position: absolute;
+
+            right: 9px;
+
+            top: 9px;
+
+            padding:
+                5px 7px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(25,180,110,0.14);
+
+            color: #54d99a;
+
+            font-size: 7px;
+
+            font-weight: 800;
+        }
+
+
+        .trend-info {
+
+            padding:
+                12px 2px 5px;
+        }
+
+
+        .trend-info h3 {
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+
+            color: #e3e4e7;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .trend-info p {
+
+            margin-top: 7px;
+
+            color: #62656d;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           NOTE
+        ========================= */
+
+        .feed-note {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-top: 48px;
+
+            padding:
+                17px 19px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.018);
+
+            color: #686b74;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        .feed-note i {
+
+            flex-shrink: 0;
+
+            color: #ff4778;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .footer-inner {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+
+        .footer-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .footer-description {
+
+            max-width: 350px;
+
+            margin-top: 14px;
+
+            color: #6e7179;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 23px;
+        }
+
+
+        .footer-links a {
+
+            color: #71747d;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #fff;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #50535b;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.97);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .age-box {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+
+        .age-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+
+        .age-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+
+        .age-box p {
+
+            color: #888b94;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+
+        .age-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .enter-button,
+        .leave-button {
+
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .enter-button {
+
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+
+        .leave-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .trending-grid {
+
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            header {
+
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+
+            nav {
+
+                position: absolute;
+
+                top: 68px;
+
+                left: 0;
+
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+
+            nav.open {
+
+                display: flex;
+            }
+
+
+            nav a {
+
+                padding: 11px 0;
+            }
+
+
+            .search-button {
+
+                display: none;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
+
+            .hero {
+
+                padding:
+                    65px 5%
+                    55px;
+            }
+
+
+            main {
+
+                padding:
+                    45px 5%
+                    70px;
+            }
+
+
+            .section-heading {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .featured {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .featured-visual {
+
+                min-height: 280px;
+            }
+
+
+            .featured-content {
+
+                padding: 30px;
+            }
+
+
+            .trending-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .footer-inner {
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .logo-mark {
+
+                width: 31px;
+
+                height: 31px;
+            }
+
+
+            .hero h1 {
+
+                letter-spacing: -2.5px;
+            }
+
+
+            .trending-grid {
+
+                gap: 12px;
+            }
+
+
+            .trend-info h3 {
+
+                font-size: 11px;
+            }
+
+
+            .featured-content h3 {
+
+                font-size: 23px;
+            }
+
+
+            .period-tabs {
+
+                width: 100%;
+            }
+
+
+            .period-tabs button {
+
+                flex: 1;
+
+                padding: 0 7px;
+            }
+
+
+            .age-box {
+
+                padding:
+                    32px 23px;
+            }
+
+
+            .age-actions {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a
+                    href="trending.html"
+                    class="active"
+                >
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="search-button"
+                    aria-label="Search"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="hero-label">
+
+                <i class="fa-solid fa-fire"></i>
+
+                What's hot
+
+            </div>
+
+
+            <h1>
+
+                Trending
+                <span>now.</span>
+
+            </h1>
+
+
+            <p>
+
+                See what is getting attention across
+                AfterDarkX. Explore the content currently
+                attracting the most interest from viewers.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main>
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+                    Trending right now
+                </h2>
+
+                <p>
+                    Updated from the platform's authorized content feed.
+                </p>
+
+            </div>
+
+
+            <div class="period-tabs">
+
+                <button
+                    class="active"
+                    data-period="today"
+                    onclick="changePeriod(this)"
+                >
+                    Today
+                </button>
+
+
+                <button
+                    data-period="week"
+                    onclick="changePeriod(this)"
+                >
+                    This week
+                </button>
+
+
+                <button
+                    data-period="all"
+                    onclick="changePeriod(this)"
+                >
+                    All time
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             FEATURED
+        ========================= -->
+
+        <article class="featured">
+
+
+            <div class="featured-visual">
+
+                <div class="visual-lines"></div>
+
+
+                <div class="trend-number">
+
+                    TRENDING
+
+                    <strong>
+                        #1
+                    </strong>
+
+                </div>
+
+
+                <div class="featured-play">
+
+                    <i class="fa-solid fa-play"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="featured-content">
+
+
+                <div class="trending-badge">
+
+                    <i class="fa-solid fa-fire"></i>
+
+                    #1 Trending
+
+                </div>
+
+
+                <h3 id="featuredTitle">
+
+                    The experience everyone is discovering
+
+                </h3>
+
+
+                <p id="featuredDescription">
+
+                    The current top trending selection
+                    will appear here when the authorized
+                    video feed is connected.
+
+                </p>
+
+
+                <div class="featured-meta">
+
+                    <span>
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        Trending
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        Rising
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        18+
+
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="watch.html"
+                    class="watch-button"
+                >
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Watch now
+
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- =========================
+             TRENDING GRID
+        ========================= -->
+
+        <section>
+
+            <div
+                class="trending-grid"
+                id="trendingGrid"
+            ></div>
+
+
+            <div class="feed-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+
+                    Trending positions shown here are
+                    demonstration data for the site layout.
+                    They will be populated from the authorized
+                    content feed once it is connected.
+
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+
+                <p class="footer-description">
+
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+
+            <div class="age-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Adults only
+            </h2>
+
+
+            <p>
+
+                This website contains content intended
+                exclusively for adults aged 18 and over.
+                By entering, you confirm that you are at
+                least 18 years old and legally permitted
+                to access adult content in your location.
+
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+
+                    I'm 18 or older
+
+                </button>
+
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+
+                    Leave
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+        /* =========================
+           DEMO TRENDING DATA
+        ========================= */
+
+        const videos = [
+
+            {
+                id: "trend-01",
+                title: "Trending Collection",
+                duration: "18:42",
+                views: "—",
+                change: "+24%",
+                color: "rgba(255,45,110,0.34)"
+            },
+
+
+            {
+                id: "trend-02",
+                title: "Popular Discovery",
+                duration: "14:25",
+                views: "—",
+                change: "+19%",
+                color: "rgba(125,55,255,0.34)"
+            },
+
+
+            {
+                id: "trend-03",
+                title: "Rising Selection",
+                duration: "21:08",
+                views: "—",
+                change: "+17%",
+                color: "rgba(50,150,255,0.30)"
+            },
+
+
+            {
+                id: "trend-04",
+                title: "Viewer Favorite",
+                duration: "16:37",
+                views: "—",
+                change: "+15%",
+                color: "rgba(255,95,45,0.30)"
+            },
+
+
+            {
+                id: "trend-05",
+                title: "Trending Feature",
+                duration: "12:54",
+                views: "—",
+                change: "+13%",
+                color: "rgba(50,210,175,0.30)"
+            },
+
+
+            {
+                id: "trend-06",
+                title: "Fast Rising",
+                duration: "24:16",
+                views: "—",
+                change: "+11%",
+                color: "rgba(220,70,145,0.30)"
+            },
+
+
+            {
+                id: "trend-07",
+                title: "Popular Collection",
+                duration: "17:22",
+                views: "—",
+                change: "+9%",
+                color: "rgba(240,175,50,0.30)"
+            },
+
+
+            {
+                id: "trend-08",
+                title: "Currently Popular",
+                duration: "19:44",
+                views: "—",
+                change: "+8%",
+                color: "rgba(80,220,190,0.30)"
+            }
+
+        ];
+
+
+        /* =========================
+           RENDER
+        ========================= */
+
+        function renderVideos() {
+
+            const grid =
+                document.getElementById(
+                    "trendingGrid"
+                );
+
+
+            grid.innerHTML =
+                videos.map(
+                    (video, index) => {
+
+                        return `
+
+                            <article
+                                class="trend-card"
+                                onclick="openVideo('${video.id}')"
+                            >
+
+                                <div
+                                    class="thumbnail"
+                                    style="--glow:${video.color};"
+                                >
+
+                                    <div
+                                        class="thumbnail-pattern"
+                                    ></div>
+
+
+                                    <div class="rank">
+
+                                        <i class="fa-solid fa-fire"></i>
+
+                                        ${index + 2}
+
+                                    </div>
+
+
+                                    <div class="trend-up">
+
+                                        ${video.change}
+
+                                    </div>
+
+
+                                    <div class="play">
+
+                                        <i
+                                            class="fa-solid fa-play"
+                                        ></i>
+
+                                    </div>
+
+
+                                    <span class="duration">
+
+                                        ${video.duration}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="trend-info">
+
+                                    <h3>
+
+                                        ${video.title}
+
+                                    </h3>
+
+
+                                    <p>
+
+                                        ${video.views} views
+                                        · Trending
+
+                                    </p>
+
+                                </div>
+
+                            </article>
+
+                        `;
+
+                    }
+                ).join("");
+
+        }
+
+
+        /* =========================
+           PERIOD
+        ========================= */
+
+        function changePeriod(button) {
+
+            document
+                .querySelectorAll(
+                    ".period-tabs button"
+                )
+                .forEach(
+                    btn => {
+                        btn.classList.remove(
+                            "active"
+                        );
+                    }
+                );
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            const period =
+                button.dataset.period;
+
+
+            if (period === "today") {
+
+                document.getElementById(
+                    "featuredTitle"
+                ).textContent =
+                    "The experience everyone is discovering";
+
+            }
+
+
+            if (period === "week") {
+
+                document.getElementById(
+                    "featuredTitle"
+                ).textContent =
+                    "This week's biggest discovery";
+
+            }
+
+
+            if (period === "all") {
+
+                document.getElementById(
+                    "featuredTitle"
+                ).textContent =
+                    "A platform favorite";
+
+            }
+
+        }
+
+
+        /* =========================
+           OPEN VIDEO
+        ========================= */
+
+        function openVideo(id) {
+
+            window.location.href =
+                `watch.html?id=${encodeURIComponent(id)}`;
+
+        }
+
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+
+            document.getElementById(
+                "ageGate"
+            ).style.display =
+                "none";
+
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        /* =========================
+           INIT
+        ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                renderVideos();
+
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display =
+                        "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

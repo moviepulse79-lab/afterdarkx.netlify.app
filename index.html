@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="A premium 18+ entertainment platform featuring curated videos, trending collections and new releases."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <title>AfterDarkX — Entertainment After Dark</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #08090b;
+            color: #f5f5f5;
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            background: rgba(8,9,11,.92);
+            backdrop-filter: blur(18px);
+        }
+
+        .header-inner {
+            width: min(1240px, calc(100% - 40px));
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(
+                135deg,
+                #ff3d6e,
+                #9b51e0
+            );
+            box-shadow:
+                0 8px 25px rgba(255,61,110,.25);
+        }
+
+        .logo-mark i {
+            font-size: 14px;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .logo em {
+            color: #ff4d7d;
+            font-style: normal;
+        }
+
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav a {
+            color: #a9abb2;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           HEADER ACTIONS
+        ========================================= */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-button,
+        .menu-button {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+            background: #111318;
+            color: #ffffff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: .2s ease;
+        }
+
+        .search-button:hover,
+        .menu-button:hover {
+            background: #1a1c22;
+            transform: translateY(-1px);
+        }
+
+        .menu-button {
+            display: none;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .hero {
+            position: relative;
+            min-height: 590px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at 75% 25%,
+                    rgba(155,81,224,.25),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 20% 60%,
+                    rgba(255,61,110,.16),
+                    transparent 35%
+                ),
+                #0b0c10;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    #08090b 0%,
+                    rgba(8,9,11,.72) 40%,
+                    rgba(8,9,11,.18) 100%
+                );
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    0deg,
+                    #08090b 0%,
+                    transparent 35%
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: min(1240px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 100px 0 80px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.10);
+            color: #d7d7dc;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-label i {
+            color: #ff4d7d;
+        }
+
+        .hero h1 {
+            max-width: 720px;
+            font-size: clamp(42px, 6vw, 78px);
+            line-height: .98;
+            letter-spacing: -3px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff4d7d,
+                    #b66cff
+                );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 590px;
+            color: #a9abb2;
+            line-height: 1.7;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-primary,
+        .hero-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 13px 19px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .hero-primary {
+            background: #ffffff;
+            color: #090a0c;
+        }
+
+        .hero-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255,255,255,.12);
+        }
+
+        .hero-secondary {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.10);
+            color: #ffffff;
+        }
+
+        .hero-secondary:hover {
+            background: rgba(255,255,255,.10);
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+            width: min(1240px, calc(100% - 40px));
+            margin: auto;
+            padding-bottom: 90px;
+        }
+
+        .section {
+            padding-top: 55px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            letter-spacing: -.7px;
+        }
+
+        .section-subtitle {
+            color: #777a83;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .view-all {
+            color: #ff5b83;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           FEATURED CARDS
+        ========================================= */
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .featured-card {
+            position: relative;
+            min-height: 270px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #111318;
+            border: 1px solid rgba(255,255,255,.06);
+        }
+
+        .featured-card:first-child {
+            min-height: 420px;
+        }
+
+        .featured-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    0deg,
+                    rgba(0,0,0,.85),
+                    rgba(0,0,0,.05) 70%
+                );
+            z-index: 1;
+        }
+
+        .featured-placeholder {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #171923,
+                    #27202a
+                );
+        }
+
+        .featured-placeholder i {
+            font-size: 38px;
+            color: rgba(255,255,255,.14);
+        }
+
+        .featured-info {
+            position: absolute;
+            z-index: 2;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .featured-tag {
+            display: inline-block;
+            margin-bottom: 9px;
+            color: #ff5b83;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .featured-info h3 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .featured-info p {
+            color: #b4b5bb;
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           VIDEO GRID
+        ========================================= */
+
+        .video-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .video-card {
+            cursor: pointer;
+        }
+
+        .thumbnail {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            border-radius: 12px;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    135deg,
+                    #161820,
+                    #25202a
+                );
+            border: 1px solid rgba(255,255,255,.06);
+        }
+
+        .thumbnail::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    0deg,
+                    rgba(0,0,0,.5),
+                    transparent 60%
+                );
+        }
+
+        .thumbnail-icon {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: rgba(255,255,255,.15);
+            font-size: 30px;
+        }
+
+        .play-button {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.92);
+            color: #111;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: .2s ease;
+        }
+
+        .video-card:hover .play-button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .video-duration {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            padding: 4px 7px;
+            border-radius: 5px;
+            background: rgba(0,0,0,.75);
+            font-size: 10px;
+            color: #fff;
+        }
+
+        .video-info {
+            padding-top: 11px;
+        }
+
+        .video-info h3 {
+            font-size: 14px;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+
+        .video-meta {
+            margin-top: 6px;
+            display: flex;
+            gap: 8px;
+            color: #70737c;
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           COLLECTION
+        ========================================= */
+
+        .collection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .collection-card {
+            min-height: 180px;
+            padding: 24px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,.07);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.015)
+                );
+            transition: .2s ease;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,.13);
+        }
+
+        .collection-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,77,125,.10);
+            color: #ff5b83;
+            margin-bottom: 22px;
+        }
+
+        .collection-card h3 {
+            margin-bottom: 7px;
+            font-size: 17px;
+        }
+
+        .collection-card p {
+            color: #777a83;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .footer {
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: 40px 0;
+        }
+
+        .footer-inner {
+            width: min(1240px, calc(100% - 40px));
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-copy {
+            color: #666972;
+            font-size: 12px;
+            line-height: 1.7;
+            max-width: 430px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #777a83;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           AGE GATE
+        ========================================= */
+
+        .age-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(3,3,5,.96);
+            backdrop-filter: blur(15px);
+        }
+
+        .age-box {
+            width: min(460px, 100%);
+            padding: 38px;
+            border-radius: 20px;
+            text-align: center;
+            background: #111318;
+            border: 1px solid rgba(255,255,255,.09);
+            box-shadow: 0 30px 80px rgba(0,0,0,.5);
+        }
+
+        .age-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,77,125,.10);
+            color: #ff5b83;
+            font-size: 24px;
+        }
+
+        .age-box h2 {
+            margin-bottom: 12px;
+            font-size: 26px;
+        }
+
+        .age-box p {
+            color: #858891;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .age-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .age-actions button {
+            flex: 1;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .enter-button {
+            background: #ffffff;
+            color: #111;
+        }
+
+        .leave-button {
+            background: #1c1e24;
+            color: #aaa;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .nav {
+                display: none;
+            }
+
+            .menu-button {
+                display: grid;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .featured-card:first-child {
+                grid-column: span 2;
+            }
+
+            .video-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .collection {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header-inner,
+            .hero-content,
+            .main,
+            .footer-inner {
+                width: min(100% - 24px, 1240px);
+            }
+
+            .header {
+                height: 64px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .logo-mark {
+                width: 31px;
+                height: 31px;
+            }
+
+            .hero {
+                min-height: 530px;
+            }
+
+            .hero-content {
+                padding-bottom: 60px;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+                letter-spacing: -2px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hero-buttons {
+                width: 100%;
+            }
+
+            .hero-primary,
+            .hero-secondary {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .featured-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+            }
+
+            .featured-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .featured-card,
+            .featured-card:first-child {
+                min-width: 82%;
+                min-height: 250px;
+                scroll-snap-align: start;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .video-info h3 {
+                font-size: 12px;
+            }
+
+            .collection {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+
+            .age-box {
+                padding: 28px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+       <a href="index.html" class="logo">
+    <div class="logo-mark">
+        <i class="fa-solid fa-moon"></i>
+    </div>
+    <span>AfterDark<em>X</em></span>
+</a>
+
+
+        <nav class="nav">
+
+            <a
+                href="index.html"
+                class="active"
+            >
+                Home
+            </a>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <a href="#trending">
+                Trending
+            </a>
+
+            <a href="#latest">
+                Latest
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            <button
+                class="search-button"
+                aria-label="Search"
+                onclick="window.location.href='search.html'"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <button
+                class="menu-button"
+                aria-label="Menu"
+                onclick="toggleMenu()"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+       <div class="hero-label">
+    <i class="fa-solid fa-circle-check"></i>
+    18+ Premium Entertainment
+</div>
+
+<h1>
+    Discover a <span>different</span> kind of experience.
+</h1>
+
+<p>
+    Explore a carefully curated collection of premium adult entertainment,
+    discover new creators and find something worth watching.
+</p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#latest"
+                class="hero-primary"
+            >
+
+                <i class="fa-solid fa-play"></i>
+
+                Explore Videos
+
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="hero-secondary"
+            >
+
+                Browse Categories
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="main">
+
+
+    <!-- TRENDING -->
+
+    <section
+        class="section"
+        id="trending"
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Trending now
+                </h2>
+
+                <p class="section-subtitle">
+                    What people are watching right now
+                </p>
+
+            </div>
+
+            <a
+                href="categories.html"
+                class="view-all"
+            >
+                View all
+            </a>
+
+        </div>
+
+
+        <div class="featured-grid">
+
+
+            <article class="featured-card">
+
+                <div class="featured-placeholder">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+
+                <div class="featured-info">
+
+                    <span class="featured-tag">
+                        Featured
+                    </span>
+
+                    <h3>
+                        Featured Experience
+                    </h3>
+
+                    <p>
+                        Discover something new tonight.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="featured-card">
+
+                <div class="featured-placeholder">
+                    <i class="fa-solid fa-film"></i>
+                </div>
+
+                <div class="featured-info">
+
+                    <span class="featured-tag">
+                        Trending
+                    </span>
+
+                    <h3>
+                        Trending Collection
+                    </h3>
+
+                    <p>
+                        Popular this week
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="featured-card">
+
+                <div class="featured-placeholder">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <div class="featured-info">
+
+                    <span class="featured-tag">
+                        Hot
+                    </span>
+
+                    <h3>
+                        Most Watched
+                    </h3>
+
+                    <p>
+                        See what is getting attention.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- LATEST -->
+
+    <section
+        class="section"
+        id="latest"
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Latest videos
+                </h2>
+
+                <p class="section-subtitle">
+                    Fresh additions to the collection
+                </p>
+
+            </div>
+
+            <a
+                href="categories.html"
+                class="view-all"
+            >
+                See all
+            </a>
+
+        </div>
+
+
+        <div class="video-grid">
+
+
+            <!-- CARD 1 -->
+
+            <article
+                class="video-card"
+                onclick="openDemo()"
+            >
+
+                <div class="thumbnail">
+
+                    <div class="thumbnail-icon">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <div class="play-button">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <span class="video-duration">
+                        12:42
+                    </span>
+
+                </div>
+
+                <div class="video-info">
+
+                    <h3>
+                        New Featured Video
+                    </h3>
+
+                    <div class="video-meta">
+
+                        <span>
+                            New
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            HD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD 2 -->
+
+            <article
+                class="video-card"
+                onclick="openDemo()"
+            >
+
+                <div class="thumbnail">
+
+                    <div class="thumbnail-icon">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+
+                    <div class="play-button">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <span class="video-duration">
+                        18:21
+                    </span>
+
+                </div>
+
+                <div class="video-info">
+
+                    <h3>
+                        Premium Collection
+                    </h3>
+
+                    <div class="video-meta">
+
+                        <span>
+                            Trending
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            HD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD 3 -->
+
+            <article
+                class="video-card"
+                onclick="openDemo()"
+            >
+
+                <div class="thumbnail">
+
+                    <div class="thumbnail-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <div class="play-button">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <span class="video-duration">
+                        09:37
+                    </span>
+
+                </div>
+
+                <div class="video-info">
+
+                    <h3>
+                        Editor's Pick
+                    </h3>
+
+                    <div class="video-meta">
+
+                        <span>
+                            Featured
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            HD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- CARD 4 -->
+
+            <article
+                class="video-card"
+                onclick="openDemo()"
+            >
+
+                <div class="thumbnail">
+
+                    <div class="thumbnail-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+
+                    <div class="play-button">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <span class="video-duration">
+                        21:08
+                    </span>
+
+                </div>
+
+                <div class="video-info">
+
+                    <h3>
+                        Popular Tonight
+                    </h3>
+
+                    <div class="video-meta">
+
+                        <span>
+                            Popular
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            HD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- COLLECTIONS -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Explore collections
+                </h2>
+
+                <p class="section-subtitle">
+                    Find the experience you're looking for
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="collection">
+
+
+            <a
+                href="categories.html"
+                class="collection-card"
+            >
+
+                <div class="collection-icon">
+
+                    <i class="fa-solid fa-fire"></i>
+
+                </div>
+
+                <h3>
+                    Trending
+                </h3>
+
+                <p>
+                    Discover the videos currently
+                    getting the most attention.
+                </p>
+
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="collection-card"
+            >
+
+                <div class="collection-icon">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
+
+                <h3>
+                    New arrivals
+                </h3>
+
+                <p>
+                    Fresh content added to the
+                    platform.
+                </p>
+
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="collection-card"
+            >
+
+                <div class="collection-icon">
+
+                    <i class="fa-solid fa-compass"></i>
+
+                </div>
+
+                <h3>
+                    Explore
+                </h3>
+
+                <p>
+                    Browse categories and discover
+                    something unexpected.
+                </p>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-copy">
+
+            <strong>
+                Velora
+            </strong>
+
+            <br>
+
+            An 18+ entertainment platform for
+            adults. All content displayed on this
+            platform is intended for adults only.
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="privacy.html">
+                Privacy
+            </a>
+
+            <a href="terms.html">
+                Terms
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     AGE GATE
+========================================= -->
+
+<div
+    class="age-gate"
+    id="ageGate"
+>
+
+    <div class="age-box">
+
+        <div class="age-icon">
+
+            <i class="fa-solid fa-lock"></i>
+
+        </div>
+
+
+        <h2>
+            Adults only
+        </h2>
+
+
+        <p>
+
+            This website contains content intended
+            exclusively for adults aged 18 and over.
+
+            By entering, you confirm that you are
+            at least 18 years old and legally permitted
+            to access adult content in your location.
+
+        </p>
+
+
+        <div class="age-actions">
+
+            <button
+                class="enter-button"
+                onclick="enterSite()"
+            >
+                I'm 18 or older
+            </button>
+
+            <button
+                class="leave-button"
+                onclick="leaveSite()"
+            >
+                Leave
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function enterSite() {
+    localStorage.setItem("afterDarkXAgeVerified", "true");
+    document.getElementById("ageGate").style.display = "none";
+}
+
+function leaveSite() {
+    window.location.href = "https://www.google.com/";
+}
+
+function toggleMenu() {
+    alert("Mobile navigation will be added next.");
+}
+
+function openDemo() {
+    alert("Video content will be connected after the TubeCorporate feed is approved.");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const verified = localStorage.getItem("afterDarkXAgeVerified");
+
+    if (verified === "true") {
+        document.getElementById("ageGate").style.display = "none";
+    }
+});
+</script>
+
+  
+
+   
+
+
+</body>
+
+</html>

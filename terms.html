@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Terms of Use | AfterDarkX</title>
+
+    <meta
+        name="description"
+        content="Terms of Use for AfterDarkX."
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="favicon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            background: #08090b;
+
+            color: #f5f5f5;
+
+            font-family: "Inter", sans-serif;
+
+            min-height: 100vh;
+        }
+
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 6%;
+
+            background:
+                rgba(8, 9, 11, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .header-inner {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo-mark {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff2f68,
+                    #8f36ff
+                );
+
+            box-shadow:
+                0 8px 25px
+                rgba(255,47,104,0.18);
+
+            font-size: 14px;
+        }
+
+
+        .logo em {
+
+            color: #ff3d73;
+
+            font-style: normal;
+        }
+
+
+        nav {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        nav a {
+
+            color: #a9abb2;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        nav a:hover {
+
+            color: #fff;
+        }
+
+
+        nav a.active {
+
+            color: #fff;
+        }
+
+
+        .search-button {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            color: #bbb;
+        }
+
+
+        .search-button:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #fff;
+        }
+
+
+        .menu-button {
+
+            display: none;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding:
+                85px 6%
+                75px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 600px;
+
+            height: 600px;
+
+            right: -200px;
+
+            top: -350px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,45,110,0.17),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 450px;
+
+            height: 450px;
+
+            left: -200px;
+
+            bottom: -350px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(130,55,255,0.13),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 850px;
+
+            margin: auto;
+
+            text-align: center;
+        }
+
+
+        .hero-label {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 100px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #c5c7cd;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .hero-label i {
+
+            color: #ff3f74;
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(40px, 6vw, 66px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .hero h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3d73,
+                    #a25cff
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            color: #858891;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding:
+                70px 6%
+                100px;
+        }
+
+
+        .updated {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 45px;
+
+            color: #656871;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .updated i {
+
+            color: #ff3f73;
+        }
+
+
+        .terms {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 45px;
+        }
+
+
+        .terms-section {
+
+            padding-bottom: 40px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.055);
+        }
+
+
+        .terms-section:last-child {
+
+            border-bottom: 0;
+        }
+
+
+        .section-number {
+
+            margin-bottom: 10px;
+
+            color: #ff3f73;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .terms-section h2 {
+
+            margin-bottom: 15px;
+
+            font-size: 21px;
+
+            letter-spacing: -0.6px;
+        }
+
+
+        .terms-section p {
+
+            margin-bottom: 13px;
+
+            color: #858891;
+
+            font-size: 12px;
+
+            line-height: 1.9;
+        }
+
+
+        .terms-section p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        .terms-section ul {
+
+            margin:
+                15px 0 0 20px;
+        }
+
+
+        .terms-section li {
+
+            margin-bottom: 10px;
+
+            padding-left: 4px;
+
+            color: #858891;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        .highlight {
+
+            padding: 22px 24px;
+
+            margin-top: 18px;
+
+            border:
+                1px solid
+                rgba(255,48,107,0.14);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,48,107,0.035);
+        }
+
+
+        .highlight p {
+
+            margin: 0;
+
+            color: #999ba3;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                55px 6%
+                35px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .footer-inner {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 45px;
+        }
+
+
+        .footer-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+
+        .footer-description {
+
+            max-width: 350px;
+
+            margin-top: 14px;
+
+            color: #6e7179;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 23px;
+        }
+
+
+        .footer-links a {
+
+            color: #71747d;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #fff;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            color: #50535b;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           AGE GATE
+        ========================= */
+
+        .age-gate {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(2,3,5,0.97);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        .age-box {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #13151a,
+                    #0b0c0f
+                );
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.6);
+        }
+
+
+        .age-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            margin:
+                0 auto 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #8739ff
+                );
+
+            font-size: 22px;
+        }
+
+
+        .age-box h2 {
+
+            margin-bottom: 12px;
+
+            font-size: 28px;
+        }
+
+
+        .age-box p {
+
+            color: #888b94;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+        }
+
+
+        .age-actions {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .enter-button,
+        .leave-button {
+
+            flex: 1;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .enter-button {
+
+            border: 0;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff306b,
+                    #963bff
+                );
+        }
+
+
+        .leave-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background: transparent;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            header {
+
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+
+            nav {
+
+                position: absolute;
+
+                top: 68px;
+
+                left: 0;
+
+                right: 0;
+
+                display: none;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                padding:
+                    18px 5%
+                    25px;
+
+                background: #0b0c0f;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.07);
+            }
+
+
+            nav.open {
+
+                display: flex;
+            }
+
+
+            nav a {
+
+                padding: 11px 0;
+            }
+
+
+            .search-button {
+
+                display: none;
+            }
+
+
+            .menu-button {
+
+                display: block;
+            }
+
+
+            .hero {
+
+                padding:
+                    60px 5%
+                    55px;
+            }
+
+
+            main {
+
+                padding:
+                    55px 5%
+                    75px;
+            }
+
+
+            .footer-inner {
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .logo-mark {
+
+                width: 31px;
+
+                height: 31px;
+            }
+
+
+            .hero h1 {
+
+                letter-spacing: -2.2px;
+            }
+
+
+            .age-box {
+
+                padding:
+                    32px 23px;
+            }
+
+
+            .age-actions {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-mark">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </div>
+
+                <span>
+                    AfterDark<em>X</em>
+                </span>
+
+            </a>
+
+
+            <nav id="mainNav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="trending.html">
+                    Trending
+                </a>
+
+                <a href="latest.html">
+                    Latest
+                </a>
+
+                <a
+                    href="search.html"
+                    class="search-button"
+                    aria-label="Search"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </a>
+
+            </nav>
+
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()"
+                aria-label="Open menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="hero-label">
+
+                <i class="fa-solid fa-file-shield"></i>
+
+                Legal
+
+            </div>
+
+
+            <h1>
+
+                Terms of
+                <span>Use.</span>
+
+            </h1>
+
+
+            <p>
+
+                The rules and conditions that apply when
+                accessing or using the AfterDarkX platform.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         TERMS
+    ========================= -->
+
+    <main>
+
+
+        <div class="updated">
+
+            <i class="fa-regular fa-clock"></i>
+
+            Last updated: September 2026
+
+        </div>
+
+
+        <div class="terms">
+
+
+            <!-- 01 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    01 / ACCEPTANCE
+                </div>
+
+
+                <h2>
+                    Acceptance of these terms
+                </h2>
+
+
+                <p>
+
+                    By accessing or using AfterDarkX, you
+                    acknowledge that you have read, understood
+                    and agree to these Terms of Use.
+
+                </p>
+
+
+                <p>
+
+                    If you do not agree with these terms,
+                    you should not access or use the platform.
+
+                </p>
+
+            </section>
+
+
+            <!-- 02 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    02 / AGE REQUIREMENT
+                </div>
+
+
+                <h2>
+                    Adults only
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX is intended exclusively for
+                    adults aged 18 and over, or the applicable
+                    legal age in the visitor's jurisdiction.
+
+                </p>
+
+
+                <p>
+
+                    By entering the platform, you represent
+                    that you satisfy the applicable age
+                    requirement and are legally permitted to
+                    access adult-oriented content where you
+                    are located.
+
+                </p>
+
+
+                <div class="highlight">
+
+                    <p>
+
+                        If you are under the applicable legal
+                        age, do not access or use AfterDarkX.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- 03 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    03 / PLATFORM USE
+                </div>
+
+
+                <h2>
+                    Permitted use
+                </h2>
+
+
+                <p>
+                    You agree to use AfterDarkX only for lawful
+                    purposes and in accordance with these terms.
+                </p>
+
+
+                <p>
+                    You must not use the platform to:
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        Violate applicable laws or regulations.
+                    </li>
+
+                    <li>
+                        Attempt to gain unauthorized access to
+                        the platform or its systems.
+                    </li>
+
+                    <li>
+                        Disrupt, overload or interfere with the
+                        normal operation of the platform.
+                    </li>
+
+                    <li>
+                        Use automated methods to generate
+                        artificial traffic or abuse platform
+                        functionality.
+                    </li>
+
+                    <li>
+                        Introduce malware, malicious code or
+                        harmful material.
+                    </li>
+
+                    <li>
+                        Circumvent security, access controls or
+                        other technical restrictions.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- 04 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    04 / CONTENT
+                </div>
+
+
+                <h2>
+                    Content and availability
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX may provide access to video
+                    content, descriptions, thumbnails,
+                    categories and other media through the
+                    platform.
+
+                </p>
+
+
+                <p>
+
+                    Content may be provided directly or through
+                    authorized third-party services and embeds.
+
+                </p>
+
+
+                <p>
+
+                    Content, availability, titles, thumbnails,
+                    categories and other information may change,
+                    be removed or become unavailable without
+                    notice.
+
+                </p>
+
+            </section>
+
+
+            <!-- 05 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    05 / THIRD-PARTY SERVICES
+                </div>
+
+
+                <h2>
+                    External services
+                </h2>
+
+
+                <p>
+
+                    Some features or content may rely on
+                    third-party services.
+
+                </p>
+
+
+                <p>
+
+                    Third-party services may have their own
+                    terms, privacy policies and requirements.
+                    Your use of those services may therefore
+                    also be subject to their respective terms.
+
+                </p>
+
+            </section>
+
+
+            <!-- 06 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    06 / INTELLECTUAL PROPERTY
+                </div>
+
+
+                <h2>
+                    Intellectual property
+                </h2>
+
+
+                <p>
+
+                    The AfterDarkX name, branding, interface
+                    design, graphics, original text and other
+                    platform materials may be protected by
+                    applicable intellectual property laws.
+
+                </p>
+
+
+                <p>
+
+                    You may not copy, reproduce, modify,
+                    distribute or commercially exploit
+                    platform-owned materials without
+                    appropriate authorization.
+
+                </p>
+
+
+                <p>
+
+                    Third-party content remains subject to the
+                    rights and licenses of its respective
+                    owners or providers.
+
+                </p>
+
+            </section>
+
+
+            <!-- 07 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    07 / PROHIBITED CONTENT
+                </div>
+
+
+                <h2>
+                    Illegal and abusive material
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX does not authorize or permit the
+                    use of the platform for illegal content or
+                    activity.
+
+                </p>
+
+
+                <p>
+
+                    Content involving minors, non-consensual
+                    activity, exploitation, trafficking,
+                    bestiality or other prohibited or unlawful
+                    material is not permitted.
+
+                </p>
+
+
+                <p>
+
+                    Suspected illegal or prohibited material
+                    may be removed, restricted or reported where
+                    appropriate.
+
+                </p>
+
+            </section>
+
+
+            <!-- 08 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    08 / AVAILABILITY
+                </div>
+
+
+                <h2>
+                    Platform availability
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX may occasionally be unavailable
+                    because of maintenance, updates, technical
+                    problems, third-party service interruptions
+                    or circumstances outside reasonable control.
+
+                </p>
+
+
+                <p>
+
+                    No guarantee is made that the platform will
+                    always be available, uninterrupted or
+                    error-free.
+
+                </p>
+
+            </section>
+
+
+            <!-- 09 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    09 / DISCLAIMER
+                </div>
+
+
+                <h2>
+                    No guarantee
+                </h2>
+
+
+                <p>
+
+                    The platform is provided on an
+                    "as available" basis.
+
+                </p>
+
+
+                <p>
+
+                    To the extent permitted by applicable law,
+                    AfterDarkX makes no guarantee regarding the
+                    completeness, accuracy, availability or
+                    suitability of information or content
+                    presented through the platform.
+
+                </p>
+
+            </section>
+
+
+            <!-- 10 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    10 / LIABILITY
+                </div>
+
+
+                <h2>
+                    Limitation of liability
+                </h2>
+
+
+                <p>
+
+                    To the maximum extent permitted by applicable
+                    law, AfterDarkX shall not be responsible for
+                    indirect, incidental, consequential or
+                    similar losses arising from the use of, or
+                    inability to use, the platform.
+
+                </p>
+
+
+                <p>
+
+                    Nothing in these terms is intended to exclude
+                    any liability that cannot legally be excluded
+                    under applicable law.
+
+                </p>
+
+            </section>
+
+
+            <!-- 11 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    11 / CHANGES
+                </div>
+
+
+                <h2>
+                    Changes to the platform or terms
+                </h2>
+
+
+                <p>
+
+                    AfterDarkX may update, modify, suspend or
+                    discontinue parts of the platform when
+                    necessary.
+
+                </p>
+
+
+                <p>
+
+                    These Terms of Use may also be updated from
+                    time to time. Continued use of the platform
+                    after an updated version is published may
+                    constitute acceptance of the revised terms
+                    where permitted by applicable law.
+
+                </p>
+
+            </section>
+
+
+            <!-- 12 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    12 / GOVERNING LAW
+                </div>
+
+
+                <h2>
+                    Applicable law
+                </h2>
+
+
+                <p>
+
+                    These terms are intended to be interpreted
+                    and applied in accordance with applicable
+                    laws and regulations.
+
+                </p>
+
+
+                <p>
+
+                    Where a specific jurisdiction's law applies,
+                    mandatory rights and protections under that
+                    law remain unaffected.
+
+                </p>
+
+            </section>
+
+
+            <!-- 13 -->
+
+            <section class="terms-section">
+
+                <div class="section-number">
+                    13 / CONTACT
+                </div>
+
+
+                <h2>
+                    Questions about these terms
+                </h2>
+
+
+                <p>
+
+                    For questions, reports or legal concerns
+                    relating to AfterDarkX, visitors can use
+                    the contact options provided on the
+                    AfterDarkX Contact page.
+
+                </p>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    <div class="logo-mark">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                    </div>
+
+                    <span>
+                        AfterDark<em>X</em>
+                    </span>
+
+                </div>
+
+
+                <p class="footer-description">
+
+                    A premium 18+ entertainment platform
+                    built around discovery and curated video.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 AfterDarkX. All rights reserved. 18+ only.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         AGE GATE
+    ========================= -->
+
+    <div
+        class="age-gate"
+        id="ageGate"
+    >
+
+        <div class="age-box">
+
+
+            <div class="age-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+
+            <h2>
+                Adults only
+            </h2>
+
+
+            <p>
+
+                This website contains content intended
+                exclusively for adults aged 18 and over.
+                By entering, you confirm that you are at
+                least 18 years old and legally permitted
+                to access adult content in your location.
+
+            </p>
+
+
+            <div class="age-actions">
+
+                <button
+                    class="enter-button"
+                    onclick="enterSite()"
+                >
+
+                    I'm 18 or older
+
+                </button>
+
+
+                <button
+                    class="leave-button"
+                    onclick="leaveSite()"
+                >
+
+                    Leave
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function toggleMenu() {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle("open");
+
+        }
+
+
+        function enterSite() {
+
+            localStorage.setItem(
+                "afterDarkXAgeVerified",
+                "true"
+            );
+
+
+            document.getElementById(
+                "ageGate"
+            ).style.display = "none";
+
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+
+        }
+
+
+        function leaveSite() {
+
+            window.location.href =
+                "https://www.google.com/";
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const verified =
+                    localStorage.getItem(
+                        "afterDarkXAgeVerified"
+                    );
+
+
+                if (
+                    verified === "true"
+                ) {
+
+                    document.getElementById(
+                        "ageGate"
+                    ).style.display = "none";
+
+                } else {
+
+                    document.body.classList.add(
+                        "no-scroll"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
