@@ -2946,51 +2946,57 @@
 
     }
 
+/* =========================
+   RELATED VIDEOS
+========================= */
 
-    /* =========================
-       RELATED VIDEOS
-    ========================= */
+function renderRelated() {
 
-    function renderRelated() {
+    const current =
+        getCurrentVideo();
 
-        const current =
-            getCurrentVideo();
+    if (!current) {
+        return;
+    }
 
+    const related =
+        videos
+            .filter(
+                video =>
+                    video.id !== current.id
+            )
+            .slice(0, 6);
 
-        if (!current) {
-            return;
-        }
+    const grid =
+        document.getElementById(
+            "relatedGrid"
+        );
 
-
-        const related =
-            videos
-                .filter(
-                    video =>
-                        video.id !== current.id
-                )
-                .slice(0, 6);
-
-
-        const grid =
-            document.getElementById(
-                "relatedGrid"
-            );
-
-
-        if (!related.length) {
-
-            grid.innerHTML =
-                "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
-
-            return;
-
-        }
-
+    if (!related.length) {
 
         grid.innerHTML =
-            related
-                .map(
-                    video => `
+            "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
+
+        return;
+
+    }
+
+    grid.innerHTML =
+        related
+            .map(
+                video => {
+
+                    const thumbnail =
+                        video.thumbnail ||
+                        (
+                            video.thumbnails
+                                ? video.thumbnails
+                                    .split(",")[0]
+                                    .trim()
+                                : ""
+                        );
+
+                    return `
 
                         <article
                             class="related-card"
@@ -3005,9 +3011,27 @@
                                 "
                             >
 
-                                <div
-                                    class="related-pattern"
-                                ></div>
+                                ${
+                                    thumbnail
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(thumbnail)}"
+                                                alt=""
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    height:100%;
+                                                    object-fit:cover;
+                                                    display:block;
+                                                "
+                                            >
+                                          `
+                                        : `
+                                            <div
+                                                class="related-pattern"
+                                            ></div>
+                                          `
+                                }
 
 
                                 <div class="related-play">
@@ -3042,47 +3066,66 @@
 
                         </article>
 
-                    `
-                )
-                .join("");
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+  
+
+ /* =========================
+   UP NEXT
+========================= */
+
+function renderUpNext() {
+
+    const current =
+        getCurrentVideo();
+
+    if (!current) {
+        return;
+    }
+
+    const next =
+        videos
+            .filter(
+                video =>
+                    video.id !== current.id
+            )
+            .slice(0, 4);
+
+    const container =
+        document.getElementById(
+            "nextList"
+        );
+
+    if (!next.length) {
+
+        container.innerHTML =
+            "<p style='color:#666;font-size:11px;'>No more videos available.</p>";
+
+        return;
 
     }
 
+    container.innerHTML =
+        next
+            .map(
+                video => {
 
-    /* =========================
-       UP NEXT
-    ========================= */
+                    const thumbnail =
+                        video.thumbnail ||
+                        (
+                            video.thumbnails
+                                ? video.thumbnails
+                                    .split(",")[0]
+                                    .trim()
+                                : ""
+                        );
 
-    function renderUpNext() {
-
-        const current =
-            getCurrentVideo();
-
-
-        if (!current) {
-            return;
-        }
-
-
-        const next =
-            videos
-                .filter(
-                    video =>
-                        video.id !== current.id
-                )
-                .slice(0, 4);
-
-
-        const container =
-            document.getElementById(
-                "nextList"
-            );
-
-
-        container.innerHTML =
-            next
-                .map(
-                    video => `
+                    return `
 
                         <article
                             class="next-item"
@@ -3094,8 +3137,30 @@
                                 style="
                                     --glow:
                                     rgba(120,50,255,0.22);
+                                    overflow:hidden;
+                                    position:relative;
                                 "
-                            ></div>
+                            >
+
+                                ${
+                                    thumbnail
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(thumbnail)}"
+                                                alt=""
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    height:100%;
+                                                    object-fit:cover;
+                                                    display:block;
+                                                "
+                                            >
+                                          `
+                                        : ""
+                                }
+
+                            </div>
 
 
                             <div class="next-info">
@@ -3114,11 +3179,13 @@
 
                         </article>
 
-                    `
-                )
-                .join("");
+                    `;
 
-    }
+                }
+            )
+            .join("");
+
+}
 
 
     /* =========================
