@@ -2107,223 +2107,739 @@
         </div>
 
     </div>
+<script>
+
+    /* =========================
+       AFTERDARKX VIDEO FEED
+    ========================= */
+
+    const FEED_ENDPOINT = "/api/videos";
 
 
-    <script>
+    let videos = [];
 
-        /* =========================
-           DEMO VIDEO DATA
-        ========================= */
+    let currentVideo = null;
 
-        /*
-            Temporary records only.
 
-            Later these will be populated from
-            the authorized TubeCorporate feed.
-        */
+    /* =========================
+       GET VIDEO ID
+    ========================= */
 
-        const videos = [
+    function getVideoId() {
 
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        return params.get("id");
+
+    }
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================
+       FORMAT DURATION
+    ========================= */
+
+    function formatDuration(seconds) {
+
+        const total =
+            parseInt(seconds, 10);
+
+        if (
+            Number.isNaN(total)
+        ) {
+
+            return "—";
+
+        }
+
+
+        const hours =
+            Math.floor(total / 3600);
+
+        const minutes =
+            Math.floor(
+                (total % 3600) / 60
+            );
+
+        const secs =
+            total % 60;
+
+
+        if (hours > 0) {
+
+            return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+        }
+
+
+        return `${minutes}:${String(secs).padStart(2, "0")}`;
+
+    }
+
+
+    /* =========================
+       FORMAT DATE
+    ========================= */
+
+    function formatDate(dateString) {
+
+        if (!dateString) {
+
+            return "Recently added";
+
+        }
+
+
+        const date =
+            new Date(
+                dateString.replace(" ", "T")
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "Recently added";
+
+        }
+
+
+        return date.toLocaleDateString(
+            undefined,
             {
-                id: "demo-01",
-                title: "Featured Collection",
-                category: "Featured",
-                duration: "12:42",
-                views: "—",
-                description:
-                    "A featured collection prepared for the authorized AfterDarkX video feed.",
-                color: "rgba(255,50,110,0.28)"
-            },
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }
+        );
 
-            {
-                id: "demo-02",
-                title: "Trending Selection",
-                category: "Trending",
-                duration: "18:25",
-                views: "—",
-                description:
-                    "A trending selection from the AfterDarkX collection.",
-                color: "rgba(120,50,255,0.28)"
-            },
+    }
 
-            {
-                id: "demo-03",
-                title: "Latest Collection",
-                category: "Latest",
-                duration: "21:08",
-                views: "—",
-                description:
-                    "One of the latest additions prepared for the platform.",
-                color: "rgba(50,150,255,0.28)"
-            },
 
-            {
-                id: "demo-04",
-                title: "Popular Selection",
-                category: "Popular",
-                duration: "15:37",
-                views: "—",
-                description:
-                    "A popular selection from the current collection.",
-                color: "rgba(255,95,45,0.28)"
-            },
+    /* =========================
+       PARSE CSV
+    ========================= */
 
-            {
-                id: "demo-05",
-                title: "Creator Collection",
-                category: "Creators",
-                duration: "09:54",
-                views: "—",
-                description:
-                    "Explore creator-focused entertainment.",
-                color: "rgba(60,210,175,0.28)"
-            },
+    function parseCSV(text) {
 
-            {
-                id: "demo-06",
-                title: "Most Viewed Collection",
-                category: "Most Viewed",
-                duration: "24:16",
-                views: "—",
-                description:
-                    "A collection based around viewer activity.",
-                color: "rgba(220,70,145,0.28)"
+        const rows = [];
+
+        let row = [];
+
+        let field = "";
+
+        let insideQuotes = false;
+
+
+        for (
+            let i = 0;
+            i < text.length;
+            i++
+        ) {
+
+            const char =
+                text[i];
+
+            const next =
+                text[i + 1];
+
+
+            if (
+                char === '"' &&
+                insideQuotes &&
+                next === '"'
+            ) {
+
+                field += '"';
+
+                i++;
+
+                continue;
+
             }
 
-        ];
 
+            if (
+                char === '"'
+            ) {
 
-        /* =========================
-           GET VIDEO ID
-        ========================= */
+                insideQuotes =
+                    !insideQuotes;
 
-        function getVideoId() {
-
-            const params =
-                new URLSearchParams(
-                    window.location.search
-                );
-
-            return params.get("id");
-
-        }
-
-
-        /* =========================
-           FIND VIDEO
-        ========================= */
-
-        function getCurrentVideo() {
-
-            const id =
-                getVideoId();
-
-            if (!id) {
-
-                return videos[0];
+                continue;
 
             }
 
 
-            const found =
-                videos.find(
-                    video =>
-                        video.id === id
+            if (
+                char === "|" &&
+                !insideQuotes
+            ) {
+
+                row.push(field);
+
+                field = "";
+
+                continue;
+
+            }
+
+
+            if (
+                (char === "\n" ||
+                 char === "\r") &&
+                !insideQuotes
+            ) {
+
+                if (
+                    char === "\r" &&
+                    next === "\n"
+                ) {
+
+                    i++;
+
+                }
+
+
+                row.push(field);
+
+                field = "";
+
+
+                if (
+                    row.some(
+                        value =>
+                            value.trim() !== ""
+                    )
+                ) {
+
+                    rows.push(row);
+
+                }
+
+
+                row = [];
+
+                continue;
+
+            }
+
+
+            field += char;
+
+        }
+
+
+        if (
+            field.length ||
+            row.length
+        ) {
+
+            row.push(field);
+
+            rows.push(row);
+
+        }
+
+
+        if (
+            rows.length < 2
+        ) {
+
+            return [];
+
+        }
+
+
+        const headers =
+            rows[0].map(
+                header =>
+                    header.trim()
+            );
+
+
+        return rows
+            .slice(1)
+            .map(values => {
+
+                const object = {};
+
+
+                headers.forEach(
+                    (header, index) => {
+
+                        object[header] =
+                            (
+                                values[index] ||
+                                ""
+                            ).trim();
+
+                    }
                 );
 
 
-            return found || videos[0];
+                return object;
+
+            });
+
+    }
+
+
+    /* =========================
+       LOAD FEED
+    ========================= */
+
+    async function loadFeed() {
+
+        try {
+
+            const response =
+                await fetch(
+                    FEED_ENDPOINT,
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Feed request failed: ${response.status}`
+                );
+
+            }
+
+
+            const csv =
+                await response.text();
+
+
+            const records =
+                parseCSV(csv);
+
+
+            videos =
+                records.map(
+                    record => {
+
+                        const categories =
+                            record.Categories ||
+                            "Featured";
+
+
+                        return {
+
+                            id:
+                                record.ID,
+
+                            title:
+                                record.Title ||
+                                "Untitled video",
+
+                            description:
+                                record.Description ||
+                                "",
+
+                            link:
+                                record["Website link"] ||
+                                record.Link ||
+                                "",
+
+                            duration:
+                                formatDuration(
+                                    record.Duration
+                                ),
+
+                            durationSeconds:
+                                parseInt(
+                                    record.Duration,
+                                    10
+                                ) || 0,
+
+                            rating:
+                                record.Rating ||
+                                "0",
+
+                            date:
+                                record["Publish date, time"] ||
+                                record["Added time"] ||
+                                "",
+
+                            category:
+                                categories
+                                    .split(",")[0]
+                                    .trim() ||
+                                "Featured",
+
+                            categories:
+                                categories
+                                    .split(",")
+                                    .map(
+                                        item =>
+                                            item.trim()
+                                    )
+                                    .filter(Boolean),
+
+                            tags:
+                                record.Tags ||
+                                "",
+
+                            embed:
+                                record["Embed code"] ||
+                                "",
+
+                            thumbnail:
+                                record["Main thumbnail"] ||
+                                "",
+
+                            thumbnails:
+                                record.Thumbnails ||
+                                ""
+
+                        };
+
+                    }
+                );
+
+
+            if (!videos.length) {
+
+                throw new Error(
+                    "The TubeCorporate feed returned no videos."
+                );
+
+            }
+
+
+            loadVideo();
+
+            renderRelated();
+
+            renderUpNext();
+
+
+        } catch (error) {
+
+            console.error(
+                "AfterDarkX feed error:",
+                error
+            );
+
+
+            showFeedError();
+
+        }
+
+    }
+
+
+    /* =========================
+       CURRENT VIDEO
+    ========================= */
+
+    function getCurrentVideo() {
+
+        const id =
+            getVideoId();
+
+
+        if (!videos.length) {
+
+            return null;
 
         }
 
 
-        /* =========================
-           LOAD VIDEO
-        ========================= */
+        if (!id) {
 
-        function loadVideo() {
-
-            const video =
-                getCurrentVideo();
-
-
-            document.title =
-                `${video.title} | AfterDarkX`;
-
-
-            document.getElementById(
-                "breadcrumbTitle"
-            ).textContent =
-                video.title;
-
-
-            document.getElementById(
-                "videoCategory"
-            ).textContent =
-                video.category;
-
-
-            document.getElementById(
-                "videoTitle"
-            ).textContent =
-                video.title;
-
-
-            document.getElementById(
-                "videoViews"
-            ).textContent =
-                `${video.views} views`;
-
-
-            document.getElementById(
-                "videoDuration"
-            ).textContent =
-                video.duration;
-
-
-            document.getElementById(
-                "videoDescription"
-            ).textContent =
-                video.description;
+            return videos[0];
 
         }
 
 
-        /* =========================
-           RELATED VIDEOS
-        ========================= */
+        return (
+            videos.find(
+                video =>
+                    String(video.id) ===
+                    String(id)
+            ) ||
+            videos[0]
+        );
 
-        function renderRelated() {
-
-            const current =
-                getCurrentVideo();
+    }
 
 
-            const related =
-                videos.filter(
+    /* =========================
+       LOAD VIDEO
+    ========================= */
+
+    function loadVideo() {
+
+        const video =
+            getCurrentVideo();
+
+
+        if (!video) {
+
+            return;
+
+        }
+
+
+        currentVideo =
+            video;
+
+
+        document.title =
+            `${video.title} | AfterDarkX`;
+
+
+        document.getElementById(
+            "breadcrumbTitle"
+        ).textContent =
+            video.title;
+
+
+        document.getElementById(
+            "videoCategory"
+        ).textContent =
+            video.category;
+
+
+        document.getElementById(
+            "videoTitle"
+        ).textContent =
+            video.title;
+
+
+        document.getElementById(
+            "videoViews"
+        ).textContent =
+            "Recently added";
+
+
+        document.getElementById(
+            "videoDuration"
+        ).textContent =
+            video.duration;
+
+
+        document.getElementById(
+            "videoDate"
+        ).textContent =
+            formatDate(video.date);
+
+
+        document.getElementById(
+            "videoDescription"
+        ).textContent =
+            video.description;
+
+
+        loadPlayer(video);
+
+    }
+
+
+    /* =========================
+       LOAD TUBECORPORATE PLAYER
+    ========================= */
+
+    function loadPlayer(video) {
+
+        const player =
+            document.getElementById(
+                "player"
+            );
+
+
+        if (!video.embed) {
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        const placeholder =
+            document.getElementById(
+                "playerPlaceholder"
+            );
+
+
+        if (placeholder) {
+
+            placeholder.remove();
+
+        }
+
+
+        player.innerHTML =
+            `
+                <div
+                    id="tubeCorporatePlayer"
+                    style="
+                        position:absolute;
+                        inset:0;
+                        width:100%;
+                        height:100%;
+                        background:#000;
+                    "
+                >
+                    ${video.embed}
+                </div>
+            `;
+
+
+        const iframe =
+            player.querySelector("iframe");
+
+
+        if (iframe) {
+
+            iframe.style.width =
+                "100%";
+
+            iframe.style.height =
+                "100%";
+
+            iframe.style.display =
+                "block";
+
+            iframe.style.border =
+                "0";
+
+        }
+
+    }
+
+
+    /* =========================
+       FEED ERROR
+    ========================= */
+
+    function showFeedError() {
+
+        const player =
+            document.getElementById(
+                "player"
+            );
+
+
+        player.innerHTML =
+            `
+                <div
+                    class="player-placeholder"
+                >
+
+                    <div class="player-glow"></div>
+
+                    <div class="player-glow-two"></div>
+
+                    <div class="player-content">
+
+                        <div class="player-icon">
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                        </div>
+
+                        <h2>
+                            Video unavailable
+                        </h2>
+
+                        <p>
+                            The video feed could not be loaded right now.
+                            Please try again shortly.
+                        </p>
+
+                        <div class="player-status">
+
+                            <span class="status-dot"></span>
+
+                            Feed unavailable
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+    }
+
+
+    /* =========================
+       RELATED VIDEOS
+    ========================= */
+
+    function renderRelated() {
+
+        const current =
+            getCurrentVideo();
+
+
+        if (!current) {
+
+            return;
+
+        }
+
+
+        const related =
+            videos
+                .filter(
                     video =>
                         video.id !== current.id
-                );
+                )
+                .slice(0, 6);
 
 
-            const grid =
-                document.getElementById(
-                    "relatedGrid"
-                );
+        const grid =
+            document.getElementById(
+                "relatedGrid"
+            );
 
 
-            grid.innerHTML =
-                related.map(
+        grid.innerHTML =
+            related
+                .map(
                     video => `
 
                         <article
                             class="related-card"
-                            onclick="openVideo('${video.id}')"
+                            onclick="openVideo('${encodeURIComponent(video.id)}')"
                         >
 
                             <div
                                 class="related-thumb"
-                                style="--glow:${video.color};"
+                                style="
+                                    --glow:
+                                    rgba(255,48,108,0.22);
+                                "
                             >
 
                                 <div
@@ -2343,7 +2859,7 @@
                                 <span
                                     class="related-duration"
                                 >
-                                    ${video.duration}
+                                    ${escapeHtml(video.duration)}
                                 </span>
 
                             </div>
@@ -2352,12 +2868,11 @@
                             <div class="related-info">
 
                                 <h3>
-                                    ${video.title}
+                                    ${escapeHtml(video.title)}
                                 </h3>
 
                                 <p>
-                                    ${video.category}
-                                    · ${video.views} views
+                                    ${escapeHtml(video.category)}
                                 </p>
 
                             </div>
@@ -2368,58 +2883,70 @@
                 )
                 .join("");
 
+    }
+
+
+    /* =========================
+       UP NEXT
+    ========================= */
+
+    function renderUpNext() {
+
+        const current =
+            getCurrentVideo();
+
+
+        if (!current) {
+
+            return;
+
         }
 
 
-        /* =========================
-           UP NEXT
-        ========================= */
-
-        function renderUpNext() {
-
-            const current =
-                getCurrentVideo();
-
-
-            const next =
-                videos
-                    .filter(
-                        video =>
-                            video.id !== current.id
-                    )
-                    .slice(0, 4);
+        const next =
+            videos
+                .filter(
+                    video =>
+                        video.id !== current.id
+                )
+                .slice(0, 4);
 
 
-            const container =
-                document.getElementById(
-                    "nextList"
-                );
+        const container =
+            document.getElementById(
+                "nextList"
+            );
 
 
-            container.innerHTML =
-                next.map(
+        container.innerHTML =
+            next
+                .map(
                     video => `
 
                         <article
                             class="next-item"
-                            onclick="openVideo('${video.id}')"
+                            onclick="openVideo('${encodeURIComponent(video.id)}')"
                         >
 
                             <div
                                 class="next-thumb"
-                                style="--glow:${video.color};"
+                                style="
+                                    --glow:
+                                    rgba(120,50,255,0.22);
+                                "
                             ></div>
 
 
                             <div class="next-info">
 
                                 <h4>
-                                    ${video.title}
+                                    ${escapeHtml(video.title)}
                                 </h4>
 
                                 <p>
-                                    ${video.duration}
-                                    · ${video.category}
+                                    ${escapeHtml(video.duration)}
+                                    ·
+                                    ${escapeHtml(video.category)}
                                 </p>
 
                             </div>
@@ -2430,278 +2957,275 @@
                 )
                 .join("");
 
-        }
+    }
 
 
-        /* =========================
-           OPEN VIDEO
-        ========================= */
+    /* =========================
+       OPEN VIDEO
+    ========================= */
 
-        function openVideo(id) {
+    function openVideo(id) {
 
-            window.location.href =
-                `watch.html?id=${encodeURIComponent(id)}`;
+        window.location.href =
+            `watch.html?id=${encodeURIComponent(id)}`;
 
-        }
-
-
-        /* =========================
-           LIKE
-        ========================= */
-
-        function toggleLike() {
-
-            const button =
-                document.getElementById(
-                    "likeButton"
-                );
+    }
 
 
-            button.classList.toggle(
-                "active"
+    /* =========================
+       LIKE
+    ========================= */
+
+    function toggleLike() {
+
+        const button =
+            document.getElementById(
+                "likeButton"
             );
 
 
-            const icon =
-                button.querySelector("i");
+        button.classList.toggle(
+            "active"
+        );
 
 
-            if (
-                button.classList.contains(
-                    "active"
-                )
-            ) {
+        if (
+            button.classList.contains(
+                "active"
+            )
+        ) {
 
-                icon.className =
-                    "fa-solid fa-heart";
+            button.innerHTML =
+                `
+                    <i class="fa-solid fa-heart"></i>
+                    Liked
+                `;
 
-                button.innerHTML =
-                    `
-                        <i class="fa-solid fa-heart"></i>
-                        Liked
-                    `;
+        } else {
 
-            } else {
-
-                button.innerHTML =
-                    `
-                        <i class="fa-regular fa-heart"></i>
-                        Like
-                    `;
-
-            }
+            button.innerHTML =
+                `
+                    <i class="fa-regular fa-heart"></i>
+                    Like
+                `;
 
         }
 
-
-        /* =========================
-           SAVE
-        ========================= */
-
-        function toggleSave() {
-
-            const button =
-                document.getElementById(
-                    "saveButton"
-                );
+    }
 
 
-            button.classList.toggle(
-                "active"
+    /* =========================
+       SAVE
+    ========================= */
+
+    function toggleSave() {
+
+        const button =
+            document.getElementById(
+                "saveButton"
             );
 
 
-            if (
-                button.classList.contains(
-                    "active"
-                )
-            ) {
+        button.classList.toggle(
+            "active"
+        );
 
-                button.innerHTML =
-                    `
-                        <i class="fa-solid fa-bookmark"></i>
-                        Saved
-                    `;
 
-            } else {
+        if (
+            button.classList.contains(
+                "active"
+            )
+        ) {
 
-                button.innerHTML =
-                    `
-                        <i class="fa-regular fa-bookmark"></i>
-                        Save
-                    `;
+            button.innerHTML =
+                `
+                    <i class="fa-solid fa-bookmark"></i>
+                    Saved
+                `;
 
-            }
+        } else {
+
+            button.innerHTML =
+                `
+                    <i class="fa-regular fa-bookmark"></i>
+                    Save
+                `;
 
         }
 
-
-        /* =========================
-           SHARE
-        ========================= */
-
-        async function shareVideo() {
-
-            const url =
-                window.location.href;
+    }
 
 
-            if (
-                navigator.share
-            ) {
+    /* =========================
+       SHARE
+    ========================= */
 
-                try {
+    async function shareVideo() {
 
-                    await navigator.share({
+        const url =
+            window.location.href;
 
-                        title:
-                            document.title,
 
-                        url:
-                            url
-
-                    });
-
-                } catch (error) {
-
-                    // User cancelled share.
-
-                }
-
-                return;
-
-            }
-
+        if (
+            navigator.share
+        ) {
 
             try {
 
-                await navigator.clipboard.writeText(
-                    url
-                );
+                await navigator.share({
 
-                alert(
-                    "Video link copied."
-                );
+                    title:
+                        document.title,
+
+                    url:
+                        url
+
+                });
 
             } catch (error) {
 
-                alert(
-                    "Copy this page URL to share the video."
-                );
+                // User cancelled sharing.
 
             }
 
-        }
-
-
-        /* =========================
-           SCROLL TO PLAYER
-        ========================= */
-
-        function scrollToPlayer() {
-
-            document.getElementById(
-                "player"
-            ).scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+            return;
 
         }
 
 
-        /* =========================
-           MOBILE MENU
-        ========================= */
+        try {
 
-        function toggleMenu() {
-
-            document
-                .getElementById(
-                    "mainNav"
-                )
-                .classList.toggle(
-                    "open"
-                );
-
-        }
-
-
-        /* =========================
-           AGE GATE
-        ========================= */
-
-        function enterSite() {
-
-            localStorage.setItem(
-                "afterDarkXAgeVerified",
-                "true"
+            await navigator.clipboard.writeText(
+                url
             );
 
 
-            document.getElementById(
-                "ageGate"
-            ).style.display =
-                "none";
+            alert(
+                "Video link copied."
+            );
 
+        } catch (error) {
 
-            document.body.classList.remove(
-                "no-scroll"
+            alert(
+                "Copy this page URL to share the video."
             );
 
         }
 
-
-        function leaveSite() {
-
-            window.location.href =
-                "https://www.google.com/";
-
-        }
+    }
 
 
-        /* =========================
-           INITIALIZE
-        ========================= */
+    /* =========================
+       SCROLL TO PLAYER
+    ========================= */
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function() {
+    function scrollToPlayer() {
 
-                loadVideo();
+        document.getElementById(
+            "player"
+        ).scrollIntoView({
 
-                renderRelated();
+            behavior:
+                "smooth",
 
-                renderUpNext();
+            block:
+                "center"
+
+        });
+
+    }
 
 
-                const verified =
-                    localStorage.getItem(
-                        "afterDarkXAgeVerified"
-                    );
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    function toggleMenu() {
+
+        document
+            .getElementById(
+                "mainNav"
+            )
+            .classList.toggle(
+                "open"
+            );
+
+    }
 
 
-                if (
-                    verified === "true"
-                ) {
+    /* =========================
+       AGE GATE
+    ========================= */
 
-                    document.getElementById(
-                        "ageGate"
-                    ).style.display =
-                        "none";
+    function enterSite() {
 
-                } else {
-
-                    document.body.classList.add(
-                        "no-scroll"
-                    );
-
-                }
-
-            }
+        localStorage.setItem(
+            "afterDarkXAgeVerified",
+            "true"
         );
 
-    </script>
+
+        document.getElementById(
+            "ageGate"
+        ).style.display =
+            "none";
+
+
+        document.body.classList.remove(
+            "no-scroll"
+        );
+
+    }
+
+
+    function leaveSite() {
+
+        window.location.href =
+            "https://www.google.com/";
+
+    }
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const verified =
+                localStorage.getItem(
+                    "afterDarkXAgeVerified"
+                );
+
+
+            if (
+                verified === "true"
+            ) {
+
+                document.getElementById(
+                    "ageGate"
+                ).style.display =
+                    "none";
+
+            } else {
+
+                document.body.classList.add(
+                    "no-scroll"
+                );
+
+            }
+
+
+            loadFeed();
+
+        }
+    );
+
+</script>
+
+ 
 
 </body>
 
