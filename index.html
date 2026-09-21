@@ -479,41 +479,61 @@
         .video-card {
             cursor: pointer;
         }
+.thumbnail {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #161820,
+            #25202a
+        );
+    border: 1px solid rgba(255,255,255,.06);
+}
 
-        .thumbnail {
-            position: relative;
-            aspect-ratio: 16 / 10;
-            border-radius: 12px;
-            overflow: hidden;
-            background:
-                linear-gradient(
-                    135deg,
-                    #161820,
-                    #25202a
-                );
-            border: 1px solid rgba(255,255,255,.06);
-        }
+.thumbnail-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s ease;
+}
 
-        .thumbnail::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(
-                    0deg,
-                    rgba(0,0,0,.5),
-                    transparent 60%
-                );
-        }
+.video-card:hover .thumbnail-image {
+    transform: scale(1.05);
+}
 
-        .thumbnail-icon {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            color: rgba(255,255,255,.15);
-            font-size: 30px;
-        }
+.thumbnail::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.05) 20%,
+            rgba(0,0,0,.75) 100%
+        );
+    z-index: 1;
+}
+
+.thumbnail-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(255,255,255,.18);
+    font-size: 30px;
+    z-index: 2;
+}
+
+.thumbnail-icon i {
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.5));
+}
+   
 
         .play-button {
             position: absolute;
@@ -1244,15 +1264,28 @@
                 onclick="openDemo()"
             >
 
-                <div class="thumbnail">
+              <div class="thumbnail">
 
-                    <div class="thumbnail-icon">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
+    <img
+        class="thumbnail-image"
+        src="${escapeHtml(getThumbnail(video))}"
+        alt=""
+        loading="lazy"
+    >
 
-                    <div class="play-button">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
+    <div class="thumbnail-icon">
+        <i class="fa-solid fa-play"></i>
+    </div>
+
+    <div class="play-button">
+        <i class="fa-solid fa-play"></i>
+    </div>
+
+    <span class="video-duration">
+        ${escapeHtml(video.duration || "—")}
+    </span>
+
+</div>
 
                     <span class="video-duration">
                         09:37
