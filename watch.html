@@ -2115,9 +2115,7 @@
 
     const FEED_ENDPOINT = "/api/videos";
 
-
     let videos = [];
-
     let currentVideo = null;
 
 
@@ -2162,14 +2160,9 @@
         const total =
             parseInt(seconds, 10);
 
-        if (
-            Number.isNaN(total)
-        ) {
-
+        if (Number.isNaN(total)) {
             return "—";
-
         }
-
 
         const hours =
             Math.floor(total / 3600);
@@ -2182,13 +2175,11 @@
         const secs =
             total % 60;
 
-
         if (hours > 0) {
 
             return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 
         }
-
 
         return `${minutes}:${String(secs).padStart(2, "0")}`;
 
@@ -2202,17 +2193,13 @@
     function formatDate(dateString) {
 
         if (!dateString) {
-
             return "Recently added";
-
         }
-
 
         const date =
             new Date(
                 dateString.replace(" ", "T")
             );
-
 
         if (
             Number.isNaN(
@@ -2223,7 +2210,6 @@
             return "Recently added";
 
         }
-
 
         return date.toLocaleDateString(
             undefined,
@@ -2238,7 +2224,7 @@
 
 
     /* =========================
-       PARSE CSV
+       CSV PARSER
     ========================= */
 
     function parseCSV(text) {
@@ -2246,9 +2232,7 @@
         const rows = [];
 
         let row = [];
-
         let field = "";
-
         let insideQuotes = false;
 
 
@@ -2280,9 +2264,7 @@
             }
 
 
-            if (
-                char === '"'
-            ) {
+            if (char === '"') {
 
                 insideQuotes =
                     !insideQuotes;
@@ -2321,7 +2303,6 @@
 
                 }
 
-
                 row.push(field);
 
                 field = "";
@@ -2337,7 +2318,6 @@
                     rows.push(row);
 
                 }
-
 
                 row = [];
 
@@ -2363,12 +2343,8 @@
         }
 
 
-        if (
-            rows.length < 2
-        ) {
-
+        if (rows.length < 2) {
             return [];
-
         }
 
 
@@ -2385,7 +2361,6 @@
 
                 const object = {};
 
-
                 headers.forEach(
                     (header, index) => {
 
@@ -2397,7 +2372,6 @@
 
                     }
                 );
-
 
                 return object;
 
@@ -2441,8 +2415,8 @@
 
 
             videos =
-                records.map(
-                    record => {
+                records
+                    .map(record => {
 
                         const categories =
                             record.Categories ||
@@ -2520,8 +2494,12 @@
 
                         };
 
-                    }
-                );
+                    })
+                    .filter(
+                        video =>
+                            video.id &&
+                            video.title
+                    );
 
 
             if (!videos.length) {
@@ -2547,7 +2525,6 @@
                 error
             );
 
-
             showFeedError();
 
         }
@@ -2566,27 +2543,20 @@
 
 
         if (!videos.length) {
-
             return null;
-
         }
 
 
         if (!id) {
-
             return videos[0];
-
         }
 
 
-        return (
-            videos.find(
-                video =>
-                    String(video.id) ===
-                    String(id)
-            ) ||
-            videos[0]
-        );
+        return videos.find(
+            video =>
+                String(video.id) ===
+                String(id)
+        ) || null;
 
     }
 
@@ -2602,6 +2572,8 @@
 
 
         if (!video) {
+
+            showVideoNotFound();
 
             return;
 
@@ -2655,7 +2627,8 @@
         document.getElementById(
             "videoDescription"
         ).textContent =
-            video.description;
+            video.description ||
+            "Video information is provided through the authorized content feed.";
 
 
         loadPlayer(video);
@@ -2664,7 +2637,7 @@
 
 
     /* =========================
-       LOAD TUBECORPORATE PLAYER
+       LOAD AUTHORIZED PLAYER
     ========================= */
 
     function loadPlayer(video) {
@@ -2684,55 +2657,238 @@
         }
 
 
-        const placeholder =
-            document.getElementById(
-                "playerPlaceholder"
+        /*
+            We receive an authorized iframe
+            from the TubeCorporate feed.
+
+            Instead of injecting the complete
+            HTML string, extract its src and
+            create the iframe ourselves.
+        */
+
+        const parser =
+            new DOMParser();
+
+
+        const embedDocument =
+            parser.parseFromString(
+                video.embed,
+                "text/html"
             );
 
 
-        if (placeholder) {
+        const sourceIframe =
+            embedDocument.querySelector(
+                "iframe"
+            );
 
-            placeholder.remove();
+
+        if (!sourceIframe) {
+
+            showFeedError();
+
+            return;
 
         }
 
 
-        player.innerHTML =
-            `
-                <div
-                    id="tubeCorporatePlayer"
-                    style="
-                        position:absolute;
-                        inset:0;
-                        width:100%;
-                        height:100%;
-                        background:#000;
-                    "
-                >
-                    ${video.embed}
-                </div>
-            `;
+        const embedUrl =
+            sourceIframe.getAttribute(
+                "src"
+            );
+
+
+        if (!embedUrl) {
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        if (
+            !embedUrl.startsWith(
+                "https://videohdzog.com/embed/"
+            )
+        ) {
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        player.innerHTML = "";
+
+
+        const playerContainer =
+            document.createElement(
+                "div"
+            );
+
+
+        playerContainer.id =
+            "tubeCorporatePlayer";
+
+
+        playerContainer.style.position =
+            "absolute";
+
+        playerContainer.style.inset =
+            "0";
+
+        playerContainer.style.width =
+            "100%";
+
+        playerContainer.style.height =
+            "100%";
+
+        playerContainer.style.background =
+            "#000";
 
 
         const iframe =
-            player.querySelector("iframe");
+            document.createElement(
+                "iframe"
+            );
 
 
-        if (iframe) {
+        iframe.src =
+            embedUrl;
 
-            iframe.style.width =
-                "100%";
 
-            iframe.style.height =
-                "100%";
+        iframe.width =
+            "100%";
 
-            iframe.style.display =
-                "block";
 
-            iframe.style.border =
-                "0";
+        iframe.height =
+            "100%";
 
-        }
+
+        iframe.frameBorder =
+            "0";
+
+
+        iframe.allowFullscreen =
+            true;
+
+
+        iframe.setAttribute(
+            "webkitallowfullscreen",
+            ""
+        );
+
+
+        iframe.setAttribute(
+            "mozallowfullscreen",
+            ""
+        );
+
+
+        iframe.setAttribute(
+            "oallowfullscreen",
+            ""
+        );
+
+
+        iframe.setAttribute(
+            "msallowfullscreen",
+            ""
+        );
+
+
+        iframe.style.width =
+            "100%";
+
+
+        iframe.style.height =
+            "100%";
+
+
+        iframe.style.display =
+            "block";
+
+
+        iframe.style.border =
+            "0";
+
+
+        playerContainer.appendChild(
+            iframe
+        );
+
+
+        player.appendChild(
+            playerContainer
+        );
+
+    }
+
+
+    /* =========================
+       VIDEO NOT FOUND
+    ========================= */
+
+    function showVideoNotFound() {
+
+        const player =
+            document.getElementById(
+                "player"
+            );
+
+
+        player.innerHTML = `
+
+            <div class="player-placeholder">
+
+                <div class="player-glow"></div>
+
+                <div class="player-glow-two"></div>
+
+                <div class="player-content">
+
+                    <div class="player-icon">
+
+                        <i class="fa-solid fa-video-slash"></i>
+
+                    </div>
+
+                    <h2>
+                        Video not found
+                    </h2>
+
+                    <p>
+                        This video is no longer available
+                        in the current content feed.
+                    </p>
+
+                    <div class="player-status">
+
+                        <span class="status-dot"></span>
+
+                        Unavailable
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "videoTitle"
+        ).textContent =
+            "Video not found";
+
+
+        document.getElementById(
+            "videoDescription"
+        ).textContent =
+            "The requested video could not be found in the current authorized feed.";
 
     }
 
@@ -2749,45 +2905,44 @@
             );
 
 
-        player.innerHTML =
-            `
-                <div
-                    class="player-placeholder"
-                >
+        player.innerHTML = `
 
-                    <div class="player-glow"></div>
+            <div class="player-placeholder">
 
-                    <div class="player-glow-two"></div>
+                <div class="player-glow"></div>
 
-                    <div class="player-content">
+                <div class="player-glow-two"></div>
 
-                        <div class="player-icon">
+                <div class="player-content">
 
-                            <i class="fa-solid fa-circle-exclamation"></i>
+                    <div class="player-icon">
 
-                        </div>
+                        <i class="fa-solid fa-circle-exclamation"></i>
 
-                        <h2>
-                            Video unavailable
-                        </h2>
+                    </div>
 
-                        <p>
-                            The video feed could not be loaded right now.
-                            Please try again shortly.
-                        </p>
+                    <h2>
+                        Video unavailable
+                    </h2>
 
-                        <div class="player-status">
+                    <p>
+                        The authorized video feed could not
+                        be loaded right now. Please try again shortly.
+                    </p>
 
-                            <span class="status-dot"></span>
+                    <div class="player-status">
 
-                            Feed unavailable
+                        <span class="status-dot"></span>
 
-                        </div>
+                        Feed unavailable
 
                     </div>
 
                 </div>
-            `;
+
+            </div>
+
+        `;
 
     }
 
@@ -2803,9 +2958,7 @@
 
 
         if (!current) {
-
             return;
-
         }
 
 
@@ -2822,6 +2975,16 @@
             document.getElementById(
                 "relatedGrid"
             );
+
+
+        if (!related.length) {
+
+            grid.innerHTML =
+                "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
+
+            return;
+
+        }
 
 
         grid.innerHTML =
@@ -2897,9 +3060,7 @@
 
 
         if (!current) {
-
             return;
-
         }
 
 
@@ -2995,19 +3156,17 @@
             )
         ) {
 
-            button.innerHTML =
-                `
-                    <i class="fa-solid fa-heart"></i>
-                    Liked
-                `;
+            button.innerHTML = `
+                <i class="fa-solid fa-heart"></i>
+                Liked
+            `;
 
         } else {
 
-            button.innerHTML =
-                `
-                    <i class="fa-regular fa-heart"></i>
-                    Like
-                `;
+            button.innerHTML = `
+                <i class="fa-regular fa-heart"></i>
+                Like
+            `;
 
         }
 
@@ -3037,19 +3196,17 @@
             )
         ) {
 
-            button.innerHTML =
-                `
-                    <i class="fa-solid fa-bookmark"></i>
-                    Saved
-                `;
+            button.innerHTML = `
+                <i class="fa-solid fa-bookmark"></i>
+                Saved
+            `;
 
         } else {
 
-            button.innerHTML =
-                `
-                    <i class="fa-regular fa-bookmark"></i>
-                    Save
-                `;
+            button.innerHTML = `
+                <i class="fa-regular fa-bookmark"></i>
+                Save
+            `;
 
         }
 
@@ -3066,9 +3223,7 @@
             window.location.href;
 
 
-        if (
-            navigator.share
-        ) {
+        if (navigator.share) {
 
             try {
 
@@ -3208,6 +3363,10 @@
                     "ageGate"
                 ).style.display =
                     "none";
+
+                document.body.classList.remove(
+                    "no-scroll"
+                );
 
             } else {
 
