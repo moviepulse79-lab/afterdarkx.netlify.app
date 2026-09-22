@@ -1787,596 +1787,1171 @@
 
     </div>
 
+<script>
 
-    <script>
+/*
+=========================================================
+AFTERDARKX CATEGORY PAGE
+CONNECTED TO TUBECORPORATE FEED
+=========================================================
+*/
 
-        /* =========================
-           CATEGORY DATA
-        ========================= */
+const API_ENDPOINT = "/api/videos";
 
-        const categories = {
+let videos = [];
+let currentCategory = "featured";
 
-            featured: {
-                name: "Featured",
-                label: "Curated collection",
+
+/*
+=========================================================
+CATEGORY CONFIG
+=========================================================
+*/
+
+const categories = {
+
+    featured: {
+        name: "Featured",
+        label: "Curated collection",
+        description:
+            "Discover a carefully selected collection of standout entertainment and fresh discoveries.",
+        resultText:
+            "Fresh selections picked for discovery."
+    },
+
+    trending: {
+        name: "Trending",
+        label: "What's getting attention",
+        description:
+            "Explore entertainment currently attracting attention across the platform.",
+        resultText:
+            "See what's getting attention right now."
+    },
+
+    popular: {
+        name: "Popular",
+        label: "Most watched",
+        description:
+            "Browse popular entertainment receiving the most attention.",
+        resultText:
+            "Popular picks from across the platform."
+    },
+
+    new: {
+        name: "New",
+        label: "Fresh arrivals",
+        description:
+            "Discover the newest additions as they arrive on AfterDarkX.",
+        resultText:
+            "Recently added entertainment."
+    },
+
+    collections: {
+        name: "Collections",
+        label: "Curated collections",
+        description:
+            "Explore themed collections designed to make discovering something new easier.",
+        resultText:
+            "Curated groups built around different themes."
+    },
+
+    creators: {
+        name: "Creators",
+        label: "Creator library",
+        description:
+            "Explore content from creators featured across the platform.",
+        resultText:
+            "Discover creator-focused collections."
+    },
+
+    "most-viewed": {
+        name: "Most Viewed",
+        label: "Audience favorites",
+        description:
+            "Browse content receiving the highest level of viewing activity.",
+        resultText:
+            "Popular entertainment by viewing activity."
+    },
+
+    latest: {
+        name: "Latest",
+        label: "Latest releases",
+        description:
+            "Stay up to date with the newest entertainment added to the platform.",
+        resultText:
+            "The newest additions to AfterDarkX."
+    }
+
+};
+
+
+/*
+=========================================================
+HTML ESCAPE
+=========================================================
+*/
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/*
+=========================================================
+CSV PARSER
+=========================================================
+*/
+
+function parseCSV(csv) {
+
+    const lines =
+        csv
+            .split(/\r?\n/)
+            .filter(line => line.trim());
+
+
+    if (lines.length < 2) {
+        return [];
+    }
+
+
+    const headers =
+        lines[0]
+            .split("|")
+            .map(header => header.trim());
+
+
+    return lines
+        .slice(1)
+        .map(line => {
+
+            const values =
+                line.split("|");
+
+            const record = {};
+
+
+            headers.forEach(
+                (header, index) => {
+
+                    record[header] =
+                        values[index] || "";
+
+                }
+            );
+
+
+            return {
+
+                id:
+                    record.ID || "",
+
+                title:
+                    record.Title ||
+                    "Untitled",
+
                 description:
-                    "Discover a carefully selected collection of standout entertainment and fresh discoveries.",
-                resultText:
-                    "Fresh selections picked for discovery."
-            },
+                    record.Description ||
+                    "",
 
-            trending: {
-                name: "Trending",
-                label: "What's getting attention",
-                description:
-                    "Explore the entertainment currently attracting the most attention across the platform.",
-                resultText:
-                    "See what's getting attention right now."
-            },
+                duration:
+                    record.Duration ||
+                    "",
 
-            popular: {
-                name: "Popular",
-                label: "Most watched",
-                description:
-                    "Browse popular entertainment selected from the content receiving the most attention.",
-                resultText:
-                    "Popular picks from across the platform."
-            },
+                rating:
+                    record.Rating ||
+                    "",
 
-            new: {
-                name: "New",
-                label: "Fresh arrivals",
-                description:
-                    "Discover the newest additions as they arrive on AfterDarkX.",
-                resultText:
-                    "Recently added entertainment."
-            },
+                date:
+                    record["Publish date, time"] ||
+                    "",
 
-            collections: {
-                name: "Collections",
-                label: "Curated collections",
-                description:
-                    "Explore themed collections designed to make discovering something new easier.",
-                resultText:
-                    "Curated groups built around different themes."
-            },
+                category:
+                    record.Categories ||
+                    "Featured",
 
-            creators: {
-                name: "Creators",
-                label: "Creator library",
-                description:
-                    "Explore content from creators featured across the AfterDarkX platform.",
-                resultText:
-                    "Discover creator-focused collections."
-            },
+                thumbnail:
+                    record["Main thumbnail"] ||
+                    "",
 
-            "most-viewed": {
-                name: "Most Viewed",
-                label: "Audience favorites",
-                description:
-                    "Browse content receiving the highest level of attention from viewers.",
-                resultText:
-                    "Popular entertainment by viewing activity."
-            },
+                thumbnails:
+                    record.Thumbnails ||
+                    "",
 
-            latest: {
-                name: "Latest",
-                label: "Latest releases",
-                description:
-                    "Stay up to date with the newest entertainment added to the platform.",
-                resultText:
-                    "The newest additions to AfterDarkX."
+                embed:
+                    record["Embed code"] ||
+                    ""
+
+            };
+
+        })
+        .filter(video => video.id);
+
+}
+
+
+/*
+=========================================================
+GET THUMBNAIL
+=========================================================
+*/
+
+function getThumbnail(video) {
+
+    if (video.thumbnail) {
+        return video.thumbnail;
+    }
+
+
+    if (video.thumbnails) {
+
+        const first =
+            video.thumbnails
+                .split(",")
+                .map(item => item.trim())
+                .find(Boolean);
+
+
+        if (first) {
+            return first;
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/*
+=========================================================
+GET CATEGORY FROM URL
+=========================================================
+*/
+
+function getCategory() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const requested =
+        params.get("category");
+
+
+    if (
+        requested &&
+        categories[requested]
+    ) {
+
+        return requested;
+
+    }
+
+
+    return "featured";
+
+}
+
+
+/*
+=========================================================
+CATEGORY -> TUBECORPORATE CATEGORY
+=========================================================
+*/
+
+function getFeedCategory(categoryKey) {
+
+    /*
+    These are actual feed categories.
+    The other page categories use sorting instead.
+    */
+
+    const categoryMap = {
+
+        african: "African",
+
+        amateur: "Amateur",
+
+        asian: "Asian",
+
+        american: "American",
+
+        british: "British",
+
+        european: "European",
+
+        indian: "Indian",
+
+        japanese: "Japanese",
+
+        korean: "Korean",
+
+        latina: "Latina",
+
+        lesbian: "Lesbian",
+
+        mature: "Mature",
+
+        cosplay: "Cosplay",
+
+        webcam: "Webcam",
+
+        vintage: "Vintage",
+
+        outdoor: "Outdoor",
+
+        couples: "Couple",
+
+        hd: "HD"
+
+    };
+
+
+    return categoryMap[
+        categoryKey.toLowerCase()
+    ] || "";
+
+}
+
+
+/*
+=========================================================
+BUILD API URL
+=========================================================
+*/
+
+function buildApiUrl() {
+
+    const params =
+        new URLSearchParams();
+
+
+    /*
+    Real TubeCorporate category
+    */
+
+    const feedCategory =
+        getFeedCategory(
+            currentCategory
+        );
+
+
+    if (feedCategory) {
+
+        params.set(
+            "category",
+            feedCategory
+        );
+
+    }
+
+
+    /*
+    Sorting
+    */
+
+    const sort =
+        document.getElementById(
+            "sortSelect"
+        ).value;
+
+
+    if (
+        currentCategory === "trending" ||
+        currentCategory === "most-viewed" ||
+        currentCategory === "popular" ||
+        sort === "popular"
+    ) {
+
+        params.set(
+            "sort",
+            "popularity"
+        );
+
+        params.set(
+            "days",
+            "30"
+        );
+
+    } else if (
+        sort === "rating"
+    ) {
+
+        params.set(
+            "sort",
+            "rating"
+        );
+
+        params.set(
+            "days",
+            "30"
+        );
+
+    } else {
+
+        params.set(
+            "sort",
+            "post_date"
+        );
+
+        params.set(
+            "days",
+            "7"
+        );
+
+    }
+
+
+    params.set(
+        "limit",
+        "100"
+    );
+
+
+    return `${API_ENDPOINT}?${params.toString()}`;
+
+}
+
+
+/*
+=========================================================
+LOAD VIDEOS
+=========================================================
+*/
+
+async function loadVideos() {
+
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
+
+    const loading =
+        document.getElementById(
+            "loadingGrid"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    loading.style.display =
+        "grid";
+
+
+    grid.innerHTML =
+        "";
+
+
+    empty.style.display =
+        "none";
+
+
+    try {
+
+        const url =
+            buildApiUrl();
+
+
+        console.log(
+            "AfterDarkX category feed:",
+            url
+        );
+
+
+        const response =
+            await fetch(
+                url,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Feed returned ${response.status}`
+            );
+
+        }
+
+
+        const csv =
+            await response.text();
+
+
+        videos =
+            parseCSV(csv);
+
+
+        /*
+        Remove duplicate IDs
+        */
+
+        const seen =
+            new Set();
+
+
+        videos =
+            videos.filter(video => {
+
+                if (
+                    !video.id ||
+                    seen.has(video.id)
+                ) {
+
+                    return false;
+
+                }
+
+
+                seen.add(
+                    video.id
+                );
+
+
+                return true;
+
+            });
+
+
+        loading.style.display =
+            "none";
+
+
+        if (!videos.length) {
+
+            showEmpty();
+
+            return;
+
+        }
+
+
+        renderFeatured();
+
+
+        renderVideos();
+
+
+    } catch (error) {
+
+        console.error(
+            "AfterDarkX category error:",
+            error
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        grid.innerHTML = "";
+
+
+        empty.style.display =
+            "block";
+
+
+        empty.querySelector("h3").textContent =
+            "Unable to load videos";
+
+
+        empty.querySelector("p").textContent =
+            "Please refresh the page and try again.";
+
+    }
+
+}
+
+
+/*
+=========================================================
+EMPTY STATE
+=========================================================
+*/
+
+function showEmpty() {
+
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    grid.innerHTML =
+        "";
+
+
+    empty.style.display =
+        "block";
+
+
+    empty.querySelector("h3").textContent =
+        "Nothing here yet";
+
+
+    empty.querySelector("p").textContent =
+        "This collection does not have available videos right now.";
+
+}
+
+
+/*
+=========================================================
+RENDER FEATURED VIDEO
+=========================================================
+*/
+
+function renderFeatured() {
+
+    if (!videos.length) {
+        return;
+    }
+
+
+    const video =
+        videos[0];
+
+
+    const title =
+        document.getElementById(
+            "featuredTitle"
+        );
+
+
+    const description =
+        document.getElementById(
+            "featuredDescription"
+        );
+
+
+    const featured =
+        document.getElementById(
+            "featuredVideo"
+        );
+
+
+    const imageBox =
+        featured.querySelector(
+            ".featured-image"
+        );
+
+
+    const watchButton =
+        featured.querySelector(
+            ".watch-featured"
+        );
+
+
+    const thumbnail =
+        getThumbnail(video);
+
+
+    /*
+    Put real thumbnail into featured area
+    */
+
+    if (thumbnail) {
+
+        imageBox.style.backgroundImage =
+            `url("${thumbnail}")`;
+
+        imageBox.style.backgroundSize =
+            "cover";
+
+        imageBox.style.backgroundPosition =
+            "center";
+
+    } else {
+
+        imageBox.style.backgroundImage =
+            "linear-gradient(135deg,#1b1621,#26121a,#111318)";
+
+    }
+
+
+    title.textContent =
+        video.title;
+
+
+    description.textContent =
+        video.description ||
+        "Discover this selection from the AfterDarkX video collection.";
+
+
+    /*
+    Connect Watch Now
+    */
+
+    watchButton.href =
+        `watch.html?id=${encodeURIComponent(video.id)}`;
+
+
+    /*
+    Clicking featured area opens video
+    */
+
+    featured.onclick =
+        function(event) {
+
+            if (
+                event.target.closest(
+                    ".watch-featured"
+                )
+            ) {
+                return;
             }
+
+
+            openVideo(
+                video.id
+            );
 
         };
 
-
-        /* =========================
-           DEMO DATA
-           ========================= */
-
-        /*
-            These are intentionally demo records.
-
-            Later, replace this array with the
-            authorized TubeCorporate feed data.
-        */
-
-        let videos = [
-
-            {
-                id: "demo-01",
-                title: "Featured Collection",
-                category: "featured",
-                duration: "12:42",
-                views: "—",
-                rating: "—",
-                color: "rgba(255,50,110,0.28)"
-            },
-
-            {
-                id: "demo-02",
-                title: "Latest Collection",
-                category: "latest",
-                duration: "18:25",
-                views: "—",
-                rating: "—",
-                color: "rgba(70,120,255,0.28)"
-            },
-
-            {
-                id: "demo-03",
-                title: "Popular Collection",
-                category: "popular",
-                duration: "21:08",
-                views: "—",
-                rating: "—",
-                color: "rgba(255,100,45,0.28)"
-            },
-
-            {
-                id: "demo-04",
-                title: "New Arrivals",
-                category: "new",
-                duration: "15:37",
-                views: "—",
-                rating: "—",
-                color: "rgba(40,190,165,0.28)"
-            },
-
-            {
-                id: "demo-05",
-                title: "Creator Collection",
-                category: "creators",
-                duration: "09:54",
-                views: "—",
-                rating: "—",
-                color: "rgba(155,70,255,0.28)"
-            },
-
-            {
-                id: "demo-06",
-                title: "Trending Selection",
-                category: "trending",
-                duration: "24:16",
-                views: "—",
-                rating: "—",
-                color: "rgba(255,50,80,0.28)"
-            },
-
-            {
-                id: "demo-07",
-                title: "Editor's Collection",
-                category: "collections",
-                duration: "17:22",
-                views: "—",
-                rating: "—",
-                color: "rgba(240,175,50,0.28)"
-            },
-
-            {
-                id: "demo-08",
-                title: "Most Viewed Collection",
-                category: "most-viewed",
-                duration: "19:44",
-                views: "—",
-                rating: "—",
-                color: "rgba(80,220,190,0.28)"
-            }
-
-        ];
+}
 
 
-        /* =========================
-           GET CATEGORY
-        ========================= */
+/*
+=========================================================
+RENDER VIDEO GRID
+=========================================================
+*/
 
-        function getCategory() {
+function renderVideos() {
 
-            const params =
-                new URLSearchParams(
-                    window.location.search
-                );
-
-            const requested =
-                params.get("category");
-
-            if (
-                requested &&
-                categories[requested]
-            ) {
-                return requested;
-            }
-
-            return "featured";
-
-        }
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
 
 
-        /* =========================
-           UPDATE PAGE
-        ========================= */
+    if (!videos.length) {
 
-        function updateCategoryPage() {
+        showEmpty();
 
-            const categoryKey =
-                getCategory();
+        return;
 
-            const category =
-                categories[categoryKey];
+    }
 
 
-            document.title =
-                `${category.name} | AfterDarkX`;
+    grid.innerHTML = "";
 
 
-            document.getElementById(
-                "breadcrumbName"
-            ).textContent =
-                category.name;
+    videos.forEach(
+        video => {
 
-
-            document.getElementById(
-                "heroLabel"
-            ).textContent =
-                category.label;
-
-
-            document.getElementById(
-                "categoryName"
-            ).textContent =
-                category.name;
-
-
-            document.getElementById(
-                "categoryDescription"
-            ).textContent =
-                category.description;
-
-
-            document.getElementById(
-                "resultsTitle"
-            ).textContent =
-                `${category.name} videos`;
-
-
-            document.getElementById(
-                "resultsDescription"
-            ).textContent =
-                category.resultText;
-
-        }
-
-
-        /* =========================
-           RENDER VIDEOS
-        ========================= */
-
-        function renderVideos() {
-
-            const categoryKey =
-                getCategory();
-
-            const grid =
-                document.getElementById(
-                    "videoGrid"
-                );
-
-            const loading =
-                document.getElementById(
-                    "loadingGrid"
-                );
-
-            const empty =
-                document.getElementById(
-                    "emptyState"
+            const card =
+                document.createElement(
+                    "article"
                 );
 
 
-            loading.style.display =
-                "none";
+            card.className =
+                "video-card";
 
 
-            let filtered =
-                videos.filter(
-                    video => {
+            card.addEventListener(
+                "click",
+                function() {
 
-                        if (
-                            categoryKey ===
-                            "featured"
-                        ) {
-                            return true;
-                        }
+                    openVideo(
+                        video.id
+                    );
 
-                        if (
-                            categoryKey ===
-                            "collections"
-                        ) {
-                            return true;
-                        }
+                }
+            );
 
-                        return (
-                            video.category ===
-                            categoryKey
-                        );
 
+            const thumbnail =
+                getThumbnail(video);
+
+
+            card.innerHTML = `
+
+                <div class="thumbnail">
+
+                    ${
+                        thumbnail
+                            ? `
+                                <img
+                                    src="${escapeHtml(thumbnail)}"
+                                    alt=""
+                                    loading="lazy"
+                                    style="
+                                        position:absolute;
+                                        inset:0;
+                                        width:100%;
+                                        height:100%;
+                                        object-fit:cover;
+                                        display:block;
+                                    "
+                                >
+                              `
+                            : `
+                                <div
+                                    class="thumbnail-pattern"
+                                ></div>
+                              `
                     }
-                );
 
 
-            if (!filtered.length) {
+                    <div class="play-small">
 
-                grid.innerHTML = "";
-
-                empty.style.display =
-                    "block";
-
-                return;
-
-            }
-
-
-            empty.style.display =
-                "none";
-
-
-            grid.innerHTML =
-                filtered.map(
-                    createVideoCard
-                ).join("");
-
-        }
-
-
-        /* =========================
-           VIDEO CARD
-        ========================= */
-
-        function createVideoCard(video) {
-
-            return `
-
-                <article
-                    class="video-card"
-                    onclick="openVideo('${video.id}')"
-                >
-
-                    <div class="thumbnail"
-                        style="--glow:${video.color};"
-                    >
-
-                        <div
-                            class="thumbnail-pattern"
-                        ></div>
-
-
-                        <div class="play-small">
-
-                            <i
-                                class="fa-solid fa-play"
-                            ></i>
-
-                        </div>
-
-
-                        <span class="quality">
-                            HD
-                        </span>
-
-
-                        <span class="duration">
-                            ${video.duration}
-                        </span>
+                        <i
+                            class="fa-solid fa-play"
+                        ></i>
 
                     </div>
 
 
-                    <div class="video-info">
+                    <span class="quality">
 
-                        <div class="video-title">
-                            ${video.title}
-                        </div>
+                        HD
+
+                    </span>
 
 
-                        <div class="video-sub">
+                    <span class="duration">
 
-                            <span>
-                                ${video.views} views
-                            </span>
+                        ${escapeHtml(
+                            video.duration || "—"
+                        )}
 
-                            <span>
-                                ${video.rating}
-                            </span>
+                    </span>
 
-                        </div>
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="video-title">
+
+                        ${escapeHtml(
+                            video.title
+                        )}
 
                     </div>
 
-                </article>
+
+                    <div class="video-sub">
+
+                        <span>
+
+                            ${
+                                video.category
+                                    ? escapeHtml(
+                                        video.category
+                                    )
+                                    : "Video"
+                            }
+
+                        </span>
+
+
+                        <span>
+
+                            ${
+                                video.rating
+                                    ? "★ " +
+                                      escapeHtml(
+                                          video.rating
+                                      )
+                                    : "HD"
+                            }
+
+                        </span>
+
+                    </div>
+
+                </div>
 
             `;
 
-        }
 
-
-        /* =========================
-           FEATURED
-        ========================= */
-
-        function updateFeatured() {
-
-            const categoryKey =
-                getCategory();
-
-            const category =
-                categories[categoryKey];
-
-
-            document.getElementById(
-                "featuredTitle"
-            ).textContent =
-                `${category.name} collection`;
-
-
-            document.getElementById(
-                "featuredDescription"
-            ).textContent =
-                category.description;
-
-        }
-
-
-        /* =========================
-           SORT
-        ========================= */
-
-        function sortVideos() {
-
-            const select =
-                document.getElementById(
-                    "sortSelect"
-                );
-
-            const value =
-                select.value;
-
-
-            if (value === "latest") {
-
-                videos.reverse();
-
-            }
-
-            if (value === "popular") {
-
-                videos.sort(
-                    () => Math.random() - 0.5
-                );
-
-            }
-
-            if (value === "rating") {
-
-                videos.reverse();
-
-            }
-
-
-            renderVideos();
-
-        }
-
-
-        /* =========================
-           OPEN VIDEO
-        ========================= */
-
-        function openVideo(id) {
-
-            if (
-                id.startsWith("demo-")
-            ) {
-
-                alert(
-                    "The authorized video feed will be connected here."
-                );
-
-                return;
-
-            }
-
-            window.location.href =
-                `watch.html?id=${encodeURIComponent(id)}`;
-
-        }
-
-
-        /* =========================
-           MOBILE MENU
-        ========================= */
-
-        function toggleMenu() {
-
-            document
-                .getElementById("mainNav")
-                .classList.toggle("open");
-
-        }
-
-
-        /* =========================
-           AGE GATE
-        ========================= */
-
-        function enterSite() {
-
-            localStorage.setItem(
-                "afterDarkXAgeVerified",
-                "true"
+            grid.appendChild(
+                card
             );
+
+        }
+    );
+
+}
+
+
+/*
+=========================================================
+SORT
+=========================================================
+*/
+
+function sortVideos() {
+
+    /*
+    Reload from the API so sorting is real.
+
+    We do NOT use random sorting or reverse().
+    */
+
+    loadVideos();
+
+}
+
+
+/*
+=========================================================
+OPEN VIDEO
+=========================================================
+*/
+
+function openVideo(id) {
+
+    if (!id) {
+        return;
+    }
+
+
+    window.location.href =
+        `watch.html?id=${encodeURIComponent(id)}`;
+
+}
+
+
+/*
+=========================================================
+UPDATE PAGE TEXT
+=========================================================
+*/
+
+function updateCategoryPage() {
+
+    currentCategory =
+        getCategory();
+
+
+    const category =
+        categories[
+            currentCategory
+        ] ||
+        categories.featured;
+
+
+    document.title =
+        `${category.name} | AfterDarkX`;
+
+
+    const breadcrumb =
+        document.getElementById(
+            "breadcrumbName"
+        );
+
+
+    const heroLabel =
+        document.getElementById(
+            "heroLabel"
+        );
+
+
+    const categoryName =
+        document.getElementById(
+            "categoryName"
+        );
+
+
+    const description =
+        document.getElementById(
+            "categoryDescription"
+        );
+
+
+    const resultsTitle =
+        document.getElementById(
+            "resultsTitle"
+        );
+
+
+    const resultsDescription =
+        document.getElementById(
+            "resultsDescription"
+        );
+
+
+    if (breadcrumb) {
+
+        breadcrumb.textContent =
+            category.name;
+
+    }
+
+
+    if (heroLabel) {
+
+        heroLabel.textContent =
+            category.label;
+
+    }
+
+
+    if (categoryName) {
+
+        categoryName.textContent =
+            category.name;
+
+    }
+
+
+    if (description) {
+
+        description.textContent =
+            category.description;
+
+    }
+
+
+    if (resultsTitle) {
+
+        resultsTitle.textContent =
+            `${category.name} videos`;
+
+    }
+
+
+    if (resultsDescription) {
+
+        resultsDescription.textContent =
+            category.resultText;
+
+    }
+
+}
+
+
+/*
+=========================================================
+MOBILE MENU
+=========================================================
+*/
+
+function toggleMenu() {
+
+    document
+        .getElementById(
+            "mainNav"
+        )
+        .classList.toggle(
+            "open"
+        );
+
+}
+
+
+/*
+=========================================================
+AGE GATE
+=========================================================
+*/
+
+function enterSite() {
+
+    localStorage.setItem(
+        "afterDarkXAgeVerified",
+        "true"
+    );
+
+
+    const ageGate =
+        document.getElementById(
+            "ageGate"
+        );
+
+
+    if (ageGate) {
+
+        ageGate.style.display =
+            "none";
+
+    }
+
+
+    document.body.classList.remove(
+        "no-scroll"
+    );
+
+}
+
+
+function leaveSite() {
+
+    window.location.href =
+        "https://www.google.com/";
+
+}
+
+
+/*
+=========================================================
+INITIALIZE
+=========================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        updateCategoryPage();
+
+
+        const verified =
+            localStorage.getItem(
+                "afterDarkXAgeVerified"
+            );
+
+
+        if (
+            verified === "true"
+        ) {
 
             document.getElementById(
                 "ageGate"
             ).style.display =
                 "none";
 
-            document.body.classList.remove(
+        } else {
+
+            document.body.classList.add(
                 "no-scroll"
             );
 
         }
 
 
-        function leaveSite() {
+        await loadVideos();
 
-            window.location.href =
-                "https://www.google.com/";
+    }
+);
 
-        }
-
-
-        /* =========================
-           INITIALIZE
-        ========================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            function() {
-
-                updateCategoryPage();
-
-                updateFeatured();
-
-                renderVideos();
-
-
-                const verified =
-                    localStorage.getItem(
-                        "afterDarkXAgeVerified"
-                    );
-
-
-                if (
-                    verified === "true"
-                ) {
-
-                    document.getElementById(
-                        "ageGate"
-                    ).style.display =
-                        "none";
-
-                } else {
-
-                    document.body.classList.add(
-                        "no-scroll"
-                    );
-
-                }
-
-            }
-        );
-
-    </script>
+</script>
+ 
 
 </body>
 
