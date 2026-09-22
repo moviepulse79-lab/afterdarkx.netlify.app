@@ -2193,734 +2193,829 @@
     </div>
 <script>
 
-    /* =========================
-       AFTERDARKXX VIDEO FEED
-    ========================= */
+/* =========================================================
+   AFTERDARKXX WATCH PAGE
+   ========================================================= */
 
-    const FEED_ENDPOINT = "/api/videos";
+const FEED_ENDPOINT = "/api/videos";
 
-    let videos = [];
-    let currentVideo = null;
+let videos = [];
+let currentVideo = null;
 
 
-    /* =========================
-       GET VIDEO ID
-    ========================= */
+/* =========================================================
+   GET VIDEO ID
+   ========================================================= */
 
-    function getVideoId() {
+function getVideoId() {
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
+    const params =
+        new URLSearchParams(window.location.search);
 
-        return params.get("id");
+    return String(
+        params.get("id") || ""
+    ).trim();
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   FORMAT DURATION
+   ========================================================= */
+
+function formatDuration(seconds) {
+
+    const total = parseInt(seconds, 10);
+
+    if (Number.isNaN(total)) {
+        return "—";
+    }
+
+    const hours =
+        Math.floor(total / 3600);
+
+    const minutes =
+        Math.floor((total % 3600) / 60);
+
+    const secs =
+        total % 60;
+
+    if (hours > 0) {
+
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 
     }
 
+    return `${minutes}:${String(secs).padStart(2, "0")}`;
 
-    /* =========================
-       ESCAPE HTML
-    ========================= */
+}
 
-    function escapeHtml(value) {
 
-        return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
 
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "Recently added";
     }
 
-
-    /* =========================
-       FORMAT DURATION
-    ========================= */
-
-    function formatDuration(seconds) {
-
-        const total =
-            parseInt(seconds, 10);
-
-        if (Number.isNaN(total)) {
-            return "—";
-        }
-
-        const hours =
-            Math.floor(total / 3600);
-
-        const minutes =
-            Math.floor(
-                (total % 3600) / 60
-            );
-
-        const secs =
-            total % 60;
-
-        if (hours > 0) {
-
-            return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-
-        }
-
-        return `${minutes}:${String(secs).padStart(2, "0")}`;
-
-    }
-
-
-    /* =========================
-       FORMAT DATE
-    ========================= */
-
-    function formatDate(dateString) {
-
-        if (!dateString) {
-            return "Recently added";
-        }
-
-        const date =
-            new Date(
-                String(dateString).replace(" ", "T")
-            );
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-
-            return "Recently added";
-
-        }
-
-        return date.toLocaleDateString(
-            undefined,
-            {
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-            }
+    const date =
+        new Date(
+            String(dateString).replace(" ", "T")
         );
 
+    if (Number.isNaN(date.getTime())) {
+        return "Recently added";
     }
 
+    return date.toLocaleDateString(
+        undefined,
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        }
+    );
 
-    /* =========================
-       CSV / PIPE PARSER
-    ========================= */
-
-    function parseCSV(text) {
-
-        const rows = [];
-
-        let row = [];
-        let field = "";
-        let insideQuotes = false;
+}
 
 
-        for (
-            let i = 0;
-            i < text.length;
-            i++
+/* =========================================================
+   PIPE FEED PARSER
+   ========================================================= */
+
+function parseCSV(text) {
+
+    const rows = [];
+
+    let row = [];
+    let field = "";
+    let insideQuotes = false;
+
+    for (
+        let i = 0;
+        i < text.length;
+        i++
+    ) {
+
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (
+            char === '"' &&
+            insideQuotes &&
+            next === '"'
         ) {
 
-            const char =
-                text[i];
-
-            const next =
-                text[i + 1];
-
-
-            if (
-                char === '"' &&
-                insideQuotes &&
-                next === '"'
-            ) {
-
-                field += '"';
-
-                i++;
-
-                continue;
-
-            }
-
-
-            if (char === '"') {
-
-                insideQuotes =
-                    !insideQuotes;
-
-                continue;
-
-            }
-
-
-            if (
-                char === "|" &&
-                !insideQuotes
-            ) {
-
-                row.push(field);
-
-                field = "";
-
-                continue;
-
-            }
-
-
-            if (
-                (
-                    char === "\n" ||
-                    char === "\r"
-                ) &&
-                !insideQuotes
-            ) {
-
-                if (
-                    char === "\r" &&
-                    next === "\n"
-                ) {
-
-                    i++;
-
-                }
-
-                row.push(field);
-
-                field = "";
-
-
-                if (
-                    row.some(
-                        value =>
-                            String(value).trim() !== ""
-                    )
-                ) {
-
-                    rows.push(row);
-
-                }
-
-                row = [];
-
-                continue;
-
-            }
-
-
-            field += char;
+            field += '"';
+            i++;
+            continue;
 
         }
 
+        if (char === '"') {
+
+            insideQuotes =
+                !insideQuotes;
+
+            continue;
+
+        }
 
         if (
-            field.length ||
-            row.length
+            char === "|" &&
+            !insideQuotes
         ) {
 
             row.push(field);
+            field = "";
+
+            continue;
+
+        }
+
+        if (
+            (
+                char === "\n" ||
+                char === "\r"
+            ) &&
+            !insideQuotes
+        ) {
+
+            if (
+                char === "\r" &&
+                next === "\n"
+            ) {
+
+                i++;
+
+            }
+
+            row.push(field);
+            field = "";
+
+            if (
+                row.some(
+                    value =>
+                        String(value).trim() !== ""
+                )
+            ) {
+
+                rows.push(row);
+
+            }
+
+            row = [];
+
+            continue;
+
+        }
+
+        field += char;
+
+    }
+
+    if (
+        field.length ||
+        row.length
+    ) {
+
+        row.push(field);
+
+        if (
+            row.some(
+                value =>
+                    String(value).trim() !== ""
+            )
+        ) {
 
             rows.push(row);
 
         }
 
-
-        if (rows.length < 2) {
-
-            return [];
-
-        }
-
-
-        const headers =
-            rows[0].map(
-                header =>
-                    String(header).trim()
-            );
-
-
-        return rows
-            .slice(1)
-            .map(values => {
-
-                const object = {};
-
-                headers.forEach(
-                    (header, index) => {
-
-                        object[header] =
-                            (
-                                values[index] ||
-                                ""
-                            ).trim();
-
-                    }
-                );
-
-                return object;
-
-            });
-
     }
 
+    if (rows.length < 2) {
+        return [];
+    }
 
-    /* =========================
-       CONVERT FEED RECORD
-    ========================= */
+    const headers =
+        rows[0].map(
+            header =>
+                String(header).trim()
+        );
 
-    function normalizeVideo(record) {
+    return rows
+        .slice(1)
+        .map(values => {
 
-        const categories =
-            record.Categories ||
-            "Featured";
+            const object = {};
+
+            headers.forEach(
+                (header, index) => {
+
+                    object[header] =
+                        String(
+                            values[index] || ""
+                        ).trim();
+
+                }
+            );
+
+            return object;
+
+        });
+
+}
 
 
-        const categoryList =
-            categories
+/* =========================================================
+   NORMALIZE PIPE RECORD
+   ========================================================= */
+
+function normalizeVideo(record) {
+
+    const categoryText =
+        record.Categories ||
+        "";
+
+    const categoryList =
+        categoryText
+            .split(",")
+            .map(
+                item =>
+                    item.trim()
+            )
+            .filter(Boolean);
+
+    return {
+
+        id:
+            String(
+                record.ID ||
+                record.id ||
+                ""
+            ).trim(),
+
+        title:
+            record.Title ||
+            record.title ||
+            "Untitled video",
+
+        description:
+            record.Description ||
+            record.description ||
+            "",
+
+        link:
+            record["Website link"] ||
+            record.link ||
+            "",
+
+        duration:
+            formatDuration(
+                record.Duration ||
+                record.duration
+            ),
+
+        durationSeconds:
+            parseInt(
+                record.Duration ||
+                record.duration,
+                10
+            ) || 0,
+
+        rating:
+            record.Rating ||
+            record.rating ||
+            "0",
+
+        date:
+            record["Publish date, time"] ||
+            record.date ||
+            "",
+
+        category:
+            categoryList[0] ||
+            "Featured",
+
+        categories:
+            categoryList,
+
+        tags:
+            record.Tags ||
+            record.tags ||
+            "",
+
+        embed:
+            record["Embed code"] ||
+            record.embed ||
+            "",
+
+        thumbnail:
+            record["Main thumbnail"] ||
+            record.thumbnail ||
+            "",
+
+        thumbnails:
+            record.Thumbnails ||
+            record.thumbnails ||
+            ""
+
+    };
+
+}
+
+
+/* =========================================================
+   NORMALIZE JSON RECORD
+   ========================================================= */
+
+function normalizeJsonVideo(item) {
+
+    const categoryValue =
+        item.categories ||
+        item.category ||
+        item.Categories ||
+        "";
+
+    const categories =
+        Array.isArray(categoryValue)
+            ? categoryValue
+            : String(categoryValue)
                 .split(",")
                 .map(
-                    item =>
-                        item.trim()
+                    value =>
+                        value.trim()
                 )
                 .filter(Boolean);
 
+    const durationSeconds =
+        parseInt(
+            item.durationSeconds ||
+            item.Duration ||
+            item.duration,
+            10
+        ) || 0;
 
-        return {
+    return {
 
-            id:
-                String(
-                    record.ID ||
-                    ""
-                ).trim(),
-
-            title:
-                record.Title ||
-                "Untitled video",
-
-            description:
-                record.Description ||
-                "",
-
-            link:
-                record["Website link"] ||
-                record.Link ||
-                "",
-
-            duration:
-                formatDuration(
-                    record.Duration
-                ),
-
-            durationSeconds:
-                parseInt(
-                    record.Duration,
-                    10
-                ) || 0,
-
-            rating:
-                record.Rating ||
-                "0",
-
-            date:
-                record["Publish date, time"] ||
-                record["Added time"] ||
-                "",
-
-            category:
-                categoryList[0] ||
-                "Featured",
-
-            categories:
-                categoryList,
-
-            tags:
-                record.Tags ||
-                "",
-
-            embed:
-                record["Embed code"] ||
-                "",
-
-            thumbnail:
-                record["Main thumbnail"] ||
-                "",
-
-            thumbnails:
-                record.Thumbnails ||
+        id:
+            String(
+                item.id ||
+                item.ID ||
                 ""
+            ).trim(),
 
-        };
+        title:
+            item.title ||
+            item.Title ||
+            "Untitled video",
+
+        description:
+            item.description ||
+            item.Description ||
+            "",
+
+        link:
+            item.link ||
+            item["Website link"] ||
+            "",
+
+        duration:
+            item.duration &&
+            typeof item.duration === "string" &&
+            item.duration.includes(":")
+                ? item.duration
+                : formatDuration(durationSeconds),
+
+        durationSeconds,
+
+        rating:
+            item.rating ||
+            item.Rating ||
+            "0",
+
+        date:
+            item.date ||
+            item["Publish date, time"] ||
+            item["Added time"] ||
+            "",
+
+        category:
+            categories[0] ||
+            "Featured",
+
+        categories,
+
+        tags:
+            item.tags ||
+            item.Tags ||
+            "",
+
+        embed:
+            item.embed ||
+            item["Embed code"] ||
+            "",
+
+        thumbnail:
+            item.thumbnail ||
+            item["Main thumbnail"] ||
+            "",
+
+        thumbnails:
+            item.thumbnails ||
+            item.Thumbnails ||
+            ""
+
+    };
+
+}
+
+
+/* =========================================================
+   FETCH ONE API FEED
+   ========================================================= */
+
+async function fetchFeed(options = {}) {
+
+    const params =
+        new URLSearchParams();
+
+    params.set(
+        "limit",
+        "500"
+    );
+
+    params.set(
+        "sort",
+        options.sort || "post_date"
+    );
+
+    params.set(
+        "days",
+        String(
+            options.days ?? "0"
+        )
+    );
+
+    if (options.category) {
+
+        params.set(
+            "category",
+            options.category
+        );
 
     }
 
+    const url =
+        `${FEED_ENDPOINT}?${params.toString()}`;
 
-    /* =========================
-       FETCH API FEED
-    ========================= */
+    console.log(
+        "AfterDarkXX fetching:",
+        url
+    );
 
-    async function fetchApiVideos() {
+    const response =
+        await fetch(
+            url,
+            {
+                cache: "no-store"
+            }
+        );
 
-        const params =
-            new URLSearchParams({
+    if (!response.ok) {
 
+        throw new Error(
+            `API request failed: ${response.status}`
+        );
+
+    }
+
+    /*
+       IMPORTANT:
+       Read the response body ONLY ONCE.
+    */
+
+    const text =
+        await response.text();
+
+    if (!text.trim()) {
+        return [];
+    }
+
+    /*
+       Try JSON first.
+    */
+
+    try {
+
+        const data =
+            JSON.parse(text);
+
+        let records = [];
+
+        if (Array.isArray(data)) {
+
+            records = data;
+
+        } else if (
+            data &&
+            Array.isArray(data.videos)
+        ) {
+
+            records = data.videos;
+
+        } else if (
+            data &&
+            Array.isArray(data.data)
+        ) {
+
+            records = data.data;
+
+        }
+
+        if (records.length) {
+
+            return records
+                .map(normalizeJsonVideo)
+                .filter(
+                    video =>
+                        video.id
+                );
+
+        }
+
+    } catch (error) {
+
+        /*
+           Not JSON.
+           Continue with pipe feed.
+        */
+
+    }
+
+    /*
+       Parse the actual HDZog pipe feed.
+    */
+
+    return parseCSV(text)
+        .map(normalizeVideo)
+        .filter(
+            video =>
+                video.id
+        );
+
+}
+
+
+/* =========================================================
+   MERGE VIDEOS
+   ========================================================= */
+
+function mergeVideos(videoList) {
+
+    const map =
+        new Map();
+
+    videoList.forEach(
+        video => {
+
+            if (!video || !video.id) {
+                return;
+            }
+
+            const id =
+                String(video.id).trim();
+
+            if (!map.has(id)) {
+
+                map.set(
+                    id,
+                    video
+                );
+
+            }
+
+        }
+    );
+
+    return Array.from(
+        map.values()
+    );
+
+}
+
+
+/* =========================================================
+   LOAD FEED
+   ========================================================= */
+
+async function loadFeed() {
+
+    try {
+
+        const requestedId =
+            getVideoId();
+
+        console.log(
+            "AfterDarkXX requested ID:",
+            requestedId
+        );
+
+
+        /*
+           FIRST:
+           Get newest videos.
+        */
+
+        let loadedVideos =
+            await fetchFeed({
                 sort: "post_date",
-
-                days: "0",
-
-                limit: "500"
-
+                days: "0"
             });
 
 
-        const response =
-            await fetch(
-                `${FEED_ENDPOINT}?${params.toString()}`,
-                {
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `API request failed: ${response.status}`
-            );
-
-        }
-
-
-        const contentType =
-            response.headers.get(
-                "content-type"
-            ) || "";
-
-
         /*
-            Your API may return JSON or the
-            original pipe-delimited feed.
+           SECOND:
+           Also get Popular / Most Viewed.
+
+           This is the important fix.
+           A video from Most Viewed may not
+           exist in the newest feed.
         */
 
-        if (
-            contentType.includes(
-                "application/json"
-            )
-        ) {
-
-            const data =
-                await response.json();
-
-
-            if (Array.isArray(data)) {
-
-                return data
-                    .map(item => {
-
-                        /*
-                            If API already returns normalized
-                            objects, keep their values.
-                        */
-
-                        return {
-
-                            id:
-                                String(
-                                    item.id ||
-                                    item.ID ||
-                                    ""
-                                ).trim(),
-
-                            title:
-                                item.title ||
-                                item.Title ||
-                                "Untitled video",
-
-                            description:
-                                item.description ||
-                                item.Description ||
-                                "",
-
-                            link:
-                                item.link ||
-                                item["Website link"] ||
-                                "",
-
-                            duration:
-                                item.duration ||
-                                formatDuration(
-                                    item.durationSeconds ||
-                                    item.Duration
-                                ),
-
-                            durationSeconds:
-                                parseInt(
-                                    item.durationSeconds ||
-                                    item.Duration,
-                                    10
-                                ) || 0,
-
-                            rating:
-                                item.rating ||
-                                item.Rating ||
-                                "0",
-
-                            date:
-                                item.date ||
-                                item["Publish date, time"] ||
-                                item["Added time"] ||
-                                "",
-
-                            category:
-                                item.category ||
-                                "Featured",
-
-                            categories:
-                                Array.isArray(
-                                    item.categories
-                                )
-                                    ? item.categories
-                                    : (
-                                        item.category
-                                            ? String(
-                                                item.category
-                                            )
-                                                .split(",")
-                                                .map(
-                                                    x =>
-                                                        x.trim()
-                                                )
-                                                .filter(Boolean)
-                                            : []
-                                    ),
-
-                            tags:
-                                item.tags ||
-                                item.Tags ||
-                                "",
-
-                            embed:
-                                item.embed ||
-                                item["Embed code"] ||
-                                "",
-
-                            thumbnail:
-                                item.thumbnail ||
-                                item["Main thumbnail"] ||
-                                "",
-
-                            thumbnails:
-                                item.thumbnails ||
-                                item.Thumbnails ||
-                                ""
-
-                        };
-
-                    })
-                    .filter(
-                        video =>
-                            video.id &&
-                            video.title
-                    );
-
-            }
-
-        }
-
-
-        /*
-            Fallback for pipe-delimited response.
-        */
-
-        const text =
-            await response.text();
-
-
-        const records =
-            parseCSV(text);
-
-
-        return records
-            .map(normalizeVideo)
-            .filter(
-                video =>
-                    video.id &&
-                    video.title
-            );
-
-    }
-
-
-    /* =========================
-       LOAD FEED
-    ========================= */
-
-    async function loadFeed() {
+        let popularVideos = [];
 
         try {
 
-            const loadedVideos =
-                await fetchApiVideos();
-
-
-            /*
-                Remove duplicate IDs.
-            */
-
-            const unique =
-                new Map();
-
-
-            loadedVideos.forEach(
-                video => {
-
-                    if (
-                        video.id &&
-                        !unique.has(
-                            String(video.id)
-                        )
-                    ) {
-
-                        unique.set(
-                            String(video.id),
-                            video
-                        );
-
-                    }
-
-                }
-            );
-
-
-            videos =
-                Array.from(
-                    unique.values()
-                );
-
-
-            if (!videos.length) {
-
-                throw new Error(
-                    "The video API returned no videos."
-                );
-
-            }
-
-
-            console.log(
-                `AfterDarkXX: loaded ${videos.length} videos`
-            );
-
-
-            const requestedId =
-                getVideoId();
-
-
-            console.log(
-                "AfterDarkXX requested video ID:",
-                requestedId
-            );
-
-
-            /*
-                Check whether the requested video
-                actually exists in the loaded feed.
-            */
-
-            if (requestedId) {
-
-                const found =
-                    videos.find(
-                        video =>
-                            String(video.id) ===
-                            String(requestedId)
-                    );
-
-
-                console.log(
-                    "AfterDarkXX requested video found:",
-                    !!found
-                );
-
-            }
-
-
-            loadVideo();
-
-            renderRelated();
-
-            renderUpNext();
-
+            popularVideos =
+                await fetchFeed({
+                    sort: "popularity",
+                    days: "30"
+                });
 
         } catch (error) {
 
-            console.error(
-                "AfterDarkXX feed error:",
+            console.warn(
+                "Popular feed failed:",
                 error
             );
-
-            showFeedError();
-
-        }
-
-    }
-
-
-    /* =========================
-       CURRENT VIDEO
-    ========================= */
-
-    function getCurrentVideo() {
-
-        const id =
-            getVideoId();
-
-
-        if (!videos.length) {
-
-            return null;
 
         }
 
 
         /*
-            A URL with ?id= must always use
-            the matching video.
-
-            Do NOT silently show another video
-            when the requested ID doesn't exist.
+           Combine both feeds.
         */
 
-        if (!id) {
+        videos =
+            mergeVideos([
+                ...loadedVideos,
+                ...popularVideos
+            ]);
 
-            return videos[0];
+
+        console.log(
+            `AfterDarkXX loaded ${videos.length} unique videos`
+        );
+
+
+        /*
+           Check requested video.
+        */
+
+        let found =
+            requestedId
+                ? videos.find(
+                    video =>
+                        String(video.id).trim() ===
+                        String(requestedId).trim()
+                )
+                : null;
+
+
+        /*
+           If still not found, search additional
+           category feeds.
+
+           This handles videos that appear under
+           a category but aren't in the first
+           two lists.
+        */
+
+        if (
+            requestedId &&
+            !found
+        ) {
+
+            const categoryFeeds = [
+
+                "African",
+                "Algerian",
+                "Egyptian",
+                "Moroccan",
+                "Nigerian",
+                "Tunisian",
+                "American",
+                "British",
+                "Asian",
+                "Latina",
+                "Amateur"
+
+            ];
+
+
+            for (
+                const category of categoryFeeds
+            ) {
+
+                try {
+
+                    const categoryVideos =
+                        await fetchFeed({
+                            category,
+                            sort: "post_date",
+                            days: "0"
+                        });
+
+
+                    const categoryMatch =
+                        categoryVideos.find(
+                            video =>
+                                String(video.id).trim() ===
+                                String(requestedId).trim()
+                        );
+
+
+                    if (categoryMatch) {
+
+                        videos =
+                            mergeVideos([
+                                ...videos,
+                                categoryMatch
+                            ]);
+
+                        found =
+                            categoryMatch;
+
+                        console.log(
+                            "AfterDarkXX found requested video in category:",
+                            category
+                        );
+
+                        break;
+
+                    }
+
+                } catch (error) {
+
+                    console.warn(
+                        `Category feed failed: ${category}`,
+                        error
+                    );
+
+                }
+
+            }
 
         }
 
 
-        return videos.find(
-            video =>
-                String(video.id) ===
-                String(id)
-        ) || null;
+        if (
+            requestedId &&
+            !found
+        ) {
 
-    }
+            console.error(
+                "AfterDarkXX VIDEO NOT FOUND:",
+                requestedId
+            );
 
-
-    /* =========================
-       LOAD VIDEO
-    ========================= */
-
-    function loadVideo() {
-
-        const video =
-            getCurrentVideo();
-
-
-        if (!video) {
+            console.log(
+                "Loaded IDs:",
+                videos
+                    .slice(0, 20)
+                    .map(video => video.id)
+            );
 
             showVideoNotFound();
 
@@ -2929,1038 +3024,1156 @@
         }
 
 
-        currentVideo =
-            video;
+        if (!videos.length) {
+
+            throw new Error(
+                "The video API returned no videos."
+            );
+
+        }
 
 
-        document.title =
-            `${video.title} | AfterDarkX`;
+        loadVideo();
+
+        renderRelated();
+
+        renderUpNext();
 
 
+    } catch (error) {
+
+        console.error(
+            "AfterDarkXX feed error:",
+            error
+        );
+
+        showFeedError();
+
+    }
+
+}
+
+
+/* =========================================================
+   GET CURRENT VIDEO
+   ========================================================= */
+
+function getCurrentVideo() {
+
+    const id =
+        getVideoId();
+
+
+    if (!videos.length) {
+        return null;
+    }
+
+
+    if (!id) {
+        return videos[0];
+    }
+
+
+    const cleanId =
+        String(id).trim();
+
+
+    return videos.find(
+        video =>
+            String(video.id).trim() ===
+            cleanId
+    ) || null;
+
+}
+
+
+/* =========================================================
+   LOAD VIDEO
+   ========================================================= */
+
+function loadVideo() {
+
+    const video =
+        getCurrentVideo();
+
+
+    if (!video) {
+
+        showVideoNotFound();
+
+        return;
+
+    }
+
+
+    currentVideo =
+        video;
+
+
+    document.title =
+        `${video.title} | AfterDarkX`;
+
+
+    const breadcrumb =
         document.getElementById(
             "breadcrumbTitle"
-        ).textContent =
+        );
+
+    if (breadcrumb) {
+
+        breadcrumb.textContent =
             video.title;
 
+    }
 
+
+    const category =
         document.getElementById(
             "videoCategory"
-        ).textContent =
+        );
+
+    if (category) {
+
+        category.textContent =
             video.category;
 
+    }
 
+
+    const title =
         document.getElementById(
             "videoTitle"
-        ).textContent =
+        );
+
+    if (title) {
+
+        title.textContent =
             video.title;
 
+    }
 
+
+    const views =
         document.getElementById(
             "videoViews"
-        ).textContent =
+        );
+
+    if (views) {
+
+        views.textContent =
             "Recently added";
 
+    }
 
+
+    const duration =
         document.getElementById(
             "videoDuration"
-        ).textContent =
+        );
+
+    if (duration) {
+
+        duration.textContent =
             video.duration;
 
+    }
 
+
+    const date =
         document.getElementById(
             "videoDate"
-        ).textContent =
+        );
+
+    if (date) {
+
+        date.textContent =
             formatDate(video.date);
 
+    }
 
+
+    const description =
         document.getElementById(
             "videoDescription"
-        ).textContent =
+        );
+
+    if (description) {
+
+        description.textContent =
             video.description ||
             "Video information is provided through the authorized content feed.";
 
+    }
 
-        loadPlayer(video);
+
+    loadPlayer(video);
+
+}
+
+
+/* =========================================================
+   LOAD TUBECORPORATE PLAYER
+   ========================================================= */
+
+function loadPlayer(video) {
+
+    const player =
+        document.getElementById(
+            "player"
+        );
+
+
+    if (!video.embed) {
+
+        console.error(
+            "No embed code:",
+            video.id
+        );
+
+        showFeedError();
+
+        return;
 
     }
 
 
-    /* =========================
-       LOAD AUTHORIZED PLAYER
-    ========================= */
+    const parser =
+        new DOMParser();
 
-    function loadPlayer(video) {
 
-        const player =
-            document.getElementById(
-                "player"
-            );
-
-
-        if (!video.embed) {
-
-            console.error(
-                "No embed code for video:",
-                video.id
-            );
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        const parser =
-            new DOMParser();
-
-
-        const embedDocument =
-            parser.parseFromString(
-                video.embed,
-                "text/html"
-            );
-
-
-        const sourceIframe =
-            embedDocument.querySelector(
-                "iframe"
-            );
-
-
-        if (!sourceIframe) {
-
-            console.error(
-                "No iframe found in embed code for video:",
-                video.id
-            );
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        let embedUrl =
-            sourceIframe.getAttribute(
-                "src"
-            );
-
-
-        if (!embedUrl) {
-
-            console.error(
-                "Embed iframe has no src for video:",
-                video.id
-            );
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        /*
-            Convert relative embed URLs to absolute URLs.
-        */
-
-        try {
-
-            embedUrl =
-                new URL(
-                    embedUrl,
-                    window.location.href
-                ).href;
-
-        } catch (error) {
-
-            console.error(
-                "Invalid embed URL:",
-                embedUrl
-            );
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        /*
-            Only allow the authorized TubeCorporate /
-            HDZog player.
-        */
-
-        let parsedEmbedUrl;
-
-        try {
-
-            parsedEmbedUrl =
-                new URL(embedUrl);
-
-        } catch (error) {
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        const allowedHosts = [
-            "videohdzog.com",
-            "www.videohdzog.com"
-        ];
-
-
-        const isAllowedHost =
-            allowedHosts.includes(
-                parsedEmbedUrl.hostname
-            );
-
-
-        const isEmbedPath =
-            parsedEmbedUrl.pathname
-                .startsWith(
-                    "/embed/"
-                );
-
-
-        if (
-            !isAllowedHost ||
-            !isEmbedPath
-        ) {
-
-            console.error(
-                "Blocked unauthorized player URL:",
-                embedUrl
-            );
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        /*
-            Clear placeholder.
-        */
-
-        player.innerHTML = "";
-
-
-        /*
-            Create player container.
-        */
-
-        const playerContainer =
-            document.createElement(
-                "div"
-            );
-
-
-        playerContainer.id =
-            "tubeCorporatePlayer";
-
-
-        /*
-            Clone authorized iframe.
-        */
-
-        const iframe =
-            sourceIframe.cloneNode(
-                true
-            );
-
-
-        iframe.src =
-            embedUrl;
-
-
-        /*
-            Remove fixed dimensions.
-        */
-
-        iframe.removeAttribute(
-            "width"
-        );
-
-        iframe.removeAttribute(
-            "height"
+    const embedDocument =
+        parser.parseFromString(
+            video.embed,
+            "text/html"
         );
 
 
-        /*
-            Permissions.
-        */
-
-        iframe.setAttribute(
-            "allow",
-            "fullscreen *; autoplay *; picture-in-picture *"
+    const sourceIframe =
+        embedDocument.querySelector(
+            "iframe"
         );
 
 
-        iframe.setAttribute(
-            "allowfullscreen",
-            ""
+    if (!sourceIframe) {
+
+        console.error(
+            "No iframe found:",
+            video.id
         );
 
+        showFeedError();
 
-        /*
-            Responsive sizing.
-        */
-
-        iframe.style.position =
-            "absolute";
-
-        iframe.style.top =
-            "0";
-
-        iframe.style.left =
-            "0";
-
-        iframe.style.width =
-            "100%";
-
-        iframe.style.height =
-            "100%";
-
-        iframe.style.minWidth =
-            "0";
-
-        iframe.style.minHeight =
-            "0";
-
-        iframe.style.maxWidth =
-            "100%";
-
-        iframe.style.maxHeight =
-            "100%";
-
-        iframe.style.display =
-            "block";
-
-        iframe.style.margin =
-            "0";
-
-        iframe.style.padding =
-            "0";
-
-        iframe.style.border =
-            "0";
-
-
-        /*
-            Player container sizing.
-        */
-
-        playerContainer.style.position =
-            "absolute";
-
-        playerContainer.style.inset =
-            "0";
-
-        playerContainer.style.width =
-            "100%";
-
-        playerContainer.style.height =
-            "100%";
-
-        playerContainer.style.overflow =
-            "hidden";
-
-        playerContainer.style.background =
-            "#000";
-
-
-        /*
-            Add iframe.
-        */
-
-        playerContainer.appendChild(
-            iframe
-        );
-
-
-        player.appendChild(
-            playerContainer
-        );
+        return;
 
     }
 
 
-    /* =========================
-       VIDEO NOT FOUND
-    ========================= */
-
-    function showVideoNotFound() {
-
-        const player =
-            document.getElementById(
-                "player"
-            );
+    let embedUrl =
+        sourceIframe.getAttribute(
+            "src"
+        );
 
 
-        player.innerHTML = `
+    if (!embedUrl) {
 
-            <div class="player-placeholder">
+        showFeedError();
 
-                <div class="player-glow"></div>
+        return;
 
-                <div class="player-glow-two"></div>
+    }
 
-                <div class="player-content">
 
-                    <div class="player-icon">
+    try {
 
-                        <i class="fa-solid fa-video-slash"></i>
+        embedUrl =
+            new URL(
+                embedUrl,
+                window.location.href
+            ).href;
 
-                    </div>
+    } catch (error) {
 
-                    <h2>
-                        Video not found
-                    </h2>
+        console.error(
+            "Invalid embed URL:",
+            embedUrl
+        );
 
-                    <p>
-                        This video could not be found
-                        in the current authorized content feed.
-                    </p>
+        showFeedError();
 
-                    <div class="player-status">
+        return;
 
-                        <span class="status-dot"></span>
+    }
 
-                        Unavailable
 
-                    </div>
+    let parsedUrl;
+
+    try {
+
+        parsedUrl =
+            new URL(embedUrl);
+
+    } catch (error) {
+
+        showFeedError();
+
+        return;
+
+    }
+
+
+    const allowedHosts = [
+        "videohdzog.com",
+        "www.videohdzog.com"
+    ];
+
+
+    if (
+        !allowedHosts.includes(
+            parsedUrl.hostname
+        )
+    ) {
+
+        console.error(
+            "Blocked player host:",
+            parsedUrl.hostname
+        );
+
+        showFeedError();
+
+        return;
+
+    }
+
+
+    if (
+        !parsedUrl.pathname.startsWith(
+            "/embed/"
+        )
+    ) {
+
+        console.error(
+            "Blocked player path:",
+            parsedUrl.pathname
+        );
+
+        showFeedError();
+
+        return;
+
+    }
+
+
+    /*
+       Clear the old placeholder.
+    */
+
+    player.innerHTML = "";
+
+
+    const playerContainer =
+        document.createElement(
+            "div"
+        );
+
+
+    playerContainer.id =
+        "tubeCorporatePlayer";
+
+
+    playerContainer.style.position =
+        "absolute";
+
+    playerContainer.style.inset =
+        "0";
+
+    playerContainer.style.width =
+        "100%";
+
+    playerContainer.style.height =
+        "100%";
+
+    playerContainer.style.overflow =
+        "hidden";
+
+    playerContainer.style.background =
+        "#000";
+
+
+    const iframe =
+        sourceIframe.cloneNode(
+            true
+        );
+
+
+    iframe.src =
+        embedUrl;
+
+
+    iframe.removeAttribute(
+        "width"
+    );
+
+    iframe.removeAttribute(
+        "height"
+    );
+
+
+    iframe.setAttribute(
+        "allow",
+        "fullscreen *; autoplay *; picture-in-picture *"
+    );
+
+
+    iframe.setAttribute(
+        "allowfullscreen",
+        ""
+    );
+
+
+    iframe.style.position =
+        "absolute";
+
+    iframe.style.top =
+        "0";
+
+    iframe.style.left =
+        "0";
+
+    iframe.style.width =
+        "100%";
+
+    iframe.style.height =
+        "100%";
+
+    iframe.style.border =
+        "0";
+
+    iframe.style.display =
+        "block";
+
+
+    playerContainer.appendChild(
+        iframe
+    );
+
+
+    player.appendChild(
+        playerContainer
+    );
+
+}
+
+
+/* =========================================================
+   VIDEO NOT FOUND
+   ========================================================= */
+
+function showVideoNotFound() {
+
+    const player =
+        document.getElementById(
+            "player"
+        );
+
+
+    player.innerHTML = `
+
+        <div class="player-placeholder">
+
+            <div class="player-glow"></div>
+
+            <div class="player-glow-two"></div>
+
+            <div class="player-content">
+
+                <div class="player-icon">
+
+                    <i class="fa-solid fa-video-slash"></i>
+
+                </div>
+
+                <h2>
+                    Video not found
+                </h2>
+
+                <p>
+                    This video could not be found
+                    in the current authorized content feed.
+                </p>
+
+                <div class="player-status">
+
+                    <span class="status-dot"></span>
+
+                    Unavailable
 
                 </div>
 
             </div>
 
-        `;
+        </div>
+
+    `;
 
 
+    const title =
         document.getElementById(
             "videoTitle"
-        ).textContent =
+        );
+
+    if (title) {
+
+        title.textContent =
             "Video not found";
 
+    }
 
+
+    const description =
         document.getElementById(
             "videoDescription"
-        ).textContent =
+        );
+
+    if (description) {
+
+        description.textContent =
             "The requested video could not be found in the current authorized feed.";
 
     }
 
-
-    /* =========================
-       FEED ERROR
-    ========================= */
-
-    function showFeedError() {
-
-        const player =
-            document.getElementById(
-                "player"
-            );
+}
 
 
-        player.innerHTML = `
+/* =========================================================
+   FEED ERROR
+   ========================================================= */
 
-            <div class="player-placeholder">
+function showFeedError() {
 
-                <div class="player-glow"></div>
+    const player =
+        document.getElementById(
+            "player"
+        );
 
-                <div class="player-glow-two"></div>
 
-                <div class="player-content">
+    player.innerHTML = `
 
-                    <div class="player-icon">
+        <div class="player-placeholder">
 
-                        <i class="fa-solid fa-circle-exclamation"></i>
+            <div class="player-glow"></div>
 
-                    </div>
+            <div class="player-glow-two"></div>
 
-                    <h2>
-                        Video unavailable
-                    </h2>
+            <div class="player-content">
 
-                    <p>
-                        The authorized video feed or player
-                        could not be loaded right now.
-                        Please try again shortly.
-                    </p>
+                <div class="player-icon">
 
-                    <div class="player-status">
+                    <i class="fa-solid fa-circle-exclamation"></i>
 
-                        <span class="status-dot"></span>
+                </div>
 
-                        Feed unavailable
+                <h2>
+                    Video unavailable
+                </h2>
 
-                    </div>
+                <p>
+                    The authorized video feed or player
+                    could not be loaded right now.
+                    Please try again shortly.
+                </p>
+
+                <div class="player-status">
+
+                    <span class="status-dot"></span>
+
+                    Feed unavailable
 
                 </div>
 
             </div>
 
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   GET THUMBNAIL
+   ========================================================= */
+
+function getThumbnail(video) {
+
+    if (video.thumbnail) {
+
+        return video.thumbnail;
+
+    }
+
+
+    if (video.thumbnails) {
+
+        return String(
+            video.thumbnails
+        )
+            .split(",")[0]
+            .trim();
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   RELATED VIDEOS
+   ========================================================= */
+
+function renderRelated() {
+
+    const current =
+        getCurrentVideo();
+
+
+    if (!current) {
+        return;
+    }
+
+
+    const related =
+        videos
+            .filter(
+                video =>
+                    String(video.id) !==
+                    String(current.id)
+            )
+            .slice(0, 6);
+
+
+    const grid =
+        document.getElementById(
+            "relatedGrid"
+        );
+
+
+    if (!grid) {
+        return;
+    }
+
+
+    if (!related.length) {
+
+        grid.innerHTML =
+            "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        related
+            .map(
+                video => {
+
+                    const thumbnail =
+                        getThumbnail(video);
+
+
+                    return `
+
+                        <article
+                            class="related-card"
+                            onclick="openVideo('${escapeHtml(video.id)}')"
+                        >
+
+                            <div
+                                class="related-thumb"
+                                style="
+                                    --glow:
+                                    rgba(255,48,108,0.22);
+                                "
+                            >
+
+                                ${
+                                    thumbnail
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(thumbnail)}"
+                                                alt=""
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    height:100%;
+                                                    object-fit:cover;
+                                                    display:block;
+                                                "
+                                            >
+                                          `
+                                        : `
+                                            <div
+                                                class="related-pattern"
+                                            ></div>
+                                          `
+                                }
+
+                                <div class="related-play">
+
+                                    <i
+                                        class="fa-solid fa-play"
+                                    ></i>
+
+                                </div>
+
+                                <span
+                                    class="related-duration"
+                                >
+                                    ${escapeHtml(video.duration)}
+                                </span>
+
+                            </div>
+
+                            <div class="related-info">
+
+                                <h3>
+                                    ${escapeHtml(video.title)}
+                                </h3>
+
+                                <p>
+                                    ${escapeHtml(video.category)}
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   UP NEXT
+   ========================================================= */
+
+function renderUpNext() {
+
+    const current =
+        getCurrentVideo();
+
+
+    if (!current) {
+        return;
+    }
+
+
+    const next =
+        videos
+            .filter(
+                video =>
+                    String(video.id) !==
+                    String(current.id)
+            )
+            .slice(0, 4);
+
+
+    const container =
+        document.getElementById(
+            "nextList"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (!next.length) {
+
+        container.innerHTML =
+            "<p style='color:#666;font-size:11px;'>No more videos available.</p>";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        next
+            .map(
+                video => {
+
+                    const thumbnail =
+                        getThumbnail(video);
+
+
+                    return `
+
+                        <article
+                            class="next-item"
+                            onclick="openVideo('${escapeHtml(video.id)}')"
+                        >
+
+                            <div
+                                class="next-thumb"
+                                style="
+                                    --glow:
+                                    rgba(120,50,255,0.22);
+                                    overflow:hidden;
+                                    position:relative;
+                                "
+                            >
+
+                                ${
+                                    thumbnail
+                                        ? `
+                                            <img
+                                                src="${escapeHtml(thumbnail)}"
+                                                alt=""
+                                                loading="lazy"
+                                                style="
+                                                    width:100%;
+                                                    height:100%;
+                                                    object-fit:cover;
+                                                    display:block;
+                                                "
+                                            >
+                                          `
+                                        : ""
+                                }
+
+                            </div>
+
+                            <div class="next-info">
+
+                                <h4>
+                                    ${escapeHtml(video.title)}
+                                </h4>
+
+                                <p>
+                                    ${escapeHtml(video.duration)}
+                                    ·
+                                    ${escapeHtml(video.category)}
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   OPEN VIDEO
+   ========================================================= */
+
+function openVideo(id) {
+
+    if (!id) {
+        return;
+    }
+
+    const cleanId =
+        String(id)
+            .trim()
+            .replace(/^["']|["']$/g, "");
+
+    console.log(
+        "AfterDarkXX opening:",
+        cleanId
+    );
+
+    window.location.href =
+        `watch.html?id=${encodeURIComponent(cleanId)}`;
+
+}
+
+
+/* =========================================================
+   LIKE
+   ========================================================= */
+
+function toggleLike() {
+
+    const button =
+        document.getElementById(
+            "likeButton"
+        );
+
+
+    button.classList.toggle(
+        "active"
+    );
+
+
+    if (
+        button.classList.contains(
+            "active"
+        )
+    ) {
+
+        button.innerHTML = `
+            <i class="fa-solid fa-heart"></i>
+            Liked
+        `;
+
+    } else {
+
+        button.innerHTML = `
+            <i class="fa-regular fa-heart"></i>
+            Like
         `;
 
     }
 
-
-    /* =========================
-       GET THUMBNAIL
-    ========================= */
-
-    function getThumbnail(video) {
-
-        if (
-            video.thumbnail
-        ) {
-
-            return video.thumbnail;
-
-        }
-
-
-        if (
-            video.thumbnails
-        ) {
-
-            return video.thumbnails
-                .split(",")[0]
-                .trim();
-
-        }
-
-
-        return "";
-
-    }
-
-
-    /* =========================
-       RELATED VIDEOS
-    ========================= */
-
-    function renderRelated() {
-
-        const current =
-            getCurrentVideo();
-
-
-        if (!current) {
-
-            return;
-
-        }
-
-
-        const related =
-            videos
-                .filter(
-                    video =>
-                        String(video.id) !==
-                        String(current.id)
-                )
-                .slice(0, 6);
-
-
-        const grid =
-            document.getElementById(
-                "relatedGrid"
-            );
-
-
-        if (!related.length) {
-
-            grid.innerHTML =
-                "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
-
-            return;
-
-        }
-
-
-        grid.innerHTML =
-            related
-                .map(
-                    video => {
-
-                        const thumbnail =
-                            getThumbnail(
-                                video
-                            );
-
-
-                        return `
-
-                            <article
-                                class="related-card"
-                                onclick="openVideo('${escapeHtml(video.id)}')"
-                            >
-
-                                <div
-                                    class="related-thumb"
-                                    style="
-                                        --glow:
-                                        rgba(255,48,108,0.22);
-                                    "
-                                >
-
-                                    ${
-                                        thumbnail
-                                            ? `
-                                                <img
-                                                    src="${escapeHtml(thumbnail)}"
-                                                    alt=""
-                                                    loading="lazy"
-                                                    style="
-                                                        width:100%;
-                                                        height:100%;
-                                                        object-fit:cover;
-                                                        display:block;
-                                                    "
-                                                >
-                                              `
-                                            : `
-                                                <div
-                                                    class="related-pattern"
-                                                ></div>
-                                              `
-                                    }
-
-
-                                    <div class="related-play">
-
-                                        <i
-                                            class="fa-solid fa-play"
-                                        ></i>
-
-                                    </div>
-
-
-                                    <span
-                                        class="related-duration"
-                                    >
-                                        ${escapeHtml(video.duration)}
-                                    </span>
-
-                                </div>
-
-
-                                <div class="related-info">
-
-                                    <h3>
-                                        ${escapeHtml(video.title)}
-                                    </h3>
-
-                                    <p>
-                                        ${escapeHtml(video.category)}
-                                    </p>
-
-                                </div>
-
-                            </article>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
-    }
-
-
-    /* =========================
-       UP NEXT
-    ========================= */
-
-    function renderUpNext() {
-
-        const current =
-            getCurrentVideo();
-
-
-        if (!current) {
-
-            return;
-
-        }
-
-
-        const next =
-            videos
-                .filter(
-                    video =>
-                        String(video.id) !==
-                        String(current.id)
-                )
-                .slice(0, 4);
-
-
-        const container =
-            document.getElementById(
-                "nextList"
-            );
-
-
-        if (!next.length) {
-
-            container.innerHTML =
-                "<p style='color:#666;font-size:11px;'>No more videos available.</p>";
-
-            return;
-
-        }
-
-
-        container.innerHTML =
-            next
-                .map(
-                    video => {
-
-                        const thumbnail =
-                            getThumbnail(
-                                video
-                            );
-
-
-                        return `
-
-                            <article
-                                class="next-item"
-                                onclick="openVideo('${escapeHtml(video.id)}')"
-                            >
-
-                                <div
-                                    class="next-thumb"
-                                    style="
-                                        --glow:
-                                        rgba(120,50,255,0.22);
-                                        overflow:hidden;
-                                        position:relative;
-                                    "
-                                >
-
-                                    ${
-                                        thumbnail
-                                            ? `
-                                                <img
-                                                    src="${escapeHtml(thumbnail)}"
-                                                    alt=""
-                                                    loading="lazy"
-                                                    style="
-                                                        width:100%;
-                                                        height:100%;
-                                                        object-fit:cover;
-                                                        display:block;
-                                                    "
-                                                >
-                                              `
-                                            : ""
-                                    }
-
-                                </div>
-
-
-                                <div class="next-info">
-
-                                    <h4>
-                                        ${escapeHtml(video.title)}
-                                    </h4>
-
-                                    <p>
-                                        ${escapeHtml(video.duration)}
-                                        ·
-                                        ${escapeHtml(video.category)}
-                                    </p>
-
-                                </div>
-
-                            </article>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
-    }
-
-
-    /* =========================
-       OPEN VIDEO
-    ========================= */
-function openVideo(id) {
-    if (!id) return;
-
-    const cleanId = String(id)
-        .trim()
-        .replace(/^["']|["']$/g, "");
-
-    console.log("Opening video ID:", cleanId);
-
-    window.location.href = `watch.html?id=${encodeURIComponent(cleanId)}`;
 }
-   
-
-    /* =========================
-       LIKE
-    ========================= */
-
-    function toggleLike() {
-
-        const button =
-            document.getElementById(
-                "likeButton"
-            );
 
 
-        button.classList.toggle(
-            "active"
+/* =========================================================
+   SAVE
+   ========================================================= */
+
+function toggleSave() {
+
+    const button =
+        document.getElementById(
+            "saveButton"
         );
 
 
-        if (
-            button.classList.contains(
-                "active"
-            )
-        ) {
-
-            button.innerHTML = `
-                <i class="fa-solid fa-heart"></i>
-                Liked
-            `;
-
-        } else {
-
-            button.innerHTML = `
-                <i class="fa-regular fa-heart"></i>
-                Like
-            `;
-
-        }
-
-    }
+    button.classList.toggle(
+        "active"
+    );
 
 
-    /* =========================
-       SAVE
-    ========================= */
-
-    function toggleSave() {
-
-        const button =
-            document.getElementById(
-                "saveButton"
-            );
-
-
-        button.classList.toggle(
+    if (
+        button.classList.contains(
             "active"
-        );
+        )
+    ) {
 
+        button.innerHTML = `
+            <i class="fa-solid fa-bookmark"></i>
+            Saved
+        `;
 
-        if (
-            button.classList.contains(
-                "active"
-            )
-        ) {
+    } else {
 
-            button.innerHTML = `
-                <i class="fa-solid fa-bookmark"></i>
-                Saved
-            `;
-
-        } else {
-
-            button.innerHTML = `
-                <i class="fa-regular fa-bookmark"></i>
-                Save
-            `;
-
-        }
+        button.innerHTML = `
+            <i class="fa-regular fa-bookmark"></i>
+            Save
+        `;
 
     }
 
-
-    /* =========================
-       SHARE
-    ========================= */
-
-    async function shareVideo() {
-
-        const url =
-            window.location.href;
+}
 
 
-        if (navigator.share) {
+/* =========================================================
+   SHARE
+   ========================================================= */
 
-            try {
+async function shareVideo() {
 
-                await navigator.share({
+    const url =
+        window.location.href;
 
-                    title:
-                        document.title,
 
-                    url:
-                        url
-
-                });
-
-            } catch (error) {
-
-                /*
-                    User cancelled sharing.
-                */
-
-            }
-
-            return;
-
-        }
-
+    if (navigator.share) {
 
         try {
 
-            await navigator.clipboard.writeText(
+            await navigator.share({
+
+                title:
+                    document.title,
+
                 url
-            );
 
-
-            alert(
-                "Video link copied."
-            );
+            });
 
         } catch (error) {
 
-            alert(
-                "Copy this page URL to share the video."
-            );
+            /* User cancelled */
 
         }
 
+        return;
+
     }
 
 
-    /* =========================
-       SCROLL TO PLAYER
-    ========================= */
+    try {
 
-    function scrollToPlayer() {
+        await navigator.clipboard.writeText(
+            url
+        );
 
+        alert(
+            "Video link copied."
+        );
+
+    } catch (error) {
+
+        alert(
+            "Copy this page URL to share the video."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SCROLL TO PLAYER
+   ========================================================= */
+
+function scrollToPlayer() {
+
+    const player =
         document.getElementById(
             "player"
-        ).scrollIntoView({
-
-            behavior:
-                "smooth",
-
-            block:
-                "center"
-
-        });
-
-    }
-
-
-    /* =========================
-       MOBILE MENU
-    ========================= */
-
-    function toggleMenu() {
-
-        document
-            .getElementById(
-                "mainNav"
-            )
-            .classList.toggle(
-                "open"
-            );
-
-    }
-
-
-    /* =========================
-       AGE GATE
-    ========================= */
-
-    function enterSite() {
-
-        localStorage.setItem(
-            "afterDarkXAgeVerified",
-            "true"
         );
 
+    if (!player) {
+        return;
+    }
 
+    player.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "center"
+
+    });
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+function toggleMenu() {
+
+    const nav =
+        document.getElementById(
+            "mainNav"
+        );
+
+    if (nav) {
+
+        nav.classList.toggle(
+            "open"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AGE GATE
+   ========================================================= */
+
+function enterSite() {
+
+    localStorage.setItem(
+        "afterDarkXAgeVerified",
+        "true"
+    );
+
+
+    const ageGate =
         document.getElementById(
             "ageGate"
-        ).style.display =
-            "none";
-
-
-        document.body.classList.remove(
-            "no-scroll"
         );
 
-    }
 
+    if (ageGate) {
 
-    function leaveSite() {
-
-        window.location.href =
-            "https://www.google.com/";
+        ageGate.style.display =
+            "none";
 
     }
 
 
-    /* =========================
-       INITIALIZE
-    ========================= */
+    document.body.classList.remove(
+        "no-scroll"
+    );
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function() {
-
-            const verified =
-                localStorage.getItem(
-                    "afterDarkXAgeVerified"
-                );
+}
 
 
-            if (
-                verified === "true"
-            ) {
+function leaveSite() {
 
-                document.getElementById(
-                    "ageGate"
-                ).style.display =
+    window.location.href =
+        "https://www.google.com/";
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const verified =
+            localStorage.getItem(
+                "afterDarkXAgeVerified"
+            );
+
+
+        const ageGate =
+            document.getElementById(
+                "ageGate"
+            );
+
+
+        if (
+            verified === "true"
+        ) {
+
+            if (ageGate) {
+
+                ageGate.style.display =
                     "none";
-
-
-                document.body.classList.remove(
-                    "no-scroll"
-                );
-
-            } else {
-
-                document.body.classList.add(
-                    "no-scroll"
-                );
 
             }
 
+            document.body.classList.remove(
+                "no-scroll"
+            );
 
-            loadFeed();
+        } else {
+
+            document.body.classList.add(
+                "no-scroll"
+            );
 
         }
-    );
+
+
+        loadFeed();
+
+    }
+);
 
 </script>
 
