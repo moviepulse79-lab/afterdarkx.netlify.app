@@ -1455,6 +1455,12 @@
 const FEED_ENDPOINT = "/api/videos";
 
 
+/*
+=========================================================
+HTML ESCAPE
+=========================================================
+*/
+
 function escapeHtml(value) {
 
     return String(value ?? "")
@@ -1467,69 +1473,149 @@ function escapeHtml(value) {
 }
 
 
+/*
+=========================================================
+CSV PARSER
+=========================================================
+*/
+
 function parseCSV(csv) {
 
-    const lines = csv
-        .split(/\r?\n/)
-        .filter(line => line.trim());
+    const lines =
+        csv
+            .split(/\r?\n/)
+            .filter(line => line.trim());
+
 
     if (lines.length < 2) {
         return [];
     }
 
-    const headers = lines[0].split("|").map(h => h.trim());
 
-    return lines.slice(1).map(line => {
+    const headers =
+        lines[0]
+            .split("|")
+            .map(header => header.trim());
 
-        const values = line.split("|");
-        const record = {};
 
-        headers.forEach((header, index) => {
-            record[header] = values[index] || "";
-        });
+    return lines
+        .slice(1)
+        .map(line => {
 
-        return {
-            id: record.ID || "",
-            title: record.Title || "Untitled",
-            description: record.Description || "",
-            duration: record.Duration || "",
-            rating: record.Rating || "",
-            date: record["Publish date, time"] || "",
-            category: record.Categories || "Featured",
-            thumbnail: record["Main thumbnail"] || "",
-            thumbnails: record.Thumbnails || "",
-            embed: record["Embed code"] || ""
-        };
+            const values =
+                line.split("|");
 
-    });
+            const record = {};
+
+
+            headers.forEach(
+                (header, index) => {
+
+                    record[header] =
+                        values[index] || "";
+
+                }
+            );
+
+
+            return {
+
+                id:
+                    record.ID || "",
+
+                title:
+                    record.Title ||
+                    "Untitled",
+
+                description:
+                    record.Description ||
+                    "",
+
+                duration:
+                    record.Duration ||
+                    "",
+
+                rating:
+                    record.Rating ||
+                    "",
+
+                date:
+                    record["Publish date, time"] ||
+                    "",
+
+                category:
+                    record.Categories ||
+                    "Featured",
+
+                thumbnail:
+                    record["Main thumbnail"] ||
+                    "",
+
+                thumbnails:
+                    record.Thumbnails ||
+                    "",
+
+                embed:
+                    record["Embed code"] ||
+                    ""
+
+            };
+
+        })
+
+        .filter(video => video.id);
 
 }
 
 
+/*
+=========================================================
+THUMBNAIL
+=========================================================
+*/
+
 function getThumbnail(video) {
 
     if (video.thumbnail) {
+
         return video.thumbnail;
+
     }
+
 
     if (video.thumbnails) {
 
-        return video.thumbnails
-            .split(",")[0]
-            .trim();
+        const first =
+            video.thumbnails
+                .split(",")
+                .map(item => item.trim())
+                .find(Boolean);
+
+
+        if (first) {
+            return first;
+        }
 
     }
+
 
     return "";
 
 }
 
 
+/*
+=========================================================
+OPEN VIDEO
+=========================================================
+*/
+
 function openVideo(id) {
 
     if (!id) {
         return;
     }
+
 
     window.location.href =
         "watch.html?id=" +
@@ -1538,276 +1624,579 @@ function openVideo(id) {
 }
 
 
-function renderFeatured(videos) {
+/*
+=========================================================
+FETCH FEED
+=========================================================
+*/
 
-    const grid =
-        document.getElementById("featuredGrid");
+async function fetchVideos(options = {}) {
 
-    if (!grid) {
-        return;
-    }
+    const params =
+        new URLSearchParams();
 
-    grid.innerHTML = "";
 
-    videos.slice(0, 3).forEach((video, index) => {
+    if (options.category) {
 
-        const card =
-            document.createElement("article");
-
-        card.className = "featured-card";
-
-        const thumbnail =
-            getThumbnail(video);
-
-        card.innerHTML = `
-
-            ${
-                thumbnail
-                    ? `
-                        <img
-                            class="featured-image"
-                            src="${escapeHtml(thumbnail)}"
-                            alt=""
-                            loading="lazy"
-                        >
-                      `
-                    : `
-                        <div class="featured-placeholder">
-                            <i class="fa-solid fa-play"></i>
-                        </div>
-                      `
-            }
-
-            <div class="featured-overlay"></div>
-
-            <button
-                class="featured-play"
-                type="button"
-                aria-label="Watch video"
-            >
-                <i class="fa-solid fa-play"></i>
-            </button>
-
-            <span class="featured-duration">
-                ${escapeHtml(video.duration || "—")}
-            </span>
-
-            <div class="featured-info">
-
-                <span class="featured-tag">
-                    ${index === 0 ? "Featured" : "Trending"}
-                </span>
-
-                <h3>
-                    ${escapeHtml(video.title)}
-                </h3>
-
-                <p>
-                    ${escapeHtml(video.category)}
-                </p>
-
-            </div>
-
-        `;
-
-        card.addEventListener(
-            "click",
-            () => openVideo(video.id)
+        params.set(
+            "category",
+            options.category
         );
 
-        grid.appendChild(card);
+    }
+
+
+    if (options.sort) {
+
+        params.set(
+            "sort",
+            options.sort
+        );
+
+    }
+
+
+    if (options.days) {
+
+        params.set(
+            "days",
+            options.days
+        );
+
+    }
+
+
+    params.set(
+        "limit",
+        options.limit || "100"
+    );
+
+
+    const url =
+        params.toString()
+            ? `${FEED_ENDPOINT}?${params.toString()}`
+            : FEED_ENDPOINT;
+
+
+    const response =
+        await fetch(url, {
+            cache: "no-store"
+        });
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            `Feed returned ${response.status}`
+        );
+
+    }
+
+
+    const csv =
+        await response.text();
+
+
+    const videos =
+        parseCSV(csv);
+
+
+    return videos;
+
+}
+
+
+/*
+=========================================================
+SHUFFLE
+=========================================================
+*/
+
+function shuffle(array) {
+
+    const result =
+        [...array];
+
+
+    for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+
+    return result;
+
+}
+
+
+/*
+=========================================================
+REMOVE DUPLICATES
+=========================================================
+*/
+
+function uniqueVideos(videos) {
+
+    const seen =
+        new Set();
+
+
+    return videos.filter(video => {
+
+        if (!video.id) {
+            return false;
+        }
+
+
+        if (seen.has(video.id)) {
+            return false;
+        }
+
+
+        seen.add(video.id);
+
+        return true;
 
     });
 
 }
 
 
-function renderLatest(videos) {
+/*
+=========================================================
+TRENDING
+=========================================================
+*/
+
+async function loadTrending() {
 
     const grid =
-        document.getElementById("latestGrid");
+        document.getElementById(
+            "featuredGrid"
+        );
+
 
     if (!grid) {
         return;
     }
 
-    grid.innerHTML = "";
-
-    videos.slice(0, 8).forEach(video => {
-
-        const card =
-            document.createElement("article");
-
-        card.className = "video-card";
-
-        const thumbnail =
-            getThumbnail(video);
-
-        card.innerHTML = `
-
-            <div class="thumbnail">
-
-                ${
-                    thumbnail
-                        ? `
-                            <img
-                                class="thumbnail-image"
-                                src="${escapeHtml(thumbnail)}"
-                                alt=""
-                                loading="lazy"
-                            >
-                          `
-                        : ""
-                }
-
-                <div class="thumbnail-icon">
-
-                    <i class="fa-solid fa-play"></i>
-
-                </div>
-
-                <div class="play-button">
-
-                    <i class="fa-solid fa-play"></i>
-
-                </div>
-
-                <span class="video-duration">
-
-                    ${escapeHtml(video.duration || "—")}
-
-                </span>
-
-            </div>
-
-            <div class="video-info">
-
-                <h3>
-                    ${escapeHtml(video.title)}
-                </h3>
-
-                <div class="video-meta">
-
-                    <span>
-                        ${escapeHtml(video.category)}
-                    </span>
-
-                    <span>•</span>
-
-                    <span>
-                        HD
-                    </span>
-
-                </div>
-
-            </div>
-
-        `;
-
-        card.addEventListener(
-            "click",
-            () => openVideo(video.id)
-        );
-
-        grid.appendChild(card);
-
-    });
-
-}
-
-
-function showHomeError() {
-
-    const latest =
-        document.getElementById("latestGrid");
-
-    const featured =
-        document.getElementById("featuredGrid");
-
-    if (latest) {
-
-        latest.innerHTML = `
-
-            <div class="loading-card">
-
-                <i class="fa-solid fa-circle-exclamation"></i>
-
-            </div>
-
-        `;
-
-    }
-
-    if (featured) {
-
-        featured.innerHTML = `
-
-            <div class="loading-card">
-
-                <i class="fa-solid fa-circle-exclamation"></i>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-async function loadHomepageVideos() {
 
     try {
 
-        const response =
-            await fetch(FEED_ENDPOINT, {
-                cache: "no-store"
+        const videos =
+            await fetchVideos({
+
+                sort:
+                    "popularity",
+
+                days:
+                    "30",
+
+                limit:
+                    "100"
+
             });
 
-        if (!response.ok) {
+
+        const selected =
+            uniqueVideos(videos)
+                .slice(0, 3);
+
+
+        if (!selected.length) {
 
             throw new Error(
-                "Feed returned " +
-                response.status
+                "No trending videos"
             );
 
         }
 
-        const csv =
-            await response.text();
 
-        const videos =
-            parseCSV(csv);
+        grid.innerHTML = "";
 
-        if (!videos.length) {
 
-            throw new Error(
-                "No videos returned"
-            );
+        selected.forEach(
+            (video, index) => {
 
-        }
+                const card =
+                    document.createElement(
+                        "article"
+                    );
 
-        renderFeatured(videos);
 
-        renderLatest(videos);
+                card.className =
+                    "featured-card";
+
+
+                const thumbnail =
+                    getThumbnail(video);
+
+
+                card.innerHTML = `
+
+                    ${
+                        thumbnail
+                            ? `
+                                <img
+                                    class="featured-image"
+                                    src="${escapeHtml(thumbnail)}"
+                                    alt=""
+                                    loading="lazy"
+                                >
+                              `
+                            : `
+                                <div class="featured-placeholder">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                              `
+                    }
+
+                    <div class="featured-overlay"></div>
+
+                    <button
+                        class="featured-play"
+                        type="button"
+                        aria-label="Watch video"
+                    >
+                        <i class="fa-solid fa-play"></i>
+                    </button>
+
+                    <span class="featured-duration">
+                        ${escapeHtml(
+                            video.duration || "—"
+                        )}
+                    </span>
+
+                    <div class="featured-info">
+
+                        <span class="featured-tag">
+                            ${
+                                index === 0
+                                    ? "Featured"
+                                    : "Trending"
+                            }
+                        </span>
+
+                        <h3>
+                            ${escapeHtml(
+                                video.title
+                            )}
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                video.category
+                            )}
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                card.addEventListener(
+                    "click",
+                    () => openVideo(video.id)
+                );
+
+
+                grid.appendChild(card);
+
+            }
+        );
+
 
     } catch (error) {
 
         console.error(
-            "AfterDarkX homepage feed error:",
+            "Trending error:",
             error
         );
 
-        showHomeError();
+
+        grid.innerHTML = `
+
+            <div class="loading-card">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+            </div>
+
+        `;
 
     }
 
 }
 
 
-/* =========================================
-   AGE GATE
-========================================= */
+/*
+=========================================================
+LATEST
+=========================================================
+*/
+
+async function loadLatest() {
+
+    const grid =
+        document.getElementById(
+            "latestGrid"
+        );
+
+
+    if (!grid) {
+        return;
+    }
+
+
+    try {
+
+        const videos =
+            await fetchVideos({
+
+                sort:
+                    "post_date",
+
+                days:
+                    "7",
+
+                limit:
+                    "100"
+
+            });
+
+
+        let selected =
+            uniqueVideos(videos);
+
+
+        /*
+        Shuffle the available latest videos
+        so the homepage doesn't always display
+        exactly the same first eight records.
+        */
+
+        selected =
+            shuffle(selected)
+                .slice(0, 8);
+
+
+        if (!selected.length) {
+
+            throw new Error(
+                "No latest videos"
+            );
+
+        }
+
+
+        grid.innerHTML = "";
+
+
+        selected.forEach(video => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "video-card";
+
+
+            const thumbnail =
+                getThumbnail(video);
+
+
+            card.innerHTML = `
+
+                <div class="thumbnail">
+
+                    ${
+                        thumbnail
+                            ? `
+                                <img
+                                    class="thumbnail-image"
+                                    src="${escapeHtml(thumbnail)}"
+                                    alt=""
+                                    loading="lazy"
+                                >
+                              `
+                            : `
+                                <div class="thumbnail-icon">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                              `
+                    }
+
+                    <div class="thumbnail-icon">
+
+                        <i class="fa-solid fa-play"></i>
+
+                    </div>
+
+                    <div class="play-button">
+
+                        <i class="fa-solid fa-play"></i>
+
+                    </div>
+
+                    <span class="video-duration">
+
+                        ${escapeHtml(
+                            video.duration || "—"
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <h3>
+                        ${escapeHtml(
+                            video.title
+                        )}
+                    </h3>
+
+
+                    <div class="video-meta">
+
+                        <span>
+                            ${escapeHtml(
+                                video.category
+                            )}
+                        </span>
+
+                        <span>
+                            •
+                        </span>
+
+                        <span>
+                            HD
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                () => openVideo(video.id)
+            );
+
+
+            grid.appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Latest videos error:",
+            error
+        );
+
+
+        grid.innerHTML = `
+
+            <div class="loading-card">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/*
+=========================================================
+CATEGORY COLLECTIONS
+
+These create different category links dynamically.
+=========================================================
+*/
+
+function setupCategoryLinks() {
+
+    const collectionCards =
+        document.querySelectorAll(
+            ".collection-card"
+        );
+
+
+    if (!collectionCards.length) {
+        return;
+    }
+
+
+    const categories = [
+
+        "African",
+
+        "Amateur",
+
+        "Asian"
+
+    ];
+
+
+    collectionCards.forEach(
+        (card, index) => {
+
+            const category =
+                categories[index];
+
+
+            if (!category) {
+                return;
+            }
+
+
+            card.href =
+                "category.html?category=" +
+                encodeURIComponent(
+                    category
+                );
+
+        }
+    );
+
+}
+
+
+/*
+=========================================================
+AGE GATE
+=========================================================
+*/
 
 function enterSite() {
 
@@ -1816,9 +2205,19 @@ function enterSite() {
         "true"
     );
 
-    document.getElementById(
-        "ageGate"
-    ).style.display = "none";
+
+    const ageGate =
+        document.getElementById(
+            "ageGate"
+        );
+
+
+    if (ageGate) {
+
+        ageGate.style.display =
+            "none";
+
+    }
 
 }
 
@@ -1831,6 +2230,12 @@ function leaveSite() {
 }
 
 
+/*
+=========================================================
+MOBILE MENU
+=========================================================
+*/
+
 function toggleMenu() {
 
     alert(
@@ -1840,9 +2245,11 @@ function toggleMenu() {
 }
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+/*
+=========================================================
+INITIALIZE
+=========================================================
+*/
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -1853,21 +2260,37 @@ document.addEventListener(
                 "afterDarkXAgeVerified"
             );
 
+
         if (verified === "true") {
 
-            document.getElementById(
-                "ageGate"
-            ).style.display = "none";
+            const ageGate =
+                document.getElementById(
+                    "ageGate"
+                );
+
+
+            if (ageGate) {
+
+                ageGate.style.display =
+                    "none";
+
+            }
 
         }
 
-        loadHomepageVideos();
+
+        setupCategoryLinks();
+
+
+        loadTrending();
+
+
+        loadLatest();
 
     }
 );
 
 </script>
-
   
 
    
