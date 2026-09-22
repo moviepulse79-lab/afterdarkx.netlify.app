@@ -1,47 +1,398 @@
-const FEED_URL =
-  "https://hdzog.com/admin/feeds/embed/?categories=African%2CAlbanian%2CAlgerian%2CAmateur%2CAmerican%2CAnal%2CArab%2CArmenian%2CAsian%2CAss%20to%20Mouth%2CAustralian%2CAustrian%2CAzeri%2CBBW%2CBDSM%2CBabe%2CBabysitter%2CBangladeshi%2CBeach%2CBehind%20The%20Scenes%2CBelgian%2CBig%20Ass%2CBig%20Cock%2CBig%20Tits%2CBisexual%20Male%2CBlonde%2CBlowjob%2CBolivian%2CBondage%2CBosnian%2CBrazilian%2CBritish%2CBrunette%2CBukkake%2CCambodian%2CCanadian%2CCar%2CCasting%2CCelebrity%2CChilean%2CClose-up%2CColombian%2CCompilation%2CCosplay%2CCosta%20Rican%2CCouple%2CCowgirl%2CCreampie%2CCroatian%2CCuban%2CCuckold%2CCum%20In%20Mouth%2CCumshot%2CCunnilingus%2CCzech%2CDeepthroat%2CDevice%20Bondage%2CDoggystyle%2CDomination%2CDouble%20Penetration%2CEbony%2CEcuadorian%2CEgyptian%2CEmo%20Girl%2CEstonian%2CEuropean%2CFace%20Sitting%2CFacial%2CFemale%20Orgasm%2CFemdom%2CFetish%2CFingering%2CFinnish%2CFisting%2CFoot%20Fetish%2CFootjob%2CFrench%2CFuck%20Machine%2CGagging%2CGangbang%2CGaping%2CGerman%2CGlory%20Hole%2CGranny%2CGreek%2CGroup%20sex%2CGuatemalan%2CHD%2CHairy%2CHandcuffs%2CHandjob%2CHanging%2CHardcore%2CHigh%20Heels%2CHogtied%2CHumiliation%2CIndian%2CIndonesian%2CInterracial%2CIranian%2CIrish%2CIsraeli%2CItalian%2CJAV%20Uncensored%2CJamaican%2CJapanese%2CJewish%2CLactating%2CLatex%2CLatina%2CLatvian%2CLebanese%2CLesbian%2CLingerie%2CLithuanian%2CMILF%2CMacedonian%2CMalaysian%2CMassage%2CMasturbation%2CMature%2CMistress%2CMoldavian%2CMoroccan%2CMuscular%20Man%2CNigerian%2CNipples%2CNorwegian%2COld%20and%20Young%2COutdoor%2CPOV%2CPakistani%2CPanamanian%2CPegging%2CPeruvian%2CPiercing%2CPornstar%2CPregnant%2CPublic%2CPuerto%20Rican%2CRed%20Head%2CRimming%2CRomanian%2CSecretary%2CShaved%2CShemale%2CShibari%20Bondage%2CSingaporean%2CSkinny%2CSlovakian%2CSlovenian%2CSmall%20Tits%2CSmoking%2CSoftcore%2CSolo%20Female%2CSouth%20African%2CSpandex%2CSpanish%2CSpanking%2CSports%2CSquirt%2CSri%20Lankan%2CStep%20Fantasy%2CStockings%2CStraight%2CStrapon%2CStriptease%2CSubmissive%2CSwallow%20Cum%2CSwingers%2CSwiss%2CTattoo%2CTeacher%2CTeens%2CThai%2CThreesome%2CToys%2CTunisian%2CUkrainian%2CUniform%2CUpskirt%2CVenezuelan%2CVintage%2CVoyeur%2CWebcam%2CWhipping&source=815139609&only_hd=on&feed_format=csv&screenshot_format=300x169&sorting=post_date&days=7&limit=100&player_width=100%25&player_height=560&csv_separator=%7C&csv_columns=id%7Ctitle%7Cdescription%7Clink%7Cduration%7Crating%7Cpost_date%7Ccategories%7Ctags%7Cembed%7Cmain_screenshot%7Cscreenshots";
+const BASE_FEED_URL =
+    "https://hdzog.com/admin/feeds/embed/";
 
-exports.handler = async function () {
+const SOURCE =
+    "815139609";
+
+const EMBED_CAMPAIGN =
+    "26590";
+
+
+/*
+=========================================================
+ALLOWED CATEGORY NAMES
+
+These match categories available from the TubeCorporate feed.
+=========================================================
+*/
+
+const VALID_CATEGORIES = new Set([
+    "African",
+    "Albanian",
+    "Algerian",
+    "Amateur",
+    "American",
+    "Arab",
+    "Armenian",
+    "Asian",
+    "Australian",
+    "Austrian",
+    "Azeri",
+    "BBW",
+    "BDSM",
+    "Babe",
+    "Bangladeshi",
+    "Beach",
+    "Behind The Scenes",
+    "Belgian",
+    "Big Ass",
+    "Big Tits",
+    "Bisexual Male",
+    "Blonde",
+    "Bolivian",
+    "Bosnian",
+    "Brazilian",
+    "British",
+    "Brunette",
+    "Cambodian",
+    "Canadian",
+    "Car",
+    "Casting",
+    "Celebrity",
+    "Chilean",
+    "Close-up",
+    "Colombian",
+    "Compilation",
+    "Cosplay",
+    "Costa Rican",
+    "Couple",
+    "Croatian",
+    "Cuban",
+    "Czech",
+    "Dominican",
+    "Ecuadorian",
+    "Egyptian",
+    "Emo Girl",
+    "Estonian",
+    "European",
+    "French",
+    "German",
+    "Greek",
+    "Guatemalan",
+    "HD",
+    "Hairy",
+    "Indian",
+    "Indonesian",
+    "Interracial",
+    "Iranian",
+    "Irish",
+    "Israeli",
+    "Italian",
+    "Jamaican",
+    "Japanese",
+    "Jewish",
+    "JAV Uncensored",
+    "Korean",
+    "Latina",
+    "Latvian",
+    "Lebanese",
+    "Lesbian",
+    "Lingerie",
+    "Lithuanian",
+    "MILF",
+    "Macedonian",
+    "Malaysian",
+    "Massage",
+    "Mature",
+    "Mexican",
+    "Moldavian",
+    "Moroccan",
+    "Nigerian",
+    "Norwegian",
+    "Outdoor",
+    "POV",
+    "Pakistani",
+    "Panamanian",
+    "Peruvian",
+    "Piercing",
+    "Pornstar",
+    "Public",
+    "Puerto Rican",
+    "Red Head",
+    "Romanian",
+    "Secretary",
+    "Shaved",
+    "Singaporean",
+    "Skinny",
+    "Slovakian",
+    "Slovenian",
+    "Spanish",
+    "Sports",
+    "Sri Lankan",
+    "Stockings",
+    "Straight",
+    "Swiss",
+    "Tattoo",
+    "Thai",
+    "Threesome",
+    "Tunisian",
+    "Ukrainian",
+    "Uniform",
+    "Venezuelan",
+    "Vintage",
+    "Voyeur",
+    "Webcam"
+]);
+
+
+/*
+=========================================================
+HELPERS
+=========================================================
+*/
+
+function buildFeedUrl({
+    category = "",
+    sorting = "post_date",
+    days = "7",
+    limit = "100"
+} = {}) {
+
+    const params = new URLSearchParams();
+
+    /*
+    Only add a category when one was requested.
+    This prevents the homepage from being locked
+    to one giant category list.
+    */
+
+    if (category && VALID_CATEGORIES.has(category)) {
+        params.set("categories", category);
+    }
+
+    params.set("source", SOURCE);
+    params.set("only_hd", "on");
+    params.set("feed_format", "csv");
+    params.set("screenshot_format", "300x169");
+    params.set("sorting", sorting);
+    params.set("days", days);
+    params.set("limit", limit);
+    params.set("player_width", "100%");
+    params.set("player_height", "560");
+    params.set("csv_separator", "|");
+
+    params.set(
+        "csv_columns",
+        [
+            "id",
+            "title",
+            "description",
+            "link",
+            "duration",
+            "rating",
+            "post_date",
+            "categories",
+            "tags",
+            "embed",
+            "main_screenshot",
+            "screenshots"
+        ].join("|")
+    );
+
+    return `${BASE_FEED_URL}?${params.toString()}`;
+}
+
+
+/*
+=========================================================
+REQUEST HANDLER
+=========================================================
+*/
+
+exports.handler = async function (event) {
+
     try {
-        const response = await fetch(FEED_URL, {
-            headers: {
-                "User-Agent": "AfterDarkX/1.0"
+
+        const query =
+            event.queryStringParameters || {};
+
+        let category =
+            query.category || "";
+
+        let sorting =
+            query.sort || "post_date";
+
+        let days =
+            query.days || "7";
+
+        let limit =
+            query.limit || "100";
+
+
+        /*
+        Clean category input
+        */
+
+        category =
+            String(category).trim();
+
+
+        /*
+        Supported sorting modes
+        */
+
+        const allowedSorting = new Set([
+            "post_date",
+            "rating",
+            "popularity",
+            "duration",
+            "id"
+        ]);
+
+        if (!allowedSorting.has(sorting)) {
+            sorting = "post_date";
+        }
+
+
+        /*
+        Keep values reasonable.
+        */
+
+        const allowedDays = new Set([
+            "1",
+            "7",
+            "30",
+            "0"
+        ]);
+
+        if (!allowedDays.has(days)) {
+            days = "7";
+        }
+
+
+        let numericLimit =
+            parseInt(limit, 10);
+
+        if (
+            !Number.isFinite(numericLimit) ||
+            numericLimit < 1
+        ) {
+            numericLimit = 100;
+        }
+
+        numericLimit =
+            Math.min(numericLimit, 100);
+
+
+        /*
+        Build authorized TubeCorporate feed URL
+        */
+
+        const feedUrl =
+            buildFeedUrl({
+                category,
+                sorting,
+                days,
+                limit: String(numericLimit)
+            });
+
+
+        console.log(
+            "AfterDarkX feed request:",
+            {
+                category: category || "ALL",
+                sorting,
+                days,
+                limit: numericLimit
             }
-        });
+        );
+
+
+        /*
+        Fetch feed
+        */
+
+        const response =
+            await fetch(feedUrl, {
+                headers: {
+                    "User-Agent":
+                        "AfterDarkX/1.0"
+                }
+            });
+
 
         if (!response.ok) {
+
             throw new Error(
-                `TubeCorporate feed returned ${response.status}`
+                `TubeCorporate returned ${response.status}`
             );
+
         }
 
-        const csv = await response.text();
 
-        if (!csv || !csv.trim()) {
-            throw new Error("TubeCorporate returned an empty feed");
+        const csv =
+            await response.text();
+
+
+        if (
+            !csv ||
+            !csv.trim()
+        ) {
+
+            throw new Error(
+                "TubeCorporate returned an empty feed"
+            );
+
         }
+
+
+        /*
+        Return CSV to frontend
+        */
 
         return {
+
             statusCode: 200,
+
             headers: {
-                "Content-Type": "text/plain; charset=utf-8",
+
+                "Content-Type":
+                    "text/plain; charset=utf-8",
+
                 "Cache-Control":
-                    "public, max-age=900, s-maxage=900"
+                    "public, max-age=900, s-maxage=900",
+
+                "Access-Control-Allow-Origin":
+                    "*"
+
             },
+
             body: csv
+
         };
+
+
     } catch (error) {
-        console.error("AfterDarkX feed error:", error);
+
+        console.error(
+            "AfterDarkX feed error:",
+            error
+        );
+
 
         return {
+
             statusCode: 502,
+
             headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "Cache-Control": "no-store"
+
+                "Content-Type":
+                    "application/json; charset=utf-8",
+
+                "Cache-Control":
+                    "no-store"
+
             },
+
             body: JSON.stringify({
-                error: "Unable to load the video feed."
+
+                error:
+                    "Unable to load the video feed."
+
             })
+
         };
+
     }
+
 };
