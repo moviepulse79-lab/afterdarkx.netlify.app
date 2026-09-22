@@ -1899,6 +1899,20 @@
 
 
     /* =========================
+       AFRICAN CATEGORIES
+    ========================= */
+
+    const AFRICAN_CATEGORIES = [
+        "African",
+        "Algerian",
+        "Egyptian",
+        "Moroccan",
+        "Nigerian",
+        "Tunisian"
+    ];
+
+
+    /* =========================
        ELEMENTS
     ========================= */
 
@@ -1928,7 +1942,7 @@
 
 
     /* =========================
-       ALL VIDEOS FROM API
+       ALL VIDEOS
     ========================= */
 
     let videos = [];
@@ -1946,6 +1960,22 @@
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================
+       NORMALIZE SEARCH TEXT
+    ========================= */
+
+    function normalizeSearch(value) {
+
+        return String(value ?? "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
 
     }
 
@@ -1972,7 +2002,11 @@
             const next = text[i + 1];
 
 
-            if (char === '"' && insideQuotes && next === '"') {
+            if (
+                char === '"' &&
+                insideQuotes &&
+                next === '"'
+            ) {
 
                 field += '"';
 
@@ -1992,7 +2026,10 @@
             }
 
 
-            if (char === "|" && !insideQuotes) {
+            if (
+                char === "|" &&
+                !insideQuotes
+            ) {
 
                 row.push(field);
 
@@ -2004,12 +2041,14 @@
 
 
             if (
-                (char === "\n" || char === "\r")
-                &&
+                (char === "\n" || char === "\r") &&
                 !insideQuotes
             ) {
 
-                if (char === "\r" && next === "\n") {
+                if (
+                    char === "\r" &&
+                    next === "\n"
+                ) {
 
                     i++;
 
@@ -2045,9 +2084,13 @@
         }
 
 
-        if (field !== "" || row.length) {
+        if (
+            field !== "" ||
+            row.length
+        ) {
 
             row.push(field);
+
 
             if (
                 row.some(
@@ -2085,6 +2128,7 @@
 
                 const item = {};
 
+
                 headers.forEach(
                     (header, index) => {
 
@@ -2094,6 +2138,7 @@
                     }
                 );
 
+
                 return item;
 
             });
@@ -2102,7 +2147,7 @@
 
 
     /* =========================
-       THUMBNAIL
+       GET THUMBNAIL
     ========================= */
 
     function getThumbnail(video) {
@@ -2148,7 +2193,7 @@
 
 
     /* =========================
-       DURATION
+       FORMAT DURATION
     ========================= */
 
     function formatDuration(value) {
@@ -2164,7 +2209,9 @@
             String(value).trim();
 
 
-        if (stringValue.includes(":")) {
+        if (
+            stringValue.includes(":")
+        ) {
 
             return stringValue;
 
@@ -2176,8 +2223,7 @@
 
 
         if (
-            !Number.isFinite(seconds)
-            ||
+            !Number.isFinite(seconds) ||
             seconds < 0
         ) {
 
@@ -2189,10 +2235,12 @@
         const hours =
             Math.floor(seconds / 3600);
 
+
         const minutes =
             Math.floor(
                 (seconds % 3600) / 60
             );
+
 
         const remainingSeconds =
             Math.floor(seconds % 60);
@@ -2201,24 +2249,235 @@
         if (hours > 0) {
 
             return [
+
                 hours,
-                String(minutes).padStart(2, "0"),
-                String(remainingSeconds).padStart(2, "0")
+
+                String(minutes)
+                    .padStart(2, "0"),
+
+                String(remainingSeconds)
+                    .padStart(2, "0")
+
             ].join(":");
 
         }
 
 
         return [
-            String(minutes).padStart(2, "0"),
-            String(remainingSeconds).padStart(2, "0")
+
+            String(minutes)
+                .padStart(2, "0"),
+
+            String(remainingSeconds)
+                .padStart(2, "0")
+
         ].join(":");
 
     }
 
 
     /* =========================
-       LOAD VIDEOS
+       FETCH ONE FEED
+    ========================= */
+
+    async function fetchFeed(options = {}) {
+
+        const params =
+            new URLSearchParams();
+
+
+        /*
+         * Use post_date because that is
+         * the sorting value accepted by
+         * the backend.
+         */
+
+        params.set(
+            "sort",
+            options.sort || "post_date"
+        );
+
+
+        /*
+         * 0 means all available days
+         * rather than only the last 7 days.
+         */
+
+        params.set(
+            "days",
+            options.days || "0"
+        );
+
+
+        params.set(
+            "limit",
+            options.limit || "500"
+        );
+
+
+        if (options.category) {
+
+            params.set(
+                "category",
+                options.category
+            );
+
+        }
+
+
+        const url =
+            `${API_ENDPOINT}?${params.toString()}`;
+
+
+        console.log(
+            "AfterDarkX loading feed:",
+            url
+        );
+
+
+        const response =
+            await fetch(
+                url,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const text =
+            await response.text();
+
+
+        if (
+            !text ||
+            !text.trim()
+        ) {
+
+            return [];
+
+        }
+
+
+        const parsed =
+            parseCSV(text);
+
+
+        console.log(
+            `Feed ${options.category || "ALL"} returned ${parsed.length} videos`
+        );
+
+
+        return parsed;
+
+    }
+
+
+    /* =========================
+       REMOVE DUPLICATES
+    ========================= */
+
+    function mergeUniqueVideos(lists) {
+
+        const map =
+            new Map();
+
+
+        for (const list of lists) {
+
+            for (const video of list) {
+
+                const id =
+                    String(
+                        video.id ||
+                        video.ID ||
+                        ""
+                    ).trim();
+
+
+                /*
+                 * Videos without IDs are
+                 * ignored because duplicate
+                 * protection depends on ID.
+                 */
+
+                if (!id) continue;
+
+
+                if (!map.has(id)) {
+
+                    map.set(
+                        id,
+                        video
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        return Array.from(
+            map.values()
+        );
+
+    }
+
+
+    /* =========================
+       SORT BY DATE
+    ========================= */
+
+    function sortNewestFirst(list) {
+
+        return list.sort(
+            (a, b) => {
+
+                const dateA =
+                    new Date(
+                        a["publish date, time"] ||
+                        a.post_date ||
+                        a.publish_date ||
+                        ""
+                    ).getTime();
+
+
+                const dateB =
+                    new Date(
+                        b["publish date, time"] ||
+                        b.post_date ||
+                        b.publish_date ||
+                        ""
+                    ).getTime();
+
+
+                return (
+                    (Number.isFinite(dateB)
+                        ? dateB
+                        : 0)
+                    -
+                    (Number.isFinite(dateA)
+                        ? dateA
+                        : 0)
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       LOAD COMPLETE SEARCH DATA
     ========================= */
 
     async function loadVideos() {
@@ -2242,7 +2501,9 @@
                     "
                 ></i>
 
-                <p>Loading collection...</p>
+                <p>
+                    Loading collection...
+                </p>
 
             </div>
 
@@ -2251,51 +2512,102 @@
 
         try {
 
-            const params =
-                new URLSearchParams({
+            /*
+             * First load the normal collection.
+             */
 
-                    sort: "date",
+            const requests = [
 
-                    limit: "100"
+                fetchFeed({
+                    sort: "post_date",
+                    days: "0",
+                    limit: "500"
+                })
 
-                });
-
-
-            const response =
-                await fetch(
-                    `${API_ENDPOINT}?${params.toString()}`,
-                    {
-                        cache: "no-store"
-                    }
-                );
+            ];
 
 
-            if (!response.ok) {
+            /*
+             * Then automatically load every
+             * supported African category.
+             */
 
-                throw new Error(
-                    `HTTP ${response.status}`
+            for (
+                const category
+                of AFRICAN_CATEGORIES
+            ) {
+
+                requests.push(
+
+                    fetchFeed({
+
+                        category,
+
+                        sort: "post_date",
+
+                        days: "0",
+
+                        limit: "500"
+
+                    })
+
                 );
 
             }
 
 
-            const text =
-                await response.text();
+            /*
+             * Run all requests together.
+             */
+
+            const feeds =
+                await Promise.all(
+                    requests
+                );
 
 
-            const loadedVideos =
-                parseCSV(text);
+            /*
+             * Merge everything and remove
+             * duplicate video IDs.
+             */
+
+            videos =
+                mergeUniqueVideos(
+                    feeds
+                );
 
 
-            console.log(
-                "AfterDarkX search feed:",
-                loadedVideos
+            /*
+             * Newest videos first.
+             */
+
+            sortNewestFirst(
+                videos
             );
 
 
-            videos =
-                loadedVideos;
+            console.log(
+                "================================"
+            );
 
+            console.log(
+                "AfterDarkX Search total:",
+                videos.length
+            );
+
+            console.log(
+                "African categories loaded:",
+                AFRICAN_CATEGORIES
+            );
+
+            console.log(
+                "================================"
+            );
+
+
+            /*
+             * Check URL search parameter.
+             */
 
             const paramsUrl =
                 new URLSearchParams(
@@ -2314,7 +2626,8 @@
 
                 performSearch(query);
 
-            } else {
+            }
+            else {
 
                 showInitialResults();
 
@@ -2445,11 +2758,17 @@
                         : "";
 
 
+                const videoId =
+                    escapeHtml(
+                        video.id
+                    );
+
+
                 return `
 
                     <article
                         class="result-card"
-                        onclick="openVideo('${escapeHtml(video.id)}')"
+                        onclick="openVideo('${videoId}')"
                     >
 
                         <div
@@ -2487,11 +2806,13 @@
                             ${
                                 duration
                                     ? `
+
                                         <span class="duration">
 
                                             ${escapeHtml(duration)}
 
                                         </span>
+
                                       `
                                     : ""
                             }
@@ -2545,11 +2866,6 @@
             "Search across the entire AfterDarkX collection.";
 
 
-        /*
-         * Show the newest 20 videos
-         * before a search is entered.
-         */
-
         renderResults(
             videos.slice(0, 20)
         );
@@ -2568,7 +2884,7 @@
     function performSearch(query) {
 
         const value =
-            query.trim().toLowerCase();
+            normalizeSearch(query);
 
 
         if (!value) {
@@ -2598,48 +2914,29 @@
         const results =
             videos.filter(video => {
 
-                const title =
-                    String(
-                        video.title || ""
-                    ).toLowerCase();
+                const searchableText = [
+
+                    video.title,
+
+                    video.description,
+
+                    video.categories,
+
+                    video.category,
+
+                    video.tags,
+
+                    video["publish date, time"],
+
+                    video.post_date
+
+                ]
+                    .map(normalizeSearch)
+                    .join(" ");
 
 
-                const description =
-                    String(
-                        video.description || ""
-                    ).toLowerCase();
-
-
-                const categories =
-                    String(
-                        video.categories ||
-                        video.category ||
-                        ""
-                    ).toLowerCase();
-
-
-                const tags =
-                    String(
-                        video.tags || ""
-                    ).toLowerCase();
-
-
-                return (
-
-                    title.includes(value)
-
-                    ||
-
-                    description.includes(value)
-
-                    ||
-
-                    categories.includes(value)
-
-                    ||
-
-                    tags.includes(value)
-
+                return searchableText.includes(
+                    value
                 );
 
             });
@@ -2657,7 +2954,9 @@
                 : "No matching content was found.";
 
 
-        renderResults(results);
+        renderResults(
+            results
+        );
 
 
         clearButton.style.display =
@@ -2681,7 +2980,9 @@
                 searchInput.value.trim();
 
 
-            performSearch(query);
+            performSearch(
+                query
+            );
 
 
             if (query) {
@@ -2731,144 +3032,150 @@
     /* =========================
        QUICK SEARCH
     ========================= */
-async function quickSearch(value) {
 
-    searchInput.value = value;
+    async function quickSearch(value) {
 
-    clearButton.style.display = "flex";
-
-
-    const newUrl =
-        `${window.location.pathname}?q=${encodeURIComponent(value)}`;
-
-    window.history.replaceState(
-        {},
-        "",
-        newUrl
-    );
+        searchInput.value =
+            value;
 
 
-    /* =========================
-       POPULAR
-    ========================= */
-
-    if (value.toLowerCase() === "popular") {
-
-        resultsTitle.textContent =
-            "Popular videos";
-
-        resultsDescription.textContent =
-            "The most popular videos from the current collection.";
-
-        resultCount.textContent =
-            "Loading...";
+        clearButton.style.display =
+            "flex";
 
 
-        resultsGrid.innerHTML = `
+        const newUrl =
+            `${window.location.pathname}?q=${encodeURIComponent(value)}`;
 
-            <div
-                style="
-                    grid-column:1/-1;
-                    padding:60px 20px;
-                    text-align:center;
-                    color:#777;
-                "
-            >
 
-                <i
-                    class="fa-solid fa-spinner fa-spin"
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+
+        /*
+         * POPULAR
+         */
+
+        if (
+            value.toLowerCase() ===
+            "popular"
+        ) {
+
+            resultsTitle.textContent =
+                "Popular videos";
+
+
+            resultsDescription.textContent =
+                "The most popular videos from the current collection.";
+
+
+            resultCount.textContent =
+                "Loading...";
+
+
+            resultsGrid.innerHTML = `
+
+                <div
                     style="
-                        font-size:22px;
-                        margin-bottom:15px;
+                        grid-column:1/-1;
+                        padding:60px 20px;
+                        text-align:center;
+                        color:#777;
                     "
-                ></i>
+                >
 
-                <p>Loading popular videos...</p>
+                    <i
+                        class="fa-solid fa-spinner fa-spin"
+                        style="
+                            font-size:22px;
+                            margin-bottom:15px;
+                        "
+                    ></i>
 
-            </div>
+                    <p>
+                        Loading popular videos...
+                    </p>
 
-        `;
+                </div>
 
-
-        try {
-
-            const params =
-                new URLSearchParams({
-
-                    sort: "popularity",
-
-                    days: "30",
-
-                    limit: "100"
-
-                });
+            `;
 
 
-            const response =
-                await fetch(
-                    `${API_ENDPOINT}?${params.toString()}`,
-                    {
-                        cache: "no-store"
-                    }
+            try {
+
+                const popularVideos =
+                    await fetchFeed({
+
+                        sort:
+                            "popularity",
+
+                        days:
+                            "30",
+
+                        limit:
+                            "100"
+
+                    });
+
+
+                renderResults(
+                    popularVideos
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Popular videos error:",
+                    error
                 );
 
 
-            if (!response.ok) {
+                resultsGrid.innerHTML =
+                    "";
 
-                throw new Error(
-                    `HTTP ${response.status}`
-                );
+
+                emptyState.style.display =
+                    "block";
+
+
+                resultCount.textContent =
+                    "Unable to load";
+
+
+                resultsTitle.textContent =
+                    "Popular videos unavailable";
+
+
+                resultsDescription.textContent =
+                    "Please try again in a moment.";
 
             }
 
 
-            const text =
-                await response.text();
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
 
 
-            const popularVideos =
-                parseCSV(text);
-
-
-            console.log(
-                "AfterDarkX popular feed:",
-                popularVideos
-            );
-
-
-            renderResults(
-                popularVideos
-            );
-
+            return;
 
         }
-        catch (error) {
-
-            console.error(
-                "Popular videos error:",
-                error
-            );
 
 
-            resultsGrid.innerHTML = "";
+        /*
+         * ALL OTHER QUICK SEARCHES
+         */
 
-
-            emptyState.style.display =
-                "block";
-
-
-            resultCount.textContent =
-                "Unable to load";
-
-
-            resultsTitle.textContent =
-                "Popular videos unavailable";
-
-
-            resultsDescription.textContent =
-                "Please try again in a moment.";
-
-        }
+        performSearch(
+            value
+        );
 
 
         window.scrollTo({
@@ -2879,30 +3186,7 @@ async function quickSearch(value) {
 
         });
 
-
-        return;
-
     }
-
-
-    /* =========================
-       OTHER QUICK SEARCHES
-       USE NORMAL SEARCH
-    ========================= */
-
-    performSearch(value);
-
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
 
 
     /* =========================
@@ -2922,7 +3206,9 @@ async function quickSearch(value) {
         );
 
 
-        performSearch("");
+        performSearch(
+            ""
+        );
 
 
         searchInput.focus();
