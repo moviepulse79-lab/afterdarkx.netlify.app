@@ -6,3 +6,8 @@
   from = "/api/videos"
   to = "/.netlify/functions/videos"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Permissions-Policy = "fullscreen=(self \"https://videohdzog.com\"), autoplay=*, picture-in-picture=*"
