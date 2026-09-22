@@ -2718,7 +2718,6 @@
         loadPlayer(video);
 
     }
-
 /* =========================
    LOAD AUTHORIZED PLAYER
 ========================= */
@@ -2735,11 +2734,6 @@ function loadPlayer(video) {
         return;
 
     }
-
-    /*
-        Read the authorized iframe supplied
-        by TubeCorporate.
-    */
 
     const parser =
         new DOMParser();
@@ -2773,9 +2767,8 @@ function loadPlayer(video) {
     }
 
     /*
-        Security check:
-        only use the authorized TubeCorporate
-        video host.
+        Only allow the authorized TubeCorporate
+        video player.
     */
 
     if (
@@ -2791,13 +2784,13 @@ function loadPlayer(video) {
     }
 
     /*
-        Clear the placeholder.
+        Clear placeholder.
     */
 
     player.innerHTML = "";
 
     /*
-        Create responsive player container.
+        Create player container.
     */
 
     const playerContainer =
@@ -2807,52 +2800,35 @@ function loadPlayer(video) {
         "tubeCorporatePlayer";
 
     /*
-        Preserve the original iframe from
-        TubeCorporate instead of creating a
-        completely new one.
+        Clone the authorized iframe.
     */
 
     const iframe =
         sourceIframe.cloneNode(true);
 
-    /*
-        Keep the authorized URL.
-    */
-
     iframe.src =
         embedUrl;
 
     /*
-        Remove fixed dimensions that can make
-        the player overflow the screen.
+        Remove fixed dimensions.
     */
 
     iframe.removeAttribute("width");
     iframe.removeAttribute("height");
 
     /*
-        Explicit fullscreen permissions.
+        IMPORTANT:
+        The allow attribute controls the
+        permissions policy.
+
+        Fullscreen must explicitly be allowed.
     */
+iframe.setAttribute(
+    "allow",
+    "fullscreen *; autoplay *; picture-in-picture *"
+);
 
-    iframe.setAttribute(
-        "allow",
-        "autoplay; fullscreen; picture-in-picture; encrypted-media"
-    );
-
-    iframe.setAttribute(
-        "allowfullscreen",
-        ""
-    );
-
-    iframe.setAttribute(
-        "webkitallowfullscreen",
-        ""
-    );
-
-    iframe.setAttribute(
-        "mozallowfullscreen",
-        ""
-    );
+iframe.setAttribute("allowfullscreen", "");
 
     /*
         Responsive sizing.
@@ -2885,6 +2861,9 @@ function loadPlayer(video) {
     iframe.style.maxHeight =
         "100%";
 
+    iframe.style.display =
+        "block";
+
     iframe.style.margin =
         "0";
 
@@ -2894,8 +2873,27 @@ function loadPlayer(video) {
     iframe.style.border =
         "0";
 
-    iframe.style.display =
-        "block";
+    /*
+        Player container sizing.
+    */
+
+    playerContainer.style.position =
+        "absolute";
+
+    playerContainer.style.inset =
+        "0";
+
+    playerContainer.style.width =
+        "100%";
+
+    playerContainer.style.height =
+        "100%";
+
+    playerContainer.style.overflow =
+        "hidden";
+
+    playerContainer.style.background =
+        "#000";
 
     /*
         Add iframe.
@@ -2910,6 +2908,7 @@ function loadPlayer(video) {
     );
 
 }
+
 
     /* =========================
        VIDEO NOT FOUND
