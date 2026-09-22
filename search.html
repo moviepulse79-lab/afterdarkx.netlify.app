@@ -1887,509 +1887,1003 @@
 
     </div>
 
+<script>
 
-    <script>
+    /* =========================
+       API
+    ========================= */
 
-
-        /* =========================
-           DEMO SEARCH DATA
-        ========================= */
-
-        const videos = [
-
-            {
-                id: "search-01",
-                title: "Featured Collection",
-                duration: "18:42",
-                type: "Featured",
-                views: "—",
-                color: "rgba(255,45,110,0.32)"
-            },
+    const API_ENDPOINT = "/api/videos";
 
 
-            {
-                id: "search-02",
-                title: "Trending Selection",
-                duration: "14:25",
-                type: "Trending",
-                views: "—",
-                color: "rgba(125,55,255,0.32)"
-            },
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const clearButton =
+        document.getElementById("clearButton");
+
+    const searchForm =
+        document.getElementById("searchForm");
+
+    const resultsGrid =
+        document.getElementById("resultsGrid");
+
+    const emptyState =
+        document.getElementById("emptyState");
+
+    const resultsTitle =
+        document.getElementById("resultsTitle");
+
+    const resultsDescription =
+        document.getElementById("resultsDescription");
+
+    const resultCount =
+        document.getElementById("resultCount");
 
 
-            {
-                id: "search-03",
-                title: "New Arrival",
-                duration: "21:08",
-                type: "New",
-                views: "—",
-                color: "rgba(50,150,255,0.28)"
-            },
+    /* =========================
+       ALL VIDEOS FROM API
+    ========================= */
+
+    let videos = [];
 
 
-            {
-                id: "search-04",
-                title: "Popular Collection",
-                duration: "16:37",
-                type: "Popular",
-                views: "—",
-                color: "rgba(255,95,45,0.28)"
-            },
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
 
 
-            {
-                id: "search-05",
-                title: "Curated Collection",
-                duration: "12:54",
-                type: "Collection",
-                views: "—",
-                color: "rgba(50,210,175,0.28)"
-            },
+    /* =========================
+       PARSE PIPE FEED
+    ========================= */
+
+    function parseCSV(text) {
+
+        const rows = [];
+
+        let row = [];
+
+        let field = "";
+
+        let insideQuotes = false;
 
 
-            {
-                id: "search-06",
-                title: "Creator Selection",
-                duration: "24:16",
-                type: "Creator",
-                views: "—",
-                color: "rgba(220,70,145,0.28)"
-            },
+        for (let i = 0; i < text.length; i++) {
+
+            const char = text[i];
+
+            const next = text[i + 1];
 
 
-            {
-                id: "search-07",
-                title: "Latest Feature",
-                duration: "17:22",
-                type: "Latest",
-                views: "—",
-                color: "rgba(240,175,50,0.28)"
-            },
+            if (char === '"' && insideQuotes && next === '"') {
 
+                field += '"';
 
-            {
-                id: "search-08",
-                title: "Most Viewed Selection",
-                duration: "19:44",
-                type: "Popular",
-                views: "—",
-                color: "rgba(80,220,190,0.28)"
+                i++;
+
+                continue;
+
             }
+
+
+            if (char === '"') {
+
+                insideQuotes = !insideQuotes;
+
+                continue;
+
+            }
+
+
+            if (char === "|" && !insideQuotes) {
+
+                row.push(field);
+
+                field = "";
+
+                continue;
+
+            }
+
+
+            if (
+                (char === "\n" || char === "\r")
+                &&
+                !insideQuotes
+            ) {
+
+                if (char === "\r" && next === "\n") {
+
+                    i++;
+
+                }
+
+
+                row.push(field);
+
+                field = "";
+
+
+                if (
+                    row.some(
+                        value =>
+                            String(value).trim() !== ""
+                    )
+                ) {
+
+                    rows.push(row);
+
+                }
+
+
+                row = [];
+
+                continue;
+
+            }
+
+
+            field += char;
+
+        }
+
+
+        if (field !== "" || row.length) {
+
+            row.push(field);
+
+            if (
+                row.some(
+                    value =>
+                        String(value).trim() !== ""
+                )
+            ) {
+
+                rows.push(row);
+
+            }
+
+        }
+
+
+        if (!rows.length) {
+
+            return [];
+
+        }
+
+
+        const headers =
+            rows[0].map(
+                header =>
+                    String(header)
+                        .trim()
+                        .toLowerCase()
+            );
+
+
+        return rows
+            .slice(1)
+            .map(values => {
+
+                const item = {};
+
+                headers.forEach(
+                    (header, index) => {
+
+                        item[header] =
+                            values[index] ?? "";
+
+                    }
+                );
+
+                return item;
+
+            });
+
+    }
+
+
+    /* =========================
+       THUMBNAIL
+    ========================= */
+
+    function getThumbnail(video) {
+
+        const candidates = [
+
+            video.main_thumbnail,
+
+            video.main_screenshot,
+
+            video.video_thumbnail_url,
+
+            video.thumbnail,
+
+            video.thumbnails
 
         ];
 
 
-        /* =========================
-           ELEMENTS
-        ========================= */
+        for (const value of candidates) {
 
-        const searchInput =
-            document.getElementById(
-                "searchInput"
+            if (!value) continue;
+
+
+            const first =
+                String(value)
+                    .split(",")[0]
+                    .trim();
+
+
+            if (first) {
+
+                return first;
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================
+       DURATION
+    ========================= */
+
+    function formatDuration(value) {
+
+        if (!value) {
+
+            return "";
+
+        }
+
+
+        const stringValue =
+            String(value).trim();
+
+
+        if (stringValue.includes(":")) {
+
+            return stringValue;
+
+        }
+
+
+        const seconds =
+            Number(stringValue);
+
+
+        if (
+            !Number.isFinite(seconds)
+            ||
+            seconds < 0
+        ) {
+
+            return "";
+
+        }
+
+
+        const hours =
+            Math.floor(seconds / 3600);
+
+        const minutes =
+            Math.floor(
+                (seconds % 3600) / 60
+            );
+
+        const remainingSeconds =
+            Math.floor(seconds % 60);
+
+
+        if (hours > 0) {
+
+            return [
+                hours,
+                String(minutes).padStart(2, "0"),
+                String(remainingSeconds).padStart(2, "0")
+            ].join(":");
+
+        }
+
+
+        return [
+            String(minutes).padStart(2, "0"),
+            String(remainingSeconds).padStart(2, "0")
+        ].join(":");
+
+    }
+
+
+    /* =========================
+       LOAD VIDEOS
+    ========================= */
+
+    async function loadVideos() {
+
+        resultsGrid.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    padding:60px 20px;
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                    style="
+                        font-size:22px;
+                        margin-bottom:15px;
+                    "
+                ></i>
+
+                <p>Loading collection...</p>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const params =
+                new URLSearchParams({
+
+                    sort: "date",
+
+                    limit: "100"
+
+                });
+
+
+            const response =
+                await fetch(
+                    `${API_ENDPOINT}?${params.toString()}`,
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+
+            const text =
+                await response.text();
+
+
+            const loadedVideos =
+                parseCSV(text);
+
+
+            console.log(
+                "AfterDarkX search feed:",
+                loadedVideos
             );
 
 
-        const clearButton =
-            document.getElementById(
-                "clearButton"
+            videos =
+                loadedVideos;
+
+
+            const paramsUrl =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const query =
+                paramsUrl.get("q");
+
+
+            if (query) {
+
+                searchInput.value =
+                    query;
+
+                performSearch(query);
+
+            } else {
+
+                showInitialResults();
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "AfterDarkX search error:",
+                error
             );
 
-
-        const searchForm =
-            document.getElementById(
-                "searchForm"
-            );
-
-
-        const resultsGrid =
-            document.getElementById(
-                "resultsGrid"
-            );
-
-
-        const emptyState =
-            document.getElementById(
-                "emptyState"
-            );
-
-
-        const resultsTitle =
-            document.getElementById(
-                "resultsTitle"
-            );
-
-
-        const resultsDescription =
-            document.getElementById(
-                "resultsDescription"
-            );
-
-
-        const resultCount =
-            document.getElementById(
-                "resultCount"
-            );
-
-
-        /* =========================
-           RENDER
-        ========================= */
-
-        function renderResults(list) {
 
             resultsGrid.innerHTML = "";
 
 
-            if (!list.length) {
-
-                emptyState.style.display =
-                    "block";
-
-                resultCount.textContent =
-                    "0 results";
-
-                return;
-
-            }
-
-
             emptyState.style.display =
-                "none";
+                "block";
 
 
             resultCount.textContent =
-                `${list.length} results`;
-
-
-            resultsGrid.innerHTML =
-                list.map(
-                    video => `
-
-                        <article
-                            class="result-card"
-                            onclick="openVideo('${video.id}')"
-                        >
-
-                            <div
-                                class="thumbnail"
-                                style="--glow:${video.color};"
-                            >
-
-                                <div
-                                    class="thumbnail-pattern"
-                                ></div>
-
-
-                                <span class="result-type">
-
-                                    ${video.type}
-
-                                </span>
-
-
-                                <div class="play">
-
-                                    <i
-                                        class="fa-solid fa-play"
-                                    ></i>
-
-                                </div>
-
-
-                                <span class="duration">
-
-                                    ${video.duration}
-
-                                </span>
-
-                            </div>
-
-
-                            <div class="result-info">
-
-                                <h3>
-
-                                    ${video.title}
-
-                                </h3>
-
-
-                                <p>
-
-                                    ${video.views} views
-                                    · ${video.type}
-
-                                </p>
-
-                            </div>
-
-                        </article>
-
-                    `
-                ).join("");
-
-        }
-
-
-        /* =========================
-           SEARCH
-        ========================= */
-
-        function performSearch(query) {
-
-            const value =
-                query.trim().toLowerCase();
-
-
-            if (!value) {
-
-                resultsTitle.textContent =
-                    "Explore the collection";
-
-                resultsDescription.textContent =
-                    "Search results will appear here.";
-
-                renderResults(videos);
-
-                clearButton.style.display =
-                    "none";
-
-                return;
-
-            }
-
-
-            const results =
-                videos.filter(
-                    video =>
-                        video.title
-                            .toLowerCase()
-                            .includes(value)
-                        ||
-                        video.type
-                            .toLowerCase()
-                            .includes(value)
-                );
+                "Feed unavailable";
 
 
             resultsTitle.textContent =
-                `Results for "${query.trim()}"`;
+                "Unable to load collection";
 
 
             resultsDescription.textContent =
-                "Matching content from the current collection.";
+                "Please try again in a moment.";
+
+        }
+
+    }
 
 
-            renderResults(results);
+    /* =========================
+       RENDER RESULTS
+    ========================= */
+
+    function renderResults(list) {
+
+        resultsGrid.innerHTML = "";
+
+
+        if (!list.length) {
+
+            emptyState.style.display =
+                "block";
+
+
+            resultCount.textContent =
+                "0 results";
+
+
+            return;
+
+        }
+
+
+        emptyState.style.display =
+            "none";
+
+
+        resultCount.textContent =
+            `${list.length} results`;
+
+
+        resultsGrid.innerHTML =
+            list.map(video => {
+
+                const thumbnail =
+                    getThumbnail(video);
+
+
+                const title =
+                    escapeHtml(
+                        video.title ||
+                        video.description ||
+                        "Untitled video"
+                    );
+
+
+                const categories =
+                    escapeHtml(
+                        video.categories ||
+                        video.category ||
+                        "Video"
+                    );
+
+
+                const duration =
+                    formatDuration(
+                        video.duration
+                    );
+
+
+                const rating =
+                    video.rating
+                        ? `★ ${escapeHtml(video.rating)}`
+                        : "";
+
+
+                const thumbnailHtml =
+                    thumbnail
+
+                        ? `
+
+                            <img
+                                src="${escapeHtml(thumbnail)}"
+                                alt="${title}"
+                                loading="lazy"
+                                style="
+                                    width:100%;
+                                    height:100%;
+                                    object-fit:cover;
+                                    position:absolute;
+                                    inset:0;
+                                "
+                                onerror="
+                                    this.style.display='none';
+                                "
+                            >
+
+                        `
+
+                        : "";
+
+
+                return `
+
+                    <article
+                        class="result-card"
+                        onclick="openVideo('${escapeHtml(video.id)}')"
+                    >
+
+                        <div
+                            class="thumbnail"
+                            style="
+                                --glow:
+                                rgba(255,45,110,0.25);
+                            "
+                        >
+
+                            ${thumbnailHtml}
+
+
+                            <div
+                                class="thumbnail-pattern"
+                            ></div>
+
+
+                            <span class="result-type">
+
+                                ${categories}
+
+                            </span>
+
+
+                            <div class="play">
+
+                                <i
+                                    class="fa-solid fa-play"
+                                ></i>
+
+                            </div>
+
+
+                            ${
+                                duration
+                                    ? `
+                                        <span class="duration">
+
+                                            ${escapeHtml(duration)}
+
+                                        </span>
+                                      `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="result-info">
+
+                            <h3>
+
+                                ${title}
+
+                            </h3>
+
+
+                            <p>
+
+                                ${
+                                    rating
+                                        ? `${rating} · `
+                                        : ""
+                                }
+
+                                ${categories}
+
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================
+       INITIAL RESULTS
+    ========================= */
+
+    function showInitialResults() {
+
+        resultsTitle.textContent =
+            "Explore the collection";
+
+
+        resultsDescription.textContent =
+            "Search across the entire AfterDarkX collection.";
+
+
+        /*
+         * Show the newest 20 videos
+         * before a search is entered.
+         */
+
+        renderResults(
+            videos.slice(0, 20)
+        );
+
+
+        clearButton.style.display =
+            "none";
+
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    function performSearch(query) {
+
+        const value =
+            query.trim().toLowerCase();
+
+
+        if (!value) {
+
+            resultsTitle.textContent =
+                "Explore the collection";
+
+
+            resultsDescription.textContent =
+                "Search across the entire AfterDarkX collection.";
+
+
+            renderResults(
+                videos.slice(0, 20)
+            );
 
 
             clearButton.style.display =
-                "flex";
-
-        }
-
-
-        searchForm.addEventListener(
-            "submit",
-            function(event) {
-
-                event.preventDefault();
-
-                performSearch(
-                    searchInput.value
-                );
-
-                const query =
-                    searchInput.value.trim();
-
-
-                if (query) {
-
-                    const newUrl =
-                        `${window.location.pathname}?q=${encodeURIComponent(query)}`;
-
-                    window.history.replaceState(
-                        {},
-                        "",
-                        newUrl
-                    );
-
-                }
-
-            }
-        );
-
-
-        searchInput.addEventListener(
-            "input",
-            function() {
-
-                clearButton.style.display =
-                    this.value
-                        ? "flex"
-                        : "none";
-
-            }
-        );
-
-
-        /* =========================
-           QUICK SEARCH
-        ========================= */
-
-        function quickSearch(value) {
-
-            searchInput.value =
-                value;
-
-            performSearch(value);
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        /* =========================
-           CLEAR
-        ========================= */
-
-        function clearSearch() {
-
-            searchInput.value = "";
-
-            window.history.replaceState(
-                {},
-                "",
-                window.location.pathname
-            );
-
-            performSearch("");
-
-            searchInput.focus();
-
-        }
-
-
-        /* =========================
-           OPEN VIDEO
-        ========================= */
-
-        function openVideo(id) {
-
-            window.location.href =
-                `watch.html?id=${encodeURIComponent(id)}`;
-
-        }
-
-
-        /* =========================
-           MOBILE MENU
-        ========================= */
-
-        function toggleMenu() {
-
-            document
-                .getElementById("mainNav")
-                .classList.toggle("open");
-
-        }
-
-
-        /* =========================
-           AGE GATE
-        ========================= */
-
-        function enterSite() {
-
-            localStorage.setItem(
-                "afterDarkXAgeVerified",
-                "true"
-            );
-
-
-            document.getElementById(
-                "ageGate"
-            ).style.display =
                 "none";
 
 
-            document.body.classList.remove(
-                "no-scroll"
-            );
+            return;
 
         }
 
 
-        function leaveSite() {
+        const results =
+            videos.filter(video => {
 
-            window.location.href =
-                "https://www.google.com/";
-
-        }
-
-
-        /* =========================
-           INITIALIZE
-        ========================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            function() {
-
-                const params =
-                    new URLSearchParams(
-                        window.location.search
-                    );
+                const title =
+                    String(
+                        video.title || ""
+                    ).toLowerCase();
 
 
-                const query =
-                    params.get("q");
+                const description =
+                    String(
+                        video.description || ""
+                    ).toLowerCase();
 
 
-                if (query) {
-
-                    searchInput.value =
-                        query;
-
-                    performSearch(query);
-
-                } else {
-
-                    renderResults(videos);
-
-                }
+                const categories =
+                    String(
+                        video.categories ||
+                        video.category ||
+                        ""
+                    ).toLowerCase();
 
 
-                const verified =
-                    localStorage.getItem(
-                        "afterDarkXAgeVerified"
-                    );
+                const tags =
+                    String(
+                        video.tags || ""
+                    ).toLowerCase();
 
 
-                if (
-                    verified === "true"
-                ) {
+                return (
 
-                    document.getElementById(
-                        "ageGate"
-                    ).style.display =
-                        "none";
+                    title.includes(value)
 
-                } else {
+                    ||
 
-                    document.body.classList.add(
-                        "no-scroll"
-                    );
+                    description.includes(value)
 
-                }
+                    ||
+
+                    categories.includes(value)
+
+                    ||
+
+                    tags.includes(value)
+
+                );
+
+            });
+
+
+        resultsTitle.textContent =
+            `Results for "${query.trim()}"`;
+
+
+        resultsDescription.textContent =
+            results.length
+
+                ? "Matching content from the AfterDarkX collection."
+
+                : "No matching content was found.";
+
+
+        renderResults(results);
+
+
+        clearButton.style.display =
+            "flex";
+
+    }
+
+
+    /* =========================
+       SEARCH FORM
+    ========================= */
+
+    searchForm.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const query =
+                searchInput.value.trim();
+
+
+            performSearch(query);
+
+
+            if (query) {
+
+                const newUrl =
+                    `${window.location.pathname}?q=${encodeURIComponent(query)}`;
+
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    newUrl
+                );
 
             }
+            else {
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    window.location.pathname
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       LIVE INPUT
+    ========================= */
+
+    searchInput.addEventListener(
+        "input",
+        function() {
+
+            clearButton.style.display =
+                this.value
+                    ? "flex"
+                    : "none";
+
+        }
+    );
+
+
+    /* =========================
+       QUICK SEARCH
+    ========================= */
+
+    function quickSearch(value) {
+
+        searchInput.value =
+            value;
+
+
+        performSearch(value);
+
+
+        const newUrl =
+            `${window.location.pathname}?q=${encodeURIComponent(value)}`;
+
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
         );
 
-    </script>
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+
+    /* =========================
+       CLEAR SEARCH
+    ========================= */
+
+    function clearSearch() {
+
+        searchInput.value =
+            "";
+
+
+        window.history.replaceState(
+            {},
+            "",
+            window.location.pathname
+        );
+
+
+        performSearch("");
+
+
+        searchInput.focus();
+
+    }
+
+
+    /* =========================
+       OPEN VIDEO
+    ========================= */
+
+    function openVideo(id) {
+
+        window.location.href =
+            `watch.html?id=${encodeURIComponent(id)}`;
+
+    }
+
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    function toggleMenu() {
+
+        document
+            .getElementById("mainNav")
+            .classList.toggle("open");
+
+    }
+
+
+    /* =========================
+       AGE GATE
+    ========================= */
+
+    function enterSite() {
+
+        localStorage.setItem(
+            "afterDarkXAgeVerified",
+            "true"
+        );
+
+
+        document.getElementById(
+            "ageGate"
+        ).style.display =
+            "none";
+
+
+        document.body.classList.remove(
+            "no-scroll"
+        );
+
+    }
+
+
+    function leaveSite() {
+
+        window.location.href =
+            "https://www.google.com/";
+
+    }
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const verified =
+                localStorage.getItem(
+                    "afterDarkXAgeVerified"
+                );
+
+
+            if (
+                verified === "true"
+            ) {
+
+                document.getElementById(
+                    "ageGate"
+                ).style.display =
+                    "none";
+
+            }
+            else {
+
+                document.body.classList.add(
+                    "no-scroll"
+                );
+
+            }
+
+
+            loadVideos();
+
+        }
+    );
+
+</script>
+   
 
 </body>
 
