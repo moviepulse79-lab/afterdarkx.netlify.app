@@ -393,32 +393,46 @@
     background: #000 !important;
 }
 
-        /* =========================
-   FULLSCREEN SUPPORT
+   /* =========================
+   FULLSCREEN PLAYER
 ========================= */
 
 #tubeCorporatePlayer:fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
     background: #000 !important;
+    z-index: 999999 !important;
 }
 
 #tubeCorporatePlayer:-webkit-full-screen {
+    position: fixed !important;
+    inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
     background: #000 !important;
+    z-index: 999999 !important;
 }
 
 #tubeCorporatePlayer:fullscreen iframe,
 #tubeCorporatePlayer:-webkit-full-screen iframe {
+    position: absolute !important;
+    inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-
     max-width: none !important;
     max-height: none !important;
+    border: 0 !important;
 }
+
+
         .player-glow {
 
             position: absolute;
@@ -3417,17 +3431,31 @@ function loadPlayer(video) {
         "height"
     );
 
+iframe.setAttribute(
+    "allow",
+    "fullscreen; autoplay; picture-in-picture"
+);
 
-    iframe.setAttribute(
-        "allow",
-        "fullscreen *; autoplay *; picture-in-picture *"
-    );
+iframe.setAttribute(
+    "allowfullscreen",
+    "true"
+);
 
+iframe.setAttribute(
+    "webkitallowfullscreen",
+    "true"
+);
 
-    iframe.setAttribute(
-        "allowfullscreen",
-        ""
-    );
+iframe.setAttribute(
+    "mozallowfullscreen",
+    "true"
+);
+
+iframe.setAttribute(
+    "playsinline",
+    "true"
+);
+  
 
 
     iframe.style.position =
