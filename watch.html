@@ -17,11 +17,11 @@
         content="Watch premium 18+ entertainment on AfterDarkX."
     >
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="favicon.png"
-    >
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="favicon.svg"
+>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -299,34 +299,7 @@
            PLAYER
         ========================= */
 
-        .player-wrapper {
-
-            position: relative;
-
-            width: 100%;
-
-            aspect-ratio: 16 / 9;
-
-            overflow: hidden;
-
-            border-radius: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #101116,
-                    #0a0b0e
-                );
-
-            border:
-                1px solid
-                rgba(255,255,255,0.07);
-
-            box-shadow:
-                0 30px 90px
-                rgba(0,0,0,0.35);
-        }
-
+        
 
         .player-placeholder {
 
@@ -339,7 +312,50 @@
 
             overflow: hidden;
         }
+/* =========================
+   RESPONSIVE VIDEO PLAYER
+========================= */
 
+.player-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+}
+
+#tubeCorporatePlayer {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: #000;
+}
+
+#tubeCorporatePlayer iframe {
+    position: absolute !important;
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
         .player-glow {
 
@@ -1469,10 +1485,11 @@
             }
 
 
-            .player-wrapper {
-
-                border-radius: 14px;
-            }
+          .player-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+}
 
 
             .related-grid {
@@ -1554,6 +1571,11 @@
 
                 flex-direction: column;
             }
+            .player-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+}
 
         }
 
@@ -2636,196 +2658,183 @@
     }
 
 
-    /* =========================
-       LOAD AUTHORIZED PLAYER
-    ========================= */
+   /* =========================
+   LOAD AUTHORIZED PLAYER
+========================= */
 
-    function loadPlayer(video) {
+function loadPlayer(video) {
 
-        const player =
-            document.getElementById(
-                "player"
-            );
+    const player =
+        document.getElementById("player");
 
+    if (!video.embed) {
 
-        if (!video.embed) {
+        showFeedError();
 
-            showFeedError();
-
-            return;
-
-        }
-
-
-        /*
-            We receive an authorized iframe
-            from the TubeCorporate feed.
-
-            Instead of injecting the complete
-            HTML string, extract its src and
-            create the iframe ourselves.
-        */
-
-        const parser =
-            new DOMParser();
-
-
-        const embedDocument =
-            parser.parseFromString(
-                video.embed,
-                "text/html"
-            );
-
-
-        const sourceIframe =
-            embedDocument.querySelector(
-                "iframe"
-            );
-
-
-        if (!sourceIframe) {
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        const embedUrl =
-            sourceIframe.getAttribute(
-                "src"
-            );
-
-
-        if (!embedUrl) {
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        if (
-            !embedUrl.startsWith(
-                "https://videohdzog.com/embed/"
-            )
-        ) {
-
-            showFeedError();
-
-            return;
-
-        }
-
-
-        player.innerHTML = "";
-
-
-        const playerContainer =
-            document.createElement(
-                "div"
-            );
-
-
-        playerContainer.id =
-            "tubeCorporatePlayer";
-
-
-        playerContainer.style.position =
-            "absolute";
-
-        playerContainer.style.inset =
-            "0";
-
-        playerContainer.style.width =
-            "100%";
-
-        playerContainer.style.height =
-            "100%";
-
-        playerContainer.style.background =
-            "#000";
-
-
-        const iframe =
-            document.createElement(
-                "iframe"
-            );
-
-
-        iframe.src =
-            embedUrl;
-
-
-        iframe.width =
-            "100%";
-
-
-        iframe.height =
-            "100%";
-
-
-        iframe.frameBorder =
-            "0";
-
-
-        iframe.allowFullscreen =
-            true;
-
-
-        iframe.setAttribute(
-            "webkitallowfullscreen",
-            ""
-        );
-
-
-        iframe.setAttribute(
-            "mozallowfullscreen",
-            ""
-        );
-
-
-        iframe.setAttribute(
-            "oallowfullscreen",
-            ""
-        );
-
-
-        iframe.setAttribute(
-            "msallowfullscreen",
-            ""
-        );
-
-
-        iframe.style.width =
-            "100%";
-
-
-        iframe.style.height =
-            "100%";
-
-
-        iframe.style.display =
-            "block";
-
-
-        iframe.style.border =
-            "0";
-
-
-        playerContainer.appendChild(
-            iframe
-        );
-
-
-        player.appendChild(
-            playerContainer
-        );
+        return;
 
     }
 
+    /*
+        The embed code comes from the authorized
+        TubeCorporate feed.
+
+        We extract only the iframe source and
+        create our own responsive iframe.
+    */
+
+    const parser =
+        new DOMParser();
+
+    const embedDocument =
+        parser.parseFromString(
+            video.embed,
+            "text/html"
+        );
+
+    const sourceIframe =
+        embedDocument.querySelector("iframe");
+
+    if (!sourceIframe) {
+
+        showFeedError();
+
+        return;
+
+    }
+
+    const embedUrl =
+        sourceIframe.getAttribute("src");
+
+    if (!embedUrl) {
+
+        showFeedError();
+
+        return;
+
+    }
+
+    /*
+        Only allow the authorized TubeCorporate
+        video host.
+    */
+
+    if (
+        !embedUrl.startsWith(
+            "https://videohdzog.com/embed/"
+        )
+    ) {
+
+        showFeedError();
+
+        return;
+
+    }
+
+    /*
+        Clear placeholder.
+    */
+
+    player.innerHTML = "";
+
+    /*
+        Player container.
+    */
+
+    const playerContainer =
+        document.createElement("div");
+
+    playerContainer.id =
+        "tubeCorporatePlayer";
+
+    /*
+        Responsive iframe.
+    */
+
+    const iframe =
+        document.createElement("iframe");
+
+    iframe.src =
+        embedUrl;
+
+    iframe.setAttribute(
+        "title",
+        "AfterDarkX video player"
+    );
+
+    iframe.setAttribute(
+        "allow",
+        "autoplay; fullscreen; picture-in-picture"
+    );
+
+    iframe.setAttribute(
+        "allowfullscreen",
+        ""
+    );
+
+    iframe.setAttribute(
+        "webkitallowfullscreen",
+        ""
+    );
+
+    iframe.setAttribute(
+        "mozallowfullscreen",
+        ""
+    );
+
+    /*
+        Force responsive sizing.
+    */
+
+    iframe.style.position =
+        "absolute";
+
+    iframe.style.inset =
+        "0";
+
+    iframe.style.width =
+        "100%";
+
+    iframe.style.height =
+        "100%";
+
+    iframe.style.minWidth =
+        "0";
+
+    iframe.style.minHeight =
+        "0";
+
+    iframe.style.maxWidth =
+        "100%";
+
+    iframe.style.maxHeight =
+        "100%";
+
+    iframe.style.display =
+        "block";
+
+    iframe.style.border =
+        "0";
+
+    iframe.style.margin =
+        "0";
+
+    iframe.style.padding =
+        "0";
+
+    /*
+        Add iframe.
+    */
+
+    playerContainer.appendChild(
+        iframe
+    );
+
+    player.appendChild(
+        playerContainer
+    );
+
+}
 
     /* =========================
        VIDEO NOT FOUND
