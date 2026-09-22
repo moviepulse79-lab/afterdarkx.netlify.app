@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08090b"/>
+      <stop offset="100%" stop-color="#17101b"/>
+    </linearGradient>
+
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff306b"/>
+      <stop offset="100%" stop-color="#963bff"/>
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect
+    width="128"
+    height="128"
+    rx="28"
+    fill="url(#bg)"
+  />
+
+  <!-- Subtle glow -->
+  <circle
+    cx="65"
+    cy="60"
+    r="38"
+    fill="#ff306b"
+    opacity=".08"
+  />
+
+  <!-- Moon -->
+  <path
+    d="M79 20
+       C57 25 43 43 43 64
+       C43 88 62 106 85 106
+       C99 106 111 99 118 88
+       C111 91 104 93 96 93
+       C74 93 57 76 57 55
+       C57 40 65 27 79 20Z"
+    fill="url(#accent)"
+    filter="url(#glow)"
+  />
+
+  <!-- X -->
+  <path
+    d="M48 47
+       L61 47
+       L76 64
+       L92 47
+       L105 47
+       L83 70
+       L106 95
+       L92 95
+       L76 77
+       L60 95
+       L46 95
+       L69 70
+       Z"
+    fill="#ffffff"
+    opacity=".96"
+  />
+
+  <!-- X accent -->
+  <path
+    d="M76 64
+       L92 47
+       L105 47
+       L83 70
+       Z"
+    fill="url(#accent)"
+  />
+</svg>
