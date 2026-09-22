@@ -3697,30 +3697,18 @@
     /* =========================
        OPEN VIDEO
     ========================= */
+function openVideo(id) {
+    if (!id) return;
 
-    function openVideo(id) {
+    const cleanId = String(id)
+        .trim()
+        .replace(/^["']|["']$/g, "");
 
-        if (!id) {
+    console.log("Opening video ID:", cleanId);
 
-            return;
-
-        }
-
-
-        /*
-            IDs are already plain values here.
-            Encode exactly once.
-        */
-
-        const cleanId =
-            String(id);
-
-
-        window.location.href =
-            `watch.html?id=${encodeURIComponent(cleanId)}`;
-
-    }
-
+    window.location.href = `watch.html?id=${encodeURIComponent(cleanId)}`;
+}
+   
 
     /* =========================
        LIKE
