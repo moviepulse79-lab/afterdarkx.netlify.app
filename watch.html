@@ -313,33 +313,66 @@
             overflow: hidden;
         }
 /* =========================
-   RESPONSIVE VIDEO PLAYER
+   VIDEO PLAYER
 ========================= */
 
 .player-wrapper {
     position: relative;
+
     width: 100%;
     max-width: 100%;
+
     aspect-ratio: 16 / 9;
+
     overflow: hidden;
-    border-radius: 20px;
+
+    border-radius: 18px;
+
     background: #000;
-    border: 1px solid rgba(255,255,255,0.07);
-    box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,0.45);
 }
+
+
+/* =========================
+   TUBECORPORATE PLAYER
+========================= */
 
 #tubeCorporatePlayer {
     position: absolute !important;
-    inset: 0 !important;
+
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
     width: 100% !important;
     height: 100% !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
     overflow: hidden !important;
-    background: #000;
+
+    background: #000 !important;
 }
+
+
+/* =========================
+   TUBECORPORATE IFRAME
+========================= */
 
 #tubeCorporatePlayer iframe {
     position: absolute !important;
-    inset: 0 !important;
+
+    top: 0 !important;
+    left: 0 !important;
 
     width: 100% !important;
     height: 100% !important;
@@ -350,13 +383,42 @@
     max-width: 100% !important;
     max-height: 100% !important;
 
-    display: block !important;
-
-    border: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+
+    border: 0 !important;
+
+    display: block !important;
+
+    background: #000 !important;
 }
 
+        /* =========================
+   FULLSCREEN SUPPORT
+========================= */
+
+#tubeCorporatePlayer:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+
+    background: #000 !important;
+}
+
+#tubeCorporatePlayer:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+
+    background: #000 !important;
+}
+
+#tubeCorporatePlayer:fullscreen iframe,
+#tubeCorporatePlayer:-webkit-full-screen iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+
+    max-width: none !important;
+    max-height: none !important;
+}
         .player-glow {
 
             position: absolute;
@@ -2657,8 +2719,7 @@
 
     }
 
-
-   /* =========================
+/* =========================
    LOAD AUTHORIZED PLAYER
 ========================= */
 
@@ -2676,11 +2737,8 @@ function loadPlayer(video) {
     }
 
     /*
-        The embed code comes from the authorized
-        TubeCorporate feed.
-
-        We extract only the iframe source and
-        create our own responsive iframe.
+        Read the authorized iframe supplied
+        by TubeCorporate.
     */
 
     const parser =
@@ -2715,7 +2773,8 @@ function loadPlayer(video) {
     }
 
     /*
-        Only allow the authorized TubeCorporate
+        Security check:
+        only use the authorized TubeCorporate
         video host.
     */
 
@@ -2732,13 +2791,13 @@ function loadPlayer(video) {
     }
 
     /*
-        Clear placeholder.
+        Clear the placeholder.
     */
 
     player.innerHTML = "";
 
     /*
-        Player container.
+        Create responsive player container.
     */
 
     const playerContainer =
@@ -2748,23 +2807,36 @@ function loadPlayer(video) {
         "tubeCorporatePlayer";
 
     /*
-        Responsive iframe.
+        Preserve the original iframe from
+        TubeCorporate instead of creating a
+        completely new one.
     */
 
     const iframe =
-        document.createElement("iframe");
+        sourceIframe.cloneNode(true);
+
+    /*
+        Keep the authorized URL.
+    */
 
     iframe.src =
         embedUrl;
 
-    iframe.setAttribute(
-        "title",
-        "AfterDarkX video player"
-    );
+    /*
+        Remove fixed dimensions that can make
+        the player overflow the screen.
+    */
+
+    iframe.removeAttribute("width");
+    iframe.removeAttribute("height");
+
+    /*
+        Explicit fullscreen permissions.
+    */
 
     iframe.setAttribute(
         "allow",
-        "autoplay; fullscreen; picture-in-picture"
+        "autoplay; fullscreen; picture-in-picture; encrypted-media"
     );
 
     iframe.setAttribute(
@@ -2783,13 +2855,16 @@ function loadPlayer(video) {
     );
 
     /*
-        Force responsive sizing.
+        Responsive sizing.
     */
 
     iframe.style.position =
         "absolute";
 
-    iframe.style.inset =
+    iframe.style.top =
+        "0";
+
+    iframe.style.left =
         "0";
 
     iframe.style.width =
@@ -2810,17 +2885,17 @@ function loadPlayer(video) {
     iframe.style.maxHeight =
         "100%";
 
-    iframe.style.display =
-        "block";
-
-    iframe.style.border =
-        "0";
-
     iframe.style.margin =
         "0";
 
     iframe.style.padding =
         "0";
+
+    iframe.style.border =
+        "0";
+
+    iframe.style.display =
+        "block";
 
     /*
         Add iframe.
