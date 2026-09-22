@@ -2194,7 +2194,7 @@
 <script>
 
     /* =========================
-       AFTERDARKX VIDEO FEED
+       AFTERDARKXX VIDEO FEED
     ========================= */
 
     const FEED_ENDPOINT = "/api/videos";
@@ -2282,7 +2282,7 @@
 
         const date =
             new Date(
-                dateString.replace(" ", "T")
+                String(dateString).replace(" ", "T")
             );
 
         if (
@@ -2308,7 +2308,7 @@
 
 
     /* =========================
-       CSV PARSER
+       CSV / PIPE PARSER
     ========================= */
 
     function parseCSV(text) {
@@ -2373,8 +2373,10 @@
 
 
             if (
-                (char === "\n" ||
-                 char === "\r") &&
+                (
+                    char === "\n" ||
+                    char === "\r"
+                ) &&
                 !insideQuotes
             ) {
 
@@ -2395,7 +2397,7 @@
                 if (
                     row.some(
                         value =>
-                            value.trim() !== ""
+                            String(value).trim() !== ""
                     )
                 ) {
 
@@ -2428,14 +2430,16 @@
 
 
         if (rows.length < 2) {
+
             return [];
+
         }
 
 
         const headers =
             rows[0].map(
                 header =>
-                    header.trim()
+                    String(header).trim()
             );
 
 
@@ -2465,115 +2469,252 @@
 
 
     /* =========================
-       LOAD FEED
+       CONVERT FEED RECORD
     ========================= */
 
-    async function loadFeed() {
+    function normalizeVideo(record) {
 
-        try {
-
-            const response =
-                await fetch(
-                    FEED_ENDPOINT,
-                    {
-                        cache: "no-store"
-                    }
-                );
+        const categories =
+            record.Categories ||
+            "Featured";
 
 
-            if (!response.ok) {
-
-                throw new Error(
-                    `Feed request failed: ${response.status}`
-                );
-
-            }
-
-
-            const csv =
-                await response.text();
+        const categoryList =
+            categories
+                .split(",")
+                .map(
+                    item =>
+                        item.trim()
+                )
+                .filter(Boolean);
 
 
-            const records =
-                parseCSV(csv);
+        return {
+
+            id:
+                String(
+                    record.ID ||
+                    ""
+                ).trim(),
+
+            title:
+                record.Title ||
+                "Untitled video",
+
+            description:
+                record.Description ||
+                "",
+
+            link:
+                record["Website link"] ||
+                record.Link ||
+                "",
+
+            duration:
+                formatDuration(
+                    record.Duration
+                ),
+
+            durationSeconds:
+                parseInt(
+                    record.Duration,
+                    10
+                ) || 0,
+
+            rating:
+                record.Rating ||
+                "0",
+
+            date:
+                record["Publish date, time"] ||
+                record["Added time"] ||
+                "",
+
+            category:
+                categoryList[0] ||
+                "Featured",
+
+            categories:
+                categoryList,
+
+            tags:
+                record.Tags ||
+                "",
+
+            embed:
+                record["Embed code"] ||
+                "",
+
+            thumbnail:
+                record["Main thumbnail"] ||
+                "",
+
+            thumbnails:
+                record.Thumbnails ||
+                ""
+
+        };
+
+    }
 
 
-            videos =
-                records
-                    .map(record => {
+    /* =========================
+       FETCH API FEED
+    ========================= */
 
-                        const categories =
-                            record.Categories ||
-                            "Featured";
+    async function fetchApiVideos() {
 
+        const params =
+            new URLSearchParams({
+
+                sort: "post_date",
+
+                days: "0",
+
+                limit: "500"
+
+            });
+
+
+        const response =
+            await fetch(
+                `${FEED_ENDPOINT}?${params.toString()}`,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `API request failed: ${response.status}`
+            );
+
+        }
+
+
+        const contentType =
+            response.headers.get(
+                "content-type"
+            ) || "";
+
+
+        /*
+            Your API may return JSON or the
+            original pipe-delimited feed.
+        */
+
+        if (
+            contentType.includes(
+                "application/json"
+            )
+        ) {
+
+            const data =
+                await response.json();
+
+
+            if (Array.isArray(data)) {
+
+                return data
+                    .map(item => {
+
+                        /*
+                            If API already returns normalized
+                            objects, keep their values.
+                        */
 
                         return {
 
                             id:
-                                record.ID,
+                                String(
+                                    item.id ||
+                                    item.ID ||
+                                    ""
+                                ).trim(),
 
                             title:
-                                record.Title ||
+                                item.title ||
+                                item.Title ||
                                 "Untitled video",
 
                             description:
-                                record.Description ||
+                                item.description ||
+                                item.Description ||
                                 "",
 
                             link:
-                                record["Website link"] ||
-                                record.Link ||
+                                item.link ||
+                                item["Website link"] ||
                                 "",
 
                             duration:
+                                item.duration ||
                                 formatDuration(
-                                    record.Duration
+                                    item.durationSeconds ||
+                                    item.Duration
                                 ),
 
                             durationSeconds:
                                 parseInt(
-                                    record.Duration,
+                                    item.durationSeconds ||
+                                    item.Duration,
                                     10
                                 ) || 0,
 
                             rating:
-                                record.Rating ||
+                                item.rating ||
+                                item.Rating ||
                                 "0",
 
                             date:
-                                record["Publish date, time"] ||
-                                record["Added time"] ||
+                                item.date ||
+                                item["Publish date, time"] ||
+                                item["Added time"] ||
                                 "",
 
                             category:
-                                categories
-                                    .split(",")[0]
-                                    .trim() ||
+                                item.category ||
                                 "Featured",
 
                             categories:
-                                categories
-                                    .split(",")
-                                    .map(
-                                        item =>
-                                            item.trim()
-                                    )
-                                    .filter(Boolean),
+                                Array.isArray(
+                                    item.categories
+                                )
+                                    ? item.categories
+                                    : (
+                                        item.category
+                                            ? String(
+                                                item.category
+                                            )
+                                                .split(",")
+                                                .map(
+                                                    x =>
+                                                        x.trim()
+                                                )
+                                                .filter(Boolean)
+                                            : []
+                                    ),
 
                             tags:
-                                record.Tags ||
+                                item.tags ||
+                                item.Tags ||
                                 "",
 
                             embed:
-                                record["Embed code"] ||
+                                item.embed ||
+                                item["Embed code"] ||
                                 "",
 
                             thumbnail:
-                                record["Main thumbnail"] ||
+                                item.thumbnail ||
+                                item["Main thumbnail"] ||
                                 "",
 
                             thumbnails:
-                                record.Thumbnails ||
+                                item.thumbnails ||
+                                item.Thumbnails ||
                                 ""
 
                         };
@@ -2585,11 +2726,123 @@
                             video.title
                     );
 
+            }
+
+        }
+
+
+        /*
+            Fallback for pipe-delimited response.
+        */
+
+        const text =
+            await response.text();
+
+
+        const records =
+            parseCSV(text);
+
+
+        return records
+            .map(normalizeVideo)
+            .filter(
+                video =>
+                    video.id &&
+                    video.title
+            );
+
+    }
+
+
+    /* =========================
+       LOAD FEED
+    ========================= */
+
+    async function loadFeed() {
+
+        try {
+
+            const loadedVideos =
+                await fetchApiVideos();
+
+
+            /*
+                Remove duplicate IDs.
+            */
+
+            const unique =
+                new Map();
+
+
+            loadedVideos.forEach(
+                video => {
+
+                    if (
+                        video.id &&
+                        !unique.has(
+                            String(video.id)
+                        )
+                    ) {
+
+                        unique.set(
+                            String(video.id),
+                            video
+                        );
+
+                    }
+
+                }
+            );
+
+
+            videos =
+                Array.from(
+                    unique.values()
+                );
+
 
             if (!videos.length) {
 
                 throw new Error(
-                    "The TubeCorporate feed returned no videos."
+                    "The video API returned no videos."
+                );
+
+            }
+
+
+            console.log(
+                `AfterDarkXX: loaded ${videos.length} videos`
+            );
+
+
+            const requestedId =
+                getVideoId();
+
+
+            console.log(
+                "AfterDarkXX requested video ID:",
+                requestedId
+            );
+
+
+            /*
+                Check whether the requested video
+                actually exists in the loaded feed.
+            */
+
+            if (requestedId) {
+
+                const found =
+                    videos.find(
+                        video =>
+                            String(video.id) ===
+                            String(requestedId)
+                    );
+
+
+                console.log(
+                    "AfterDarkXX requested video found:",
+                    !!found
                 );
 
             }
@@ -2605,7 +2858,7 @@
         } catch (error) {
 
             console.error(
-                "AfterDarkX feed error:",
+                "AfterDarkXX feed error:",
                 error
             );
 
@@ -2627,12 +2880,24 @@
 
 
         if (!videos.length) {
+
             return null;
+
         }
 
 
+        /*
+            A URL with ?id= must always use
+            the matching video.
+
+            Do NOT silently show another video
+            when the requested ID doesn't exist.
+        */
+
         if (!id) {
+
             return videos[0];
+
         }
 
 
@@ -2718,196 +2983,313 @@
         loadPlayer(video);
 
     }
-/* =========================
-   LOAD AUTHORIZED PLAYER
-========================= */
 
-function loadPlayer(video) {
 
-    const player =
-        document.getElementById("player");
+    /* =========================
+       LOAD AUTHORIZED PLAYER
+    ========================= */
 
-    if (!video.embed) {
+    function loadPlayer(video) {
 
-        showFeedError();
+        const player =
+            document.getElementById(
+                "player"
+            );
 
-        return;
 
-    }
+        if (!video.embed) {
 
-    const parser =
-        new DOMParser();
+            console.error(
+                "No embed code for video:",
+                video.id
+            );
 
-    const embedDocument =
-        parser.parseFromString(
-            video.embed,
-            "text/html"
+            showFeedError();
+
+            return;
+
+        }
+
+
+        const parser =
+            new DOMParser();
+
+
+        const embedDocument =
+            parser.parseFromString(
+                video.embed,
+                "text/html"
+            );
+
+
+        const sourceIframe =
+            embedDocument.querySelector(
+                "iframe"
+            );
+
+
+        if (!sourceIframe) {
+
+            console.error(
+                "No iframe found in embed code for video:",
+                video.id
+            );
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        let embedUrl =
+            sourceIframe.getAttribute(
+                "src"
+            );
+
+
+        if (!embedUrl) {
+
+            console.error(
+                "Embed iframe has no src for video:",
+                video.id
+            );
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        /*
+            Convert relative embed URLs to absolute URLs.
+        */
+
+        try {
+
+            embedUrl =
+                new URL(
+                    embedUrl,
+                    window.location.href
+                ).href;
+
+        } catch (error) {
+
+            console.error(
+                "Invalid embed URL:",
+                embedUrl
+            );
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        /*
+            Only allow the authorized TubeCorporate /
+            HDZog player.
+        */
+
+        let parsedEmbedUrl;
+
+        try {
+
+            parsedEmbedUrl =
+                new URL(embedUrl);
+
+        } catch (error) {
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        const allowedHosts = [
+            "videohdzog.com",
+            "www.videohdzog.com"
+        ];
+
+
+        const isAllowedHost =
+            allowedHosts.includes(
+                parsedEmbedUrl.hostname
+            );
+
+
+        const isEmbedPath =
+            parsedEmbedUrl.pathname
+                .startsWith(
+                    "/embed/"
+                );
+
+
+        if (
+            !isAllowedHost ||
+            !isEmbedPath
+        ) {
+
+            console.error(
+                "Blocked unauthorized player URL:",
+                embedUrl
+            );
+
+            showFeedError();
+
+            return;
+
+        }
+
+
+        /*
+            Clear placeholder.
+        */
+
+        player.innerHTML = "";
+
+
+        /*
+            Create player container.
+        */
+
+        const playerContainer =
+            document.createElement(
+                "div"
+            );
+
+
+        playerContainer.id =
+            "tubeCorporatePlayer";
+
+
+        /*
+            Clone authorized iframe.
+        */
+
+        const iframe =
+            sourceIframe.cloneNode(
+                true
+            );
+
+
+        iframe.src =
+            embedUrl;
+
+
+        /*
+            Remove fixed dimensions.
+        */
+
+        iframe.removeAttribute(
+            "width"
         );
 
-    const sourceIframe =
-        embedDocument.querySelector("iframe");
+        iframe.removeAttribute(
+            "height"
+        );
 
-    if (!sourceIframe) {
 
-        showFeedError();
+        /*
+            Permissions.
+        */
 
-        return;
+        iframe.setAttribute(
+            "allow",
+            "fullscreen *; autoplay *; picture-in-picture *"
+        );
+
+
+        iframe.setAttribute(
+            "allowfullscreen",
+            ""
+        );
+
+
+        /*
+            Responsive sizing.
+        */
+
+        iframe.style.position =
+            "absolute";
+
+        iframe.style.top =
+            "0";
+
+        iframe.style.left =
+            "0";
+
+        iframe.style.width =
+            "100%";
+
+        iframe.style.height =
+            "100%";
+
+        iframe.style.minWidth =
+            "0";
+
+        iframe.style.minHeight =
+            "0";
+
+        iframe.style.maxWidth =
+            "100%";
+
+        iframe.style.maxHeight =
+            "100%";
+
+        iframe.style.display =
+            "block";
+
+        iframe.style.margin =
+            "0";
+
+        iframe.style.padding =
+            "0";
+
+        iframe.style.border =
+            "0";
+
+
+        /*
+            Player container sizing.
+        */
+
+        playerContainer.style.position =
+            "absolute";
+
+        playerContainer.style.inset =
+            "0";
+
+        playerContainer.style.width =
+            "100%";
+
+        playerContainer.style.height =
+            "100%";
+
+        playerContainer.style.overflow =
+            "hidden";
+
+        playerContainer.style.background =
+            "#000";
+
+
+        /*
+            Add iframe.
+        */
+
+        playerContainer.appendChild(
+            iframe
+        );
+
+
+        player.appendChild(
+            playerContainer
+        );
 
     }
-
-    const embedUrl =
-        sourceIframe.getAttribute("src");
-
-    if (!embedUrl) {
-
-        showFeedError();
-
-        return;
-
-    }
-
-    /*
-        Only allow the authorized TubeCorporate
-        video player.
-    */
-
-    if (
-        !embedUrl.startsWith(
-            "https://videohdzog.com/embed/"
-        )
-    ) {
-
-        showFeedError();
-
-        return;
-
-    }
-
-    /*
-        Clear placeholder.
-    */
-
-    player.innerHTML = "";
-
-    /*
-        Create player container.
-    */
-
-    const playerContainer =
-        document.createElement("div");
-
-    playerContainer.id =
-        "tubeCorporatePlayer";
-
-    /*
-        Clone the authorized iframe.
-    */
-
-    const iframe =
-        sourceIframe.cloneNode(true);
-
-    iframe.src =
-        embedUrl;
-
-    /*
-        Remove fixed dimensions.
-    */
-
-    iframe.removeAttribute("width");
-    iframe.removeAttribute("height");
-
-    /*
-        IMPORTANT:
-        The allow attribute controls the
-        permissions policy.
-
-        Fullscreen must explicitly be allowed.
-    */
-iframe.setAttribute(
-    "allow",
-    "fullscreen *; autoplay *; picture-in-picture *"
-);
-
-iframe.setAttribute("allowfullscreen", "");
-
-    /*
-        Responsive sizing.
-    */
-
-    iframe.style.position =
-        "absolute";
-
-    iframe.style.top =
-        "0";
-
-    iframe.style.left =
-        "0";
-
-    iframe.style.width =
-        "100%";
-
-    iframe.style.height =
-        "100%";
-
-    iframe.style.minWidth =
-        "0";
-
-    iframe.style.minHeight =
-        "0";
-
-    iframe.style.maxWidth =
-        "100%";
-
-    iframe.style.maxHeight =
-        "100%";
-
-    iframe.style.display =
-        "block";
-
-    iframe.style.margin =
-        "0";
-
-    iframe.style.padding =
-        "0";
-
-    iframe.style.border =
-        "0";
-
-    /*
-        Player container sizing.
-    */
-
-    playerContainer.style.position =
-        "absolute";
-
-    playerContainer.style.inset =
-        "0";
-
-    playerContainer.style.width =
-        "100%";
-
-    playerContainer.style.height =
-        "100%";
-
-    playerContainer.style.overflow =
-        "hidden";
-
-    playerContainer.style.background =
-        "#000";
-
-    /*
-        Add iframe.
-    */
-
-    playerContainer.appendChild(
-        iframe
-    );
-
-    player.appendChild(
-        playerContainer
-    );
-
-}
 
 
     /* =========================
@@ -2943,8 +3325,8 @@ iframe.setAttribute("allowfullscreen", "");
                     </h2>
 
                     <p>
-                        This video is no longer available
-                        in the current content feed.
+                        This video could not be found
+                        in the current authorized content feed.
                     </p>
 
                     <div class="player-status">
@@ -3009,8 +3391,9 @@ iframe.setAttribute("allowfullscreen", "");
                     </h2>
 
                     <p>
-                        The authorized video feed could not
-                        be loaded right now. Please try again shortly.
+                        The authorized video feed or player
+                        could not be loaded right now.
+                        Please try again shortly.
                     </p>
 
                     <div class="player-status">
@@ -3029,246 +3412,286 @@ iframe.setAttribute("allowfullscreen", "");
 
     }
 
-/* =========================
-   RELATED VIDEOS
-========================= */
 
-function renderRelated() {
+    /* =========================
+       GET THUMBNAIL
+    ========================= */
 
-    const current =
-        getCurrentVideo();
+    function getThumbnail(video) {
 
-    if (!current) {
-        return;
+        if (
+            video.thumbnail
+        ) {
+
+            return video.thumbnail;
+
+        }
+
+
+        if (
+            video.thumbnails
+        ) {
+
+            return video.thumbnails
+                .split(",")[0]
+                .trim();
+
+        }
+
+
+        return "";
+
     }
 
-    const related =
-        videos
-            .filter(
-                video =>
-                    video.id !== current.id
-            )
-            .slice(0, 6);
 
-    const grid =
-        document.getElementById(
-            "relatedGrid"
-        );
+    /* =========================
+       RELATED VIDEOS
+    ========================= */
 
-    if (!related.length) {
+    function renderRelated() {
+
+        const current =
+            getCurrentVideo();
+
+
+        if (!current) {
+
+            return;
+
+        }
+
+
+        const related =
+            videos
+                .filter(
+                    video =>
+                        String(video.id) !==
+                        String(current.id)
+                )
+                .slice(0, 6);
+
+
+        const grid =
+            document.getElementById(
+                "relatedGrid"
+            );
+
+
+        if (!related.length) {
+
+            grid.innerHTML =
+                "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
+
+            return;
+
+        }
+
 
         grid.innerHTML =
-            "<p style='color:#666;font-size:11px;'>No related videos available.</p>";
+            related
+                .map(
+                    video => {
 
-        return;
+                        const thumbnail =
+                            getThumbnail(
+                                video
+                            );
 
-    }
 
-    grid.innerHTML =
-        related
-            .map(
-                video => {
+                        return `
 
-                    const thumbnail =
-                        video.thumbnail ||
-                        (
-                            video.thumbnails
-                                ? video.thumbnails
-                                    .split(",")[0]
-                                    .trim()
-                                : ""
-                        );
-
-                    return `
-
-                        <article
-                            class="related-card"
-                            onclick="openVideo('${encodeURIComponent(video.id)}')"
-                        >
-
-                            <div
-                                class="related-thumb"
-                                style="
-                                    --glow:
-                                    rgba(255,48,108,0.22);
-                                "
+                            <article
+                                class="related-card"
+                                onclick="openVideo('${escapeHtml(video.id)}')"
                             >
 
-                                ${
-                                    thumbnail
-                                        ? `
-                                            <img
-                                                src="${escapeHtml(thumbnail)}"
-                                                alt=""
-                                                loading="lazy"
-                                                style="
-                                                    width:100%;
-                                                    height:100%;
-                                                    object-fit:cover;
-                                                    display:block;
-                                                "
-                                            >
-                                          `
-                                        : `
-                                            <div
-                                                class="related-pattern"
-                                            ></div>
-                                          `
-                                }
+                                <div
+                                    class="related-thumb"
+                                    style="
+                                        --glow:
+                                        rgba(255,48,108,0.22);
+                                    "
+                                >
+
+                                    ${
+                                        thumbnail
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(thumbnail)}"
+                                                    alt=""
+                                                    loading="lazy"
+                                                    style="
+                                                        width:100%;
+                                                        height:100%;
+                                                        object-fit:cover;
+                                                        display:block;
+                                                    "
+                                                >
+                                              `
+                                            : `
+                                                <div
+                                                    class="related-pattern"
+                                                ></div>
+                                              `
+                                    }
 
 
-                                <div class="related-play">
+                                    <div class="related-play">
 
-                                    <i
-                                        class="fa-solid fa-play"
-                                    ></i>
+                                        <i
+                                            class="fa-solid fa-play"
+                                        ></i>
+
+                                    </div>
+
+
+                                    <span
+                                        class="related-duration"
+                                    >
+                                        ${escapeHtml(video.duration)}
+                                    </span>
 
                                 </div>
 
 
-                                <span
-                                    class="related-duration"
-                                >
-                                    ${escapeHtml(video.duration)}
-                                </span>
+                                <div class="related-info">
 
-                            </div>
+                                    <h3>
+                                        ${escapeHtml(video.title)}
+                                    </h3>
 
+                                    <p>
+                                        ${escapeHtml(video.category)}
+                                    </p>
 
-                            <div class="related-info">
+                                </div>
 
-                                <h3>
-                                    ${escapeHtml(video.title)}
-                                </h3>
+                            </article>
 
-                                <p>
-                                    ${escapeHtml(video.category)}
-                                </p>
+                        `;
 
-                            </div>
+                    }
+                )
+                .join("");
 
-                        </article>
-
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-  
-
- /* =========================
-   UP NEXT
-========================= */
-
-function renderUpNext() {
-
-    const current =
-        getCurrentVideo();
-
-    if (!current) {
-        return;
     }
 
-    const next =
-        videos
-            .filter(
-                video =>
-                    video.id !== current.id
-            )
-            .slice(0, 4);
 
-    const container =
-        document.getElementById(
-            "nextList"
-        );
+    /* =========================
+       UP NEXT
+    ========================= */
 
-    if (!next.length) {
+    function renderUpNext() {
+
+        const current =
+            getCurrentVideo();
+
+
+        if (!current) {
+
+            return;
+
+        }
+
+
+        const next =
+            videos
+                .filter(
+                    video =>
+                        String(video.id) !==
+                        String(current.id)
+                )
+                .slice(0, 4);
+
+
+        const container =
+            document.getElementById(
+                "nextList"
+            );
+
+
+        if (!next.length) {
+
+            container.innerHTML =
+                "<p style='color:#666;font-size:11px;'>No more videos available.</p>";
+
+            return;
+
+        }
+
 
         container.innerHTML =
-            "<p style='color:#666;font-size:11px;'>No more videos available.</p>";
+            next
+                .map(
+                    video => {
 
-        return;
+                        const thumbnail =
+                            getThumbnail(
+                                video
+                            );
 
-    }
 
-    container.innerHTML =
-        next
-            .map(
-                video => {
+                        return `
 
-                    const thumbnail =
-                        video.thumbnail ||
-                        (
-                            video.thumbnails
-                                ? video.thumbnails
-                                    .split(",")[0]
-                                    .trim()
-                                : ""
-                        );
-
-                    return `
-
-                        <article
-                            class="next-item"
-                            onclick="openVideo('${encodeURIComponent(video.id)}')"
-                        >
-
-                            <div
-                                class="next-thumb"
-                                style="
-                                    --glow:
-                                    rgba(120,50,255,0.22);
-                                    overflow:hidden;
-                                    position:relative;
-                                "
+                            <article
+                                class="next-item"
+                                onclick="openVideo('${escapeHtml(video.id)}')"
                             >
 
-                                ${
-                                    thumbnail
-                                        ? `
-                                            <img
-                                                src="${escapeHtml(thumbnail)}"
-                                                alt=""
-                                                loading="lazy"
-                                                style="
-                                                    width:100%;
-                                                    height:100%;
-                                                    object-fit:cover;
-                                                    display:block;
-                                                "
-                                            >
-                                          `
-                                        : ""
-                                }
+                                <div
+                                    class="next-thumb"
+                                    style="
+                                        --glow:
+                                        rgba(120,50,255,0.22);
+                                        overflow:hidden;
+                                        position:relative;
+                                    "
+                                >
 
-                            </div>
+                                    ${
+                                        thumbnail
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(thumbnail)}"
+                                                    alt=""
+                                                    loading="lazy"
+                                                    style="
+                                                        width:100%;
+                                                        height:100%;
+                                                        object-fit:cover;
+                                                        display:block;
+                                                    "
+                                                >
+                                              `
+                                            : ""
+                                    }
+
+                                </div>
 
 
-                            <div class="next-info">
+                                <div class="next-info">
 
-                                <h4>
-                                    ${escapeHtml(video.title)}
-                                </h4>
+                                    <h4>
+                                        ${escapeHtml(video.title)}
+                                    </h4>
 
-                                <p>
-                                    ${escapeHtml(video.duration)}
-                                    ·
-                                    ${escapeHtml(video.category)}
-                                </p>
+                                    <p>
+                                        ${escapeHtml(video.duration)}
+                                        ·
+                                        ${escapeHtml(video.category)}
+                                    </p>
 
-                            </div>
+                                </div>
 
-                        </article>
+                            </article>
 
-                    `;
+                        `;
 
-                }
-            )
-            .join("");
+                    }
+                )
+                .join("");
 
-}
+    }
 
 
     /* =========================
@@ -3277,8 +3700,24 @@ function renderUpNext() {
 
     function openVideo(id) {
 
+        if (!id) {
+
+            return;
+
+        }
+
+
+        /*
+            IDs are already plain values here.
+            Encode exactly once.
+        */
+
+        const cleanId =
+            String(id);
+
+
         window.location.href =
-            `watch.html?id=${encodeURIComponent(id)}`;
+            `watch.html?id=${encodeURIComponent(cleanId)}`;
 
     }
 
@@ -3389,7 +3828,9 @@ function renderUpNext() {
 
             } catch (error) {
 
-                // User cancelled sharing.
+                /*
+                    User cancelled sharing.
+                */
 
             }
 
@@ -3513,6 +3954,7 @@ function renderUpNext() {
                     "ageGate"
                 ).style.display =
                     "none";
+
 
                 document.body.classList.remove(
                     "no-scroll"
