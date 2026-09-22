@@ -17,11 +17,7 @@
         content="Discover what's trending on AfterDarkX."
     >
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="favicon.png"
-    >
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <link
         rel="preconnect"
@@ -2055,132 +2051,620 @@
 
     </div>
 
+<script>
 
-    <script>
+    /* =====================================================
+       AFTERDARKX TRENDING
+       Real TubeCorporate feed
+    ===================================================== */
 
+    const API_ENDPOINT = "/api/videos";
 
-        /* =========================
-           DEMO TRENDING DATA
-        ========================= */
-
-        const videos = [
-
-            {
-                id: "trend-01",
-                title: "Trending Collection",
-                duration: "18:42",
-                views: "—",
-                change: "+24%",
-                color: "rgba(255,45,110,0.34)"
-            },
+    let currentPeriod = "today";
+    let currentVideos = [];
 
 
-            {
-                id: "trend-02",
-                title: "Popular Discovery",
-                duration: "14:25",
-                views: "—",
-                change: "+19%",
-                color: "rgba(125,55,255,0.34)"
-            },
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
 
 
-            {
-                id: "trend-03",
-                title: "Rising Selection",
-                duration: "21:08",
-                views: "—",
-                change: "+17%",
-                color: "rgba(50,150,255,0.30)"
-            },
+    /* =====================================================
+       CSV PARSER
+       Handles quoted CSV fields correctly
+    ===================================================== */
 
+    function parseCSV(text) {
 
-            {
-                id: "trend-04",
-                title: "Viewer Favorite",
-                duration: "16:37",
-                views: "—",
-                change: "+15%",
-                color: "rgba(255,95,45,0.30)"
-            },
+        const rows = [];
+        let row = [];
+        let cell = "";
+        let insideQuotes = false;
 
+        for (let i = 0; i < text.length; i++) {
 
-            {
-                id: "trend-05",
-                title: "Trending Feature",
-                duration: "12:54",
-                views: "—",
-                change: "+13%",
-                color: "rgba(50,210,175,0.30)"
-            },
+            const char = text[i];
+            const next = text[i + 1];
 
+            if (char === '"') {
 
-            {
-                id: "trend-06",
-                title: "Fast Rising",
-                duration: "24:16",
-                views: "—",
-                change: "+11%",
-                color: "rgba(220,70,145,0.30)"
-            },
+                if (insideQuotes && next === '"') {
 
+                    cell += '"';
+                    i++;
 
-            {
-                id: "trend-07",
-                title: "Popular Collection",
-                duration: "17:22",
-                views: "—",
-                change: "+9%",
-                color: "rgba(240,175,50,0.30)"
-            },
+                } else {
 
+                    insideQuotes = !insideQuotes;
 
-            {
-                id: "trend-08",
-                title: "Currently Popular",
-                duration: "19:44",
-                views: "—",
-                change: "+8%",
-                color: "rgba(80,220,190,0.30)"
+                }
+
+                continue;
             }
 
-        ];
+            if (char === "|" && !insideQuotes) {
+
+                row.push(cell);
+                cell = "";
+                continue;
+
+            }
+
+            if (
+                (char === "\n" || char === "\r") &&
+                !insideQuotes
+            ) {
+
+                if (char === "\r" && next === "\n") {
+                    i++;
+                }
+
+                row.push(cell);
+                cell = "";
+
+                if (
+                    row.length > 1 ||
+                    String(row[0] || "").trim()
+                ) {
+                    rows.push(row);
+                }
+
+                row = [];
+
+                continue;
+            }
+
+            cell += char;
+        }
+
+        if (cell.length || row.length) {
+
+            row.push(cell);
+
+            if (
+                row.length > 1 ||
+                String(row[0] || "").trim()
+            ) {
+                rows.push(row);
+            }
+
+        }
+
+        if (!rows.length) {
+            return [];
+        }
+
+        const headers = rows[0].map(
+            header =>
+                String(header)
+                    .replace(/^\uFEFF/, "")
+                    .trim()
+                    .toLowerCase()
+        );
+
+        return rows
+            .slice(1)
+            .map(columns => {
+
+                const item = {};
+
+                headers.forEach(
+                    (header, index) => {
+                        item[header] =
+                            String(columns[index] ?? "").trim();
+                    }
+                );
+
+                return item;
+
+            })
+            .filter(item => item.id);
+
+    }
 
 
-        /* =========================
-           RENDER
-        ========================= */
+    /* =====================================================
+       THUMBNAIL
+    ===================================================== */
 
-        function renderVideos() {
+    function getThumbnail(video) {
 
-            const grid =
-                document.getElementById(
-                    "trendingGrid"
+        if (video.main_thumbnail) {
+            return video.main_thumbnail;
+        }
+
+        if (video.main_screenshot) {
+            return video.main_screenshot;
+        }
+
+        if (video.video_thumbnail_url) {
+            return video.video_thumbnail_url;
+        }
+
+        if (video.thumbnail) {
+            return video.thumbnail;
+        }
+
+        if (video.thumbnails) {
+
+            const first =
+                String(video.thumbnails)
+                    .split(",")[0]
+                    .trim();
+
+            if (first) {
+                return first;
+            }
+
+        }
+
+        return "";
+
+    }
+
+
+    /* =====================================================
+       DURATION
+    ===================================================== */
+
+    function formatDuration(value) {
+
+        if (!value) {
+            return "HD";
+        }
+
+        const raw = String(value).trim();
+
+        if (
+            raw.includes(":")
+        ) {
+            return raw;
+        }
+
+        const seconds =
+            parseInt(raw, 10);
+
+        if (!Number.isFinite(seconds)) {
+            return raw;
+        }
+
+        const hours =
+            Math.floor(seconds / 3600);
+
+        const minutes =
+            Math.floor(
+                (seconds % 3600) / 60
+            );
+
+        const secs =
+            seconds % 60;
+
+        if (hours > 0) {
+
+            return [
+                hours,
+                String(minutes).padStart(2, "0"),
+                String(secs).padStart(2, "0")
+            ].join(":");
+
+        }
+
+        return [
+            minutes,
+            String(secs).padStart(2, "0")
+        ].join(":");
+
+    }
+
+
+    /* =====================================================
+       PERIOD SETTINGS
+    ===================================================== */
+
+    function getPeriodSettings() {
+
+        if (currentPeriod === "today") {
+
+            return {
+                days: "1",
+                label: "Today"
+            };
+
+        }
+
+        if (currentPeriod === "week") {
+
+            return {
+                days: "7",
+                label: "This week"
+            };
+
+        }
+
+        return {
+            days: "30",
+            label: "All time"
+        };
+
+    }
+
+
+    /* =====================================================
+       LOAD TRENDING VIDEOS
+    ===================================================== */
+
+    async function loadTrending() {
+
+        const grid =
+            document.getElementById(
+                "trendingGrid"
+            );
+
+        if (!grid) return;
+
+        grid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                padding:70px 20px;
+                text-align:center;
+                color:#666a73;
+            ">
+                <i
+                    class="fa-solid fa-circle-notch fa-spin"
+                    style="
+                        font-size:22px;
+                        margin-bottom:14px;
+                    "
+                ></i>
+
+                <div>
+                    Loading trending videos...
+                </div>
+            </div>
+        `;
+
+
+        const settings =
+            getPeriodSettings();
+
+
+        const params =
+            new URLSearchParams({
+
+                sort: "popularity",
+
+                days: settings.days,
+
+                limit: "100"
+
+            });
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_ENDPOINT}?${params.toString()}`,
+                    {
+                        cache: "no-store"
+                    }
                 );
 
 
-            grid.innerHTML =
-                videos.map(
+            if (!response.ok) {
+
+                throw new Error(
+                    `Feed returned ${response.status}`
+                );
+
+            }
+
+
+            const csv =
+                await response.text();
+
+
+            const videos =
+                parseCSV(csv);
+
+
+            console.log(
+                "AfterDarkX trending feed:",
+                videos
+            );
+
+
+            currentVideos =
+                videos;
+
+
+            if (!videos.length) {
+
+                renderEmptyState();
+
+                return;
+
+            }
+
+
+            renderFeatured(
+                videos[0]
+            );
+
+
+            renderTrendingGrid(
+                videos
+            );
+
+
+            updateFeedNote(
+                videos.length,
+                settings.label
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Trending feed error:",
+                error
+            );
+
+
+            grid.innerHTML = `
+                <div style="
+                    grid-column:1/-1;
+                    padding:70px 20px;
+                    text-align:center;
+                    color:#777b84;
+                ">
+
+                    <i
+                        class="fa-solid fa-triangle-exclamation"
+                        style="
+                            font-size:25px;
+                            color:#ff4779;
+                            margin-bottom:14px;
+                        "
+                    ></i>
+
+                    <div style="
+                        color:#d7d8dc;
+                        font-weight:700;
+                        margin-bottom:7px;
+                    ">
+                        Unable to load trending videos
+                    </div>
+
+                    <div style="
+                        font-size:11px;
+                    ">
+                        Please refresh and try again.
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FEATURED VIDEO
+    ===================================================== */
+
+    function renderFeatured(video) {
+
+        const visual =
+            document.querySelector(
+                ".featured-visual"
+            );
+
+        const title =
+            document.getElementById(
+                "featuredTitle"
+            );
+
+        const description =
+            document.getElementById(
+                "featuredDescription"
+            );
+
+        const watchButton =
+            document.querySelector(
+                ".watch-button"
+            );
+
+        if (!visual) return;
+
+
+        const thumbnail =
+            getThumbnail(video);
+
+
+        if (thumbnail) {
+
+            visual.style.backgroundImage = `
+                linear-gradient(
+                    180deg,
+                    rgba(0,0,0,0.08),
+                    rgba(0,0,0,0.72)
+                ),
+                url("${thumbnail}")
+            `;
+
+            visual.style.backgroundSize =
+                "cover";
+
+            visual.style.backgroundPosition =
+                "center";
+
+        }
+
+
+        if (title) {
+
+            title.textContent =
+                video.title ||
+                "Trending now";
+
+        }
+
+
+        if (description) {
+
+            description.textContent =
+                video.description ||
+                "Discover what viewers are watching right now on AfterDarkX.";
+
+        }
+
+
+        if (watchButton) {
+
+            watchButton.href =
+                `watch.html?id=${encodeURIComponent(video.id)}`;
+
+        }
+
+
+        const number =
+            document.querySelector(
+                ".trend-number"
+            );
+
+        if (number) {
+
+            number.innerHTML = `
+                TRENDING
+                <strong>#1</strong>
+            `;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GRID
+    ===================================================== */
+
+    function renderTrendingGrid(videos) {
+
+        const grid =
+            document.getElementById(
+                "trendingGrid"
+            );
+
+        if (!grid) return;
+
+
+        const items =
+            videos.slice(1, 13);
+
+
+        if (!items.length) {
+
+            renderEmptyState();
+
+            return;
+
+        }
+
+
+        grid.innerHTML =
+            items
+                .map(
                     (video, index) => {
+
+                        const thumbnail =
+                            getThumbnail(video);
+
+                        const duration =
+                            formatDuration(
+                                video.duration
+                            );
+
+                        const rating =
+                            video.rating
+                                ? `★ ${escapeHtml(video.rating)}`
+                                : "Trending";
+
 
                         return `
 
                             <article
                                 class="trend-card"
-                                onclick="openVideo('${video.id}')"
+                                onclick="openVideo('${escapeHtml(video.id)}')"
                             >
 
-                                <div
-                                    class="thumbnail"
-                                    style="--glow:${video.color};"
-                                >
+                                <div class="thumbnail">
+
+                                    ${
+                                        thumbnail
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(thumbnail)}"
+                                                    alt="${escapeHtml(video.title || "Trending video")}"
+                                                    loading="lazy"
+                                                    style="
+                                                        position:absolute;
+                                                        inset:0;
+                                                        width:100%;
+                                                        height:100%;
+                                                        object-fit:cover;
+                                                        display:block;
+                                                        z-index:1;
+                                                        transition:transform .35s ease;
+                                                    "
+                                                    onerror="this.style.display='none'"
+                                                >
+                                            `
+                                            : ""
+                                    }
 
                                     <div
                                         class="thumbnail-pattern"
+                                        style="z-index:2;"
                                     ></div>
 
 
-                                    <div class="rank">
+                                    <div
+                                        class="rank"
+                                        style="z-index:5;"
+                                    >
 
                                         <i class="fa-solid fa-fire"></i>
 
@@ -2189,14 +2673,20 @@
                                     </div>
 
 
-                                    <div class="trend-up">
+                                    <div
+                                        class="trend-up"
+                                        style="z-index:5;"
+                                    >
 
-                                        ${video.change}
+                                        TRENDING
 
                                     </div>
 
 
-                                    <div class="play">
+                                    <div
+                                        class="play"
+                                        style="z-index:6;"
+                                    >
 
                                         <i
                                             class="fa-solid fa-play"
@@ -2205,9 +2695,12 @@
                                     </div>
 
 
-                                    <span class="duration">
+                                    <span
+                                        class="duration"
+                                        style="z-index:6;"
+                                    >
 
-                                        ${video.duration}
+                                        ${escapeHtml(duration)}
 
                                     </span>
 
@@ -2217,16 +2710,24 @@
                                 <div class="trend-info">
 
                                     <h3>
-
-                                        ${video.title}
-
+                                        ${escapeHtml(
+                                            video.title ||
+                                            "Untitled video"
+                                        )}
                                     </h3>
 
 
                                     <p>
 
-                                        ${video.views} views
-                                        · Trending
+                                        ${rating}
+
+                                        ·
+
+                                        ${
+                                            video.categories ||
+                                            video.category ||
+                                            "Trending"
+                                        }
 
                                     </p>
 
@@ -2237,167 +2738,211 @@
                         `;
 
                     }
-                ).join("");
-
-        }
-
-
-        /* =========================
-           PERIOD
-        ========================= */
-
-        function changePeriod(button) {
-
-            document
-                .querySelectorAll(
-                    ".period-tabs button"
                 )
-                .forEach(
-                    btn => {
-                        btn.classList.remove(
-                            "active"
-                        );
-                    }
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    function renderEmptyState() {
+
+        const grid =
+            document.getElementById(
+                "trendingGrid"
+            );
+
+        grid.innerHTML = `
+
+            <div style="
+                grid-column:1/-1;
+                padding:70px 20px;
+                text-align:center;
+            ">
+
+                <i
+                    class="fa-solid fa-fire"
+                    style="
+                        font-size:30px;
+                        color:#ff4779;
+                        margin-bottom:16px;
+                    "
+                ></i>
+
+                <h3 style="
+                    font-size:17px;
+                    margin-bottom:8px;
+                ">
+                    No trending videos found
+                </h3>
+
+                <p style="
+                    color:#686b74;
+                    font-size:11px;
+                ">
+                    Try another time period.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       FEED NOTE
+    ===================================================== */
+
+    function updateFeedNote(
+        count,
+        period
+    ) {
+
+        const note =
+            document.querySelector(
+                ".feed-note span"
+            );
+
+        if (!note) return;
+
+
+        note.textContent =
+            `${count} trending videos currently available from the authorized content feed. Showing popularity-based results for ${period.toLowerCase()}.`;
+
+    }
+
+
+    /* =====================================================
+       PERIOD SWITCH
+    ===================================================== */
+
+    function changePeriod(button) {
+
+        document
+            .querySelectorAll(
+                ".period-tabs button"
+            )
+            .forEach(
+                btn =>
+                    btn.classList.remove(
+                        "active"
+                    )
+            );
+
+
+        button.classList.add(
+            "active"
+        );
+
+
+        currentPeriod =
+            button.dataset.period;
+
+
+        loadTrending();
+
+    }
+
+
+    /* =====================================================
+       OPEN VIDEO
+    ===================================================== */
+
+    function openVideo(id) {
+
+        window.location.href =
+            `watch.html?id=${encodeURIComponent(id)}`;
+
+    }
+
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    function toggleMenu() {
+
+        document
+            .getElementById("mainNav")
+            .classList.toggle("open");
+
+    }
+
+
+    /* =====================================================
+       AGE GATE
+    ===================================================== */
+
+    function enterSite() {
+
+        localStorage.setItem(
+            "afterDarkXAgeVerified",
+            "true"
+        );
+
+
+        document.getElementById(
+            "ageGate"
+        ).style.display = "none";
+
+
+        document.body.classList.remove(
+            "no-scroll"
+        );
+
+    }
+
+
+    function leaveSite() {
+
+        window.location.href =
+            "https://www.google.com/";
+
+    }
+
+
+    /* =====================================================
+       INIT
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const verified =
+                localStorage.getItem(
+                    "afterDarkXAgeVerified"
                 );
 
 
-            button.classList.add(
-                "active"
-            );
-
-
-            const period =
-                button.dataset.period;
-
-
-            if (period === "today") {
+            if (
+                verified === "true"
+            ) {
 
                 document.getElementById(
-                    "featuredTitle"
-                ).textContent =
-                    "The experience everyone is discovering";
+                    "ageGate"
+                ).style.display =
+                    "none";
+
+            } else {
+
+                document.body.classList.add(
+                    "no-scroll"
+                );
 
             }
 
 
-            if (period === "week") {
-
-                document.getElementById(
-                    "featuredTitle"
-                ).textContent =
-                    "This week's biggest discovery";
-
-            }
-
-
-            if (period === "all") {
-
-                document.getElementById(
-                    "featuredTitle"
-                ).textContent =
-                    "A platform favorite";
-
-            }
+            loadTrending();
 
         }
+    );
 
-
-        /* =========================
-           OPEN VIDEO
-        ========================= */
-
-        function openVideo(id) {
-
-            window.location.href =
-                `watch.html?id=${encodeURIComponent(id)}`;
-
-        }
-
-
-        /* =========================
-           MOBILE MENU
-        ========================= */
-
-        function toggleMenu() {
-
-            document
-                .getElementById("mainNav")
-                .classList.toggle("open");
-
-        }
-
-
-        /* =========================
-           AGE GATE
-        ========================= */
-
-        function enterSite() {
-
-            localStorage.setItem(
-                "afterDarkXAgeVerified",
-                "true"
-            );
-
-
-            document.getElementById(
-                "ageGate"
-            ).style.display =
-                "none";
-
-
-            document.body.classList.remove(
-                "no-scroll"
-            );
-
-        }
-
-
-        function leaveSite() {
-
-            window.location.href =
-                "https://www.google.com/";
-
-        }
-
-
-        /* =========================
-           INIT
-        ========================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            function() {
-
-                renderVideos();
-
-
-                const verified =
-                    localStorage.getItem(
-                        "afterDarkXAgeVerified"
-                    );
-
-
-                if (
-                    verified === "true"
-                ) {
-
-                    document.getElementById(
-                        "ageGate"
-                    ).style.display =
-                        "none";
-
-                } else {
-
-                    document.body.classList.add(
-                        "no-scroll"
-                    );
-
-                }
-
-            }
-        );
-
-    </script>
+</script>
 
 </body>
 
