@@ -3,26 +3,153 @@ const BASE_FEED_URL =
 
 const SOURCE = "815139609";
 
+
+/*
+ * ==========================================
+ * VALID CATEGORIES
+ * ==========================================
+ */
+
 const VALID_CATEGORIES = new Set([
-    "African","Albanian","Algerian","Amateur","American","Arab","Armenian",
-    "Asian","Australian","Austrian","Azeri","BBW","BDSM","Babe","Bangladeshi",
-    "Beach","Behind The Scenes","Belgian","Big Ass","Big Tits","Bisexual Male",
-    "Blonde","Bolivian","Bosnian","Brazilian","British","Brunette","Cambodian",
-    "Canadian","Car","Casting","Celebrity","Chilean","Close-up","Colombian",
-    "Compilation","Cosplay","Costa Rican","Couple","Croatian","Cuban","Czech",
-    "Dominican","Egyptian","Emo Girl","Estonian","European","French",
-    "German","Greek","Guatemalan","HD","Hairy","Indian","Indonesian","Interracial",
-    "Iranian","Irish","Israeli","Italian","Jamaican","Japanese","Jewish",
-    "JAV Uncensored","Korean","Latina","Latvian","Lebanese","Lesbian","Lingerie",
-    "Lithuanian","MILF","Macedonian","Malaysian","Massage","Mature","Mexican",
-    "Moldavian","Moroccan","Nigerian","Norwegian","Outdoor","POV","Pakistani",
-    "Panamanian","Peruvian","Piercing","Pornstar","Public","Puerto Rican",
-    "Red Head","Romanian","Secretary","Shaved","Singaporean","Slovakian",
-    "Slovenian","Spanish","Sports","Sri Lankan","Stockings","Straight","Swiss",
-    "Tattoo","Thai","Threesome","Tunisian","Ukrainian","Uniform","Venezuelan",
-    "Vintage","Voyeur","Webcam"
+    "African",
+    "Albanian",
+    "Algerian",
+    "Amateur",
+    "American",
+    "Arab",
+    "Armenian",
+    "Asian",
+    "Australian",
+    "Austrian",
+    "Azeri",
+    "BBW",
+    "BDSM",
+    "Babe",
+    "Bangladeshi",
+    "Beach",
+    "Behind The Scenes",
+    "Belgian",
+    "Big Ass",
+    "Big Tits",
+    "Bisexual Male",
+    "Blonde",
+    "Bolivian",
+    "Bosnian",
+    "Brazilian",
+    "British",
+    "Brunette",
+    "Cambodian",
+    "Canadian",
+    "Car",
+    "Casting",
+    "Celebrity",
+    "Chilean",
+    "Close-up",
+    "Colombian",
+    "Compilation",
+    "Cosplay",
+    "Costa Rican",
+    "Couple",
+    "Croatian",
+    "Cuban",
+    "Czech",
+    "Dominican",
+    "Ecuadorian",
+    "Egyptian",
+    "Emo Girl",
+    "Estonian",
+    "European",
+    "French",
+    "German",
+    "Greek",
+    "Guatemalan",
+    "HD",
+    "Hairy",
+    "Indian",
+    "Indonesian",
+    "Interracial",
+    "Iranian",
+    "Irish",
+    "Israeli",
+    "Italian",
+    "Jamaican",
+    "Japanese",
+    "Jewish",
+    "JAV Uncensored",
+    "Korean",
+    "Latina",
+    "Latvian",
+    "Lebanese",
+    "Lesbian",
+    "Lingerie",
+    "Lithuanian",
+    "MILF",
+    "Macedonian",
+    "Malaysian",
+    "Massage",
+    "Mature",
+    "Mexican",
+    "Moldavian",
+    "Moroccan",
+    "Nigerian",
+    "Norwegian",
+    "Outdoor",
+    "POV",
+    "Pakistani",
+    "Panamanian",
+    "Peruvian",
+    "Piercing",
+    "Pornstar",
+    "Public",
+    "Puerto Rican",
+    "Red Head",
+    "Romanian",
+    "Secretary",
+    "Shaved",
+    "Singaporean",
+    "Slovakian",
+    "Slovenian",
+    "Spanish",
+    "Sports",
+    "Sri Lankan",
+    "Stockings",
+    "Straight",
+    "Swiss",
+    "Tattoo",
+    "Thai",
+    "Threesome",
+    "Tunisian",
+    "Ukrainian",
+    "Uniform",
+    "Venezuelan",
+    "Vintage",
+    "Voyeur",
+    "Webcam"
 ]);
 
+
+/*
+ * ==========================================
+ * AFRICAN CATEGORIES
+ * ==========================================
+ */
+
+const AFRICAN_CATEGORIES = [
+    "African",
+    "Nigerian",
+    "Moroccan",
+    "Egyptian",
+    "Algerian",
+    "Tunisian",
+    "Jamaican"
+];
+
+
+/*
+ * ==========================================
+ * BUILD FEED URL
+ * ==========================================
+ */
 
 function buildFeedUrl({
     category = "",
@@ -31,67 +158,82 @@ function buildFeedUrl({
     limit = "100"
 } = {}) {
 
-    const params = new URLSearchParams();
+    const params =
+        new URLSearchParams();
+
 
     if (
         category &&
         VALID_CATEGORIES.has(category)
     ) {
+
         params.set(
             "categories",
             category
         );
+
     }
+
 
     params.set(
         "source",
         SOURCE
     );
 
+
     params.set(
         "only_hd",
         "on"
     );
+
 
     params.set(
         "feed_format",
         "csv"
     );
 
+
     params.set(
         "screenshot_format",
         "300x169"
     );
+
 
     params.set(
         "sorting",
         sorting
     );
 
+
     params.set(
         "days",
         days
     );
+
 
     params.set(
         "limit",
         limit
     );
 
+
     params.set(
         "player_width",
         "100%"
     );
+
 
     params.set(
         "player_height",
         "560"
     );
 
+
     params.set(
         "csv_separator",
         "|"
     );
+
 
     params.set(
         "csv_columns",
@@ -111,9 +253,19 @@ function buildFeedUrl({
         ].join("|")
     );
 
-    return `${BASE_FEED_URL}?${params.toString()}`;
+
+    return (
+        `${BASE_FEED_URL}?${params.toString()}`
+    );
+
 }
 
+
+/*
+ * ==========================================
+ * CSV LINE PARSER
+ * ==========================================
+ */
 
 function parseCSVLine(line) {
 
@@ -134,7 +286,9 @@ function parseCSVLine(line) {
             line[i];
 
 
-        if (char === '"') {
+        if (
+            char === '"'
+        ) {
 
             if (
                 insideQuotes &&
@@ -148,6 +302,7 @@ function parseCSVLine(line) {
                 continue;
 
             }
+
 
             insideQuotes =
                 !insideQuotes;
@@ -187,6 +342,392 @@ function parseCSVLine(line) {
 
 }
 
+
+/*
+ * ==========================================
+ * PARSE COMPLETE CSV
+ * ==========================================
+ */
+
+function parseCSVFeed(csv) {
+
+    const lines =
+        csv
+            .split(/\r?\n/)
+            .filter(
+                line =>
+                    line.trim()
+            );
+
+
+    if (
+        lines.length < 2
+    ) {
+
+        return {
+            headers: [],
+            rows: []
+        };
+
+    }
+
+
+    const headers =
+        parseCSVLine(
+            lines[0]
+        );
+
+
+    const rows = [];
+
+
+    for (
+        let i = 1;
+        i < lines.length;
+        i++
+    ) {
+
+        const values =
+            parseCSVLine(
+                lines[i]
+            );
+
+
+        if (
+            values.length
+        ) {
+
+            rows.push(
+                values
+            );
+
+        }
+
+    }
+
+
+    return {
+        headers,
+        rows
+    };
+
+}
+
+
+/*
+ * ==========================================
+ * FETCH ONE CATEGORY
+ * ==========================================
+ */
+
+async function fetchCategory(
+    category,
+    sorting,
+    days,
+    limit
+) {
+
+    const url =
+        buildFeedUrl({
+
+            category,
+
+            sorting,
+
+            days,
+
+            limit
+
+        });
+
+
+    const response =
+        await fetch(
+            url,
+            {
+                headers: {
+                    "User-Agent":
+                        "AfterDarkXX/1.0"
+                }
+            }
+        );
+
+
+    if (
+        !response.ok
+    ) {
+
+        throw new Error(
+            `${category} returned ${response.status}`
+        );
+
+    }
+
+
+    return await response.text();
+
+}
+
+
+/*
+ * ==========================================
+ * GET COMBINED AFRICAN FEED
+ * ==========================================
+ */
+
+async function getAfricanFeed({
+    sorting = "post_date",
+    days = "0",
+    limit = "500"
+} = {}) {
+
+    const results =
+        await Promise.allSettled(
+
+            AFRICAN_CATEGORIES.map(
+                category =>
+                    fetchCategory(
+                        category,
+                        sorting,
+                        days,
+                        "100"
+                    )
+            )
+
+        );
+
+
+    let headers = [];
+
+    const allRows = [];
+
+
+    for (
+        const result of results
+    ) {
+
+        if (
+            result.status !==
+            "fulfilled"
+        ) {
+
+            console.error(
+                "African category failed:",
+                result.reason
+            );
+
+            continue;
+
+        }
+
+
+        const parsed =
+            parseCSVFeed(
+                result.value
+            );
+
+
+        if (
+            !headers.length
+        ) {
+
+            headers =
+                parsed.headers;
+
+        }
+
+
+        allRows.push(
+            ...parsed.rows
+        );
+
+    }
+
+
+    if (
+        !headers.length
+    ) {
+
+        throw new Error(
+            "African feeds returned no data"
+        );
+
+    }
+
+
+    /*
+     * ==========================================
+     * REMOVE DUPLICATES
+     * ==========================================
+     */
+
+    const idIndex =
+        headers.indexOf("ID");
+
+
+    const seen =
+        new Set();
+
+
+    const uniqueRows =
+        allRows.filter(
+            row => {
+
+                const id =
+                    idIndex >= 0
+                        ? String(
+                            row[idIndex] || ""
+                        ).trim()
+                        : "";
+
+
+                if (
+                    !id
+                ) {
+
+                    return true;
+
+                }
+
+
+                if (
+                    seen.has(id)
+                ) {
+
+                    return false;
+
+                }
+
+
+                seen.add(id);
+
+                return true;
+
+            }
+        );
+
+
+    /*
+     * ==========================================
+     * SORT NEWEST
+     * ==========================================
+     */
+
+    const dateIndex =
+        headers.indexOf(
+            "Publish date, time"
+        );
+
+
+    if (
+        sorting === "post_date" &&
+        dateIndex >= 0
+    ) {
+
+        uniqueRows.sort(
+            (a, b) =>
+                String(
+                    b[dateIndex] || ""
+                ).localeCompare(
+                    String(
+                        a[dateIndex] || ""
+                    )
+                )
+        );
+
+    }
+
+
+    /*
+     * ==========================================
+     * SORT RATING
+     * ==========================================
+     */
+
+    const ratingIndex =
+        headers.indexOf(
+            "Rating"
+        );
+
+
+    if (
+        sorting === "rating" &&
+        ratingIndex >= 0
+    ) {
+
+        uniqueRows.sort(
+            (a, b) =>
+                Number(
+                    b[ratingIndex] || 0
+                ) -
+                Number(
+                    a[ratingIndex] || 0
+                )
+        );
+
+    }
+
+
+    /*
+     * ==========================================
+     * FINAL LIMIT
+     * ==========================================
+     */
+
+    const finalRows =
+        uniqueRows.slice(
+            0,
+            Number(limit)
+        );
+
+
+    return [
+        headers.join("|"),
+
+        ...finalRows.map(
+            row =>
+                row
+                    .map(
+                        value => {
+
+                            const text =
+                                String(
+                                    value ?? ""
+                                );
+
+
+                            if (
+                                text.includes("|") ||
+                                text.includes('"') ||
+                                text.includes("\n") ||
+                                text.includes("\r")
+                            ) {
+
+                                return `"${text.replace(
+                                    /"/g,
+                                    '""'
+                                )}"`;
+
+                            }
+
+
+                            return text;
+
+                        }
+                    )
+                    .join("|")
+        )
+
+    ].join("\n");
+
+}
+
+
+/*
+ * ==========================================
+ * HERO THUMBNAIL
+ * ==========================================
+ */
 
 function getHeroThumbnail(csv) {
 
@@ -270,7 +811,9 @@ function getHeroThumbnail(csv) {
         }
 
 
-        if (thumbnail) {
+        if (
+            thumbnail
+        ) {
 
             validRows.push(
                 thumbnail
@@ -304,6 +847,12 @@ function getHeroThumbnail(csv) {
 }
 
 
+/*
+ * ==========================================
+ * MAIN HANDLER
+ * ==========================================
+ */
+
 exports.handler =
     async function(event) {
 
@@ -316,7 +865,7 @@ exports.handler =
 
             /*
              * ==========================================
-             * HERO IMAGE MODE
+             * HERO MODE
              * ==========================================
              */
 
@@ -345,7 +894,7 @@ exports.handler =
                         {
                             headers: {
                                 "User-Agent":
-                                    "AfterDarkX/1.0"
+                                    "AfterDarkXX/1.0"
                             }
                         }
                     );
@@ -389,7 +938,7 @@ exports.handler =
                         {
                             headers: {
                                 "User-Agent":
-                                    "AfterDarkX/1.0"
+                                    "AfterDarkXX/1.0"
                             }
                         }
                     );
@@ -451,6 +1000,87 @@ exports.handler =
 
             /*
              * ==========================================
+             * AFRICAN MODE
+             * ==========================================
+             */
+
+            if (
+                query.african === "1"
+            ) {
+
+                let africanLimit =
+                    parseInt(
+                        query.limit ||
+                        "500",
+                        10
+                    );
+
+
+                if (
+                    !Number.isFinite(
+                        africanLimit
+                    ) ||
+                    africanLimit < 1
+                ) {
+
+                    africanLimit =
+                        500;
+
+                }
+
+
+                africanLimit =
+                    Math.min(
+                        africanLimit,
+                        500
+                    );
+
+
+                const africanCSV =
+                    await getAfricanFeed({
+
+                        sorting:
+                            "post_date",
+
+                        days:
+                            "0",
+
+                        limit:
+                            String(
+                                africanLimit
+                            )
+
+                    });
+
+
+                return {
+
+                    statusCode:
+                        200,
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain; charset=utf-8",
+
+                        "Cache-Control":
+                            "public, max-age=900, s-maxage=900",
+
+                        "Access-Control-Allow-Origin":
+                            "*"
+
+                    },
+
+                    body:
+                        africanCSV
+
+                };
+
+            }
+
+
+            /*
+             * ==========================================
              * NORMAL FEED
              * ==========================================
              */
@@ -478,9 +1108,7 @@ exports.handler =
 
 
             /*
-             * ==========================================
              * CATEGORY VALIDATION
-             * ==========================================
              */
 
             if (
@@ -490,30 +1118,23 @@ exports.handler =
                 )
             ) {
 
-                category = "";
+                category =
+                    "";
 
             }
 
 
             /*
-             * ==========================================
              * SORTING VALIDATION
-             * ==========================================
              */
 
             const allowedSorting =
                 new Set([
-
                     "post_date",
-
                     "rating",
-
                     "popularity",
-
                     "duration",
-
                     "id"
-
                 ]);
 
 
@@ -530,22 +1151,15 @@ exports.handler =
 
 
             /*
-             * ==========================================
              * DAYS VALIDATION
-             * ==========================================
              */
 
             const allowedDays =
                 new Set([
-
                     "1",
-
                     "7",
-
                     "30",
-
                     "0"
-
                 ]);
 
 
@@ -562,9 +1176,7 @@ exports.handler =
 
 
             /*
-             * ==========================================
              * LIMIT
-             * ==========================================
              */
 
             let numericLimit =
@@ -587,16 +1199,6 @@ exports.handler =
             }
 
 
-            /*
-             * Increased maximum.
-             *
-             * Previously:
-             * Math.min(numericLimit, 100)
-             *
-             * Now:
-             * Math.min(numericLimit, 500)
-             */
-
             numericLimit =
                 Math.min(
                     numericLimit,
@@ -605,9 +1207,7 @@ exports.handler =
 
 
             /*
-             * ==========================================
              * BUILD FEED
-             * ==========================================
              */
 
             const feedUrl =
@@ -628,9 +1228,8 @@ exports.handler =
 
 
             console.log(
-                "AfterDarkX feed request:",
+                "AfterDarkXX feed request:",
                 {
-
                     category:
                         category ||
                         "ALL",
@@ -641,7 +1240,6 @@ exports.handler =
 
                     limit:
                         numericLimit
-
                 }
             );
 
@@ -653,7 +1251,7 @@ exports.handler =
                         headers: {
 
                             "User-Agent":
-                                "AfterDarkX/1.0"
+                                "AfterDarkXX/1.0"
 
                         }
                     }
@@ -711,10 +1309,12 @@ exports.handler =
             };
 
         }
-        catch (error) {
+        catch (
+            error
+        ) {
 
             console.error(
-                "AfterDarkX feed error:",
+                "AfterDarkXX feed error:",
                 error
             );
 
