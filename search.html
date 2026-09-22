@@ -2729,25 +2729,144 @@
     /* =========================
        QUICK SEARCH
     ========================= */
+async function quickSearch(value) {
 
-    function quickSearch(value) {
+    searchInput.value = value;
 
-        searchInput.value =
-            value;
-
-
-        performSearch(value);
+    clearButton.style.display = "flex";
 
 
-        const newUrl =
-            `${window.location.pathname}?q=${encodeURIComponent(value)}`;
+    const newUrl =
+        `${window.location.pathname}?q=${encodeURIComponent(value)}`;
+
+    window.history.replaceState(
+        {},
+        "",
+        newUrl
+    );
 
 
-        window.history.replaceState(
-            {},
-            "",
-            newUrl
-        );
+    /* =========================
+       POPULAR
+    ========================= */
+
+    if (value.toLowerCase() === "popular") {
+
+        resultsTitle.textContent =
+            "Popular videos";
+
+        resultsDescription.textContent =
+            "The most popular videos from the current collection.";
+
+        resultCount.textContent =
+            "Loading...";
+
+
+        resultsGrid.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    padding:60px 20px;
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                    style="
+                        font-size:22px;
+                        margin-bottom:15px;
+                    "
+                ></i>
+
+                <p>Loading popular videos...</p>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const params =
+                new URLSearchParams({
+
+                    sort: "popularity",
+
+                    days: "30",
+
+                    limit: "100"
+
+                });
+
+
+            const response =
+                await fetch(
+                    `${API_ENDPOINT}?${params.toString()}`,
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+
+            const text =
+                await response.text();
+
+
+            const popularVideos =
+                parseCSV(text);
+
+
+            console.log(
+                "AfterDarkX popular feed:",
+                popularVideos
+            );
+
+
+            renderResults(
+                popularVideos
+            );
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "Popular videos error:",
+                error
+            );
+
+
+            resultsGrid.innerHTML = "";
+
+
+            emptyState.style.display =
+                "block";
+
+
+            resultCount.textContent =
+                "Unable to load";
+
+
+            resultsTitle.textContent =
+                "Popular videos unavailable";
+
+
+            resultsDescription.textContent =
+                "Please try again in a moment.";
+
+        }
 
 
         window.scrollTo({
@@ -2758,7 +2877,30 @@
 
         });
 
+
+        return;
+
     }
+
+
+    /* =========================
+       OTHER QUICK SEARCHES
+       USE NORMAL SEARCH
+    ========================= */
+
+    performSearch(value);
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
 
 
     /* =========================
