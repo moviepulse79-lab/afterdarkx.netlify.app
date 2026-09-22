@@ -1192,7 +1192,7 @@
     color: #fff;
 }
 /* =========================================
-   MOBILE NAVIGATION + FULL WIDTH VIDEOS
+   MOBILE MENU
 ========================================= */
 
 .mobile-nav {
@@ -1204,22 +1204,26 @@
     .mobile-nav {
         position: fixed;
         top: 64px;
-        left: 0;
-        right: 0;
-        z-index: 999;
+        left: 12px;
+        right: 12px;
 
-        padding: 12px;
+        z-index: 9999;
 
-        background: rgba(8, 9, 11, .98);
-        border-bottom: 1px solid rgba(255,255,255,.08);
+        padding: 8px;
 
-        backdrop-filter: blur(18px);
+        background: rgba(12, 13, 17, .98);
 
-        flex-direction: column;
-        gap: 4px;
+        border: 1px solid rgba(255,255,255,.10);
+
+        border-radius: 14px;
 
         box-shadow:
-            0 15px 40px rgba(0,0,0,.35);
+            0 20px 50px rgba(0,0,0,.55);
+
+        backdrop-filter: blur(20px);
+
+        flex-direction: column;
+        gap: 3px;
     }
 
     .mobile-nav.show {
@@ -1230,92 +1234,42 @@
         display: flex;
         align-items: center;
 
+        width: 100%;
         min-height: 48px;
-        padding: 0 15px;
 
-        border-radius: 10px;
+        padding: 0 16px;
 
-        color: #b5b7bf;
+        color: #b8bac2;
 
         font-size: 14px;
         font-weight: 600;
 
-        transition: .2s ease;
+        border-radius: 9px;
+
+        transition:
+            background .2s ease,
+            color .2s ease;
     }
 
     .mobile-nav a:hover,
     .mobile-nav a:active {
-        background: rgba(255,255,255,.07);
+        background: rgba(255,255,255,.08);
         color: #ffffff;
     }
 
-}
+    .menu-button {
+        display: grid !important;
 
+        position: relative;
+        z-index: 10001;
 
-@media (max-width: 600px) {
-
-    /* Latest videos fill the phone width */
-
-    .video-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .video-card {
-        width: 100%;
-    }
-
-    .thumbnail {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        border-radius: 12px;
-    }
-
-    .video-info h3 {
-        font-size: 14px;
-    }
-
-
-    /* Trending cards fit the phone properly */
-
-    .featured-grid {
-        display: flex;
-
-        width: 100%;
-
-        overflow-x: auto;
-
-        gap: 12px;
-
-        scroll-snap-type: x mandatory;
-
-        scrollbar-width: none;
-    }
-
-    .featured-grid::-webkit-scrollbar {
-        display: none;
-    }
-
-    .featured-card,
-    .featured-card:first-child {
-        flex: 0 0 100%;
-        width: 100%;
-        min-width: 100%;
-        min-height: 270px;
-
-        scroll-snap-align: start;
-    }
-
-
-    /* Prevent horizontal page overflow */
-
-    html,
-    body {
-        max-width: 100%;
-        overflow-x: hidden;
+        cursor: pointer;
+        pointer-events: auto;
     }
 
 }
+
+
         
     </style>
 
@@ -1375,13 +1329,15 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
 
-            <button
-                class="menu-button"
-                aria-label="Menu"
-                onclick="toggleMenu()"
-            >
-                <i class="fa-solid fa-bars"></i>
-            </button>
+          <button
+    class="menu-button"
+    id="menuButton"
+    type="button"
+    aria-label="Open navigation"
+    aria-expanded="false"
+>
+    <i class="fa-solid fa-bars"></i>
+</button>
 
         </div>
 
