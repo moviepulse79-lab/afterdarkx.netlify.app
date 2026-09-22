@@ -1191,7 +1191,132 @@
     font-size: 10px;
     color: #fff;
 }
+/* =========================================
+   MOBILE NAVIGATION + FULL WIDTH VIDEOS
+========================================= */
 
+.mobile-nav {
+    display: none;
+}
+
+@media (max-width: 900px) {
+
+    .mobile-nav {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+
+        padding: 12px;
+
+        background: rgba(8, 9, 11, .98);
+        border-bottom: 1px solid rgba(255,255,255,.08);
+
+        backdrop-filter: blur(18px);
+
+        flex-direction: column;
+        gap: 4px;
+
+        box-shadow:
+            0 15px 40px rgba(0,0,0,.35);
+    }
+
+    .mobile-nav.show {
+        display: flex;
+    }
+
+    .mobile-nav a {
+        display: flex;
+        align-items: center;
+
+        min-height: 48px;
+        padding: 0 15px;
+
+        border-radius: 10px;
+
+        color: #b5b7bf;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        transition: .2s ease;
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a:active {
+        background: rgba(255,255,255,.07);
+        color: #ffffff;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    /* Latest videos fill the phone width */
+
+    .video-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .video-card {
+        width: 100%;
+    }
+
+    .thumbnail {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+    }
+
+    .video-info h3 {
+        font-size: 14px;
+    }
+
+
+    /* Trending cards fit the phone properly */
+
+    .featured-grid {
+        display: flex;
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        gap: 12px;
+
+        scroll-snap-type: x mandatory;
+
+        scrollbar-width: none;
+    }
+
+    .featured-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .featured-card,
+    .featured-card:first-child {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 100%;
+        min-height: 270px;
+
+        scroll-snap-align: start;
+    }
+
+
+    /* Prevent horizontal page overflow */
+
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+}
+        
     </style>
 
 </head>
@@ -2482,14 +2607,82 @@ function leaveSite() {
 MOBILE MENU
 =========================================================
 */
-
 function toggleMenu() {
 
-    alert(
-        "Mobile navigation will be added next."
-    );
+    const mobileNav =
+        document.getElementById("mobileNav");
+
+    const menuButton =
+        document.querySelector(".menu-button");
+
+    if (!mobileNav) {
+        return;
+    }
+
+    const isOpen =
+        mobileNav.classList.toggle("show");
+
+    if (menuButton) {
+
+        menuButton.innerHTML =
+            isOpen
+                ? '<i class="fa-solid fa-xmark"></i>'
+                : '<i class="fa-solid fa-bars"></i>';
+
+    }
 
 }
+
+
+/*
+=========================================================
+CLOSE MOBILE MENU AFTER CLICKING A LINK
+=========================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const mobileNav =
+            document.getElementById("mobileNav");
+
+        if (!mobileNav) {
+            return;
+        }
+
+        mobileNav
+            .querySelectorAll("a")
+            .forEach(link => {
+
+                link.addEventListener(
+                    "click",
+                    function() {
+
+                        mobileNav.classList.remove(
+                            "show"
+                        );
+
+                        const menuButton =
+                            document.querySelector(
+                                ".menu-button"
+                            );
+
+                        if (menuButton) {
+
+                            menuButton.innerHTML =
+                                '<i class="fa-solid fa-bars"></i>';
+
+                        }
+
+                    }
+                );
+
+            });
+
+    }
+);
+
 
 
 /*
