@@ -1332,7 +1332,44 @@
             }
 
         }
+        
+.thumbnail-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+    transition: transform 0.35s ease;
+}
 
+.thumbnail::before {
+    z-index: 2;
+}
+
+.thumbnail-pattern {
+    z-index: 2;
+}
+
+.play-small {
+    z-index: 4;
+}
+
+.duration,
+.quality {
+    z-index: 5;
+}
+
+.video-card:hover .thumbnail-image {
+    transform: scale(1.06);
+}
+
+.featured-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
     </style>
 
 </head>
@@ -1789,111 +1826,349 @@
 
 <script>
 
-/*
-=========================================================
-AFTERDARKX CATEGORY PAGE
-CONNECTED TO TUBECORPORATE FEED
-=========================================================
-*/
-
 const API_ENDPOINT = "/api/videos";
 
-let videos = [];
-let currentCategory = "featured";
 
-
-/*
-=========================================================
-CATEGORY CONFIG
-=========================================================
-*/
+// ============================================================
+// CATEGORY CONFIGURATION
+// ============================================================
 
 const categories = {
 
     featured: {
-        name: "Featured",
+        title: "Featured",
         label: "Curated collection",
-        description:
-            "Discover a carefully selected collection of standout entertainment and fresh discoveries.",
-        resultText:
-            "Fresh selections picked for discovery."
+        description: "Discover selected videos from across AfterDarkX.",
+        results: "Featured videos",
+        resultDescription: "Fresh selections picked for discovery.",
+        sort: "rating",
+        days: "30",
+        feedCategory: ""
     },
 
     trending: {
-        name: "Trending",
-        label: "What's getting attention",
-        description:
-            "Explore entertainment currently attracting attention across the platform.",
-        resultText:
-            "See what's getting attention right now."
+        title: "Trending",
+        label: "Trending now",
+        description: "See what is getting the most attention right now.",
+        results: "Trending videos",
+        resultDescription: "Videos currently attracting the most attention.",
+        sort: "popularity",
+        days: "30",
+        feedCategory: ""
     },
 
     popular: {
-        name: "Popular",
-        label: "Most watched",
-        description:
-            "Browse popular entertainment receiving the most attention.",
-        resultText:
-            "Popular picks from across the platform."
+        title: "Popular",
+        label: "Popular collection",
+        description: "Browse popular videos from the AfterDarkX collection.",
+        results: "Popular videos",
+        resultDescription: "A collection of popular videos.",
+        sort: "popularity",
+        days: "30",
+        feedCategory: ""
     },
 
     new: {
-        name: "New",
-        label: "Fresh arrivals",
-        description:
-            "Discover the newest additions as they arrive on AfterDarkX.",
-        resultText:
-            "Recently added entertainment."
+        title: "New",
+        label: "Recently added",
+        description: "Freshly added videos, updated regularly.",
+        results: "New videos",
+        resultDescription: "Recently added videos from the feed.",
+        sort: "post_date",
+        days: "7",
+        feedCategory: ""
     },
 
     collections: {
-        name: "Collections",
-        label: "Curated collections",
-        description:
-            "Explore themed collections designed to make discovering something new easier.",
-        resultText:
-            "Curated groups built around different themes."
+        title: "Collections",
+        label: "Explore collections",
+        description: "Explore videos organized into different collections.",
+        results: "Collection videos",
+        resultDescription: "Discover videos across different categories.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: ""
     },
 
     creators: {
-        name: "Creators",
-        label: "Creator library",
-        description:
-            "Explore content from creators featured across the platform.",
-        resultText:
-            "Discover creator-focused collections."
+        title: "Creators",
+        label: "Creator collection",
+        description: "Explore videos from creators across the platform.",
+        results: "Creator videos",
+        resultDescription: "Discover videos available from the feed.",
+        sort: "popularity",
+        days: "30",
+        feedCategory: ""
     },
 
     "most-viewed": {
-        name: "Most Viewed",
-        label: "Audience favorites",
-        description:
-            "Browse content receiving the highest level of viewing activity.",
-        resultText:
-            "Popular entertainment by viewing activity."
+        title: "Most Viewed",
+        label: "Most viewed",
+        description: "Browse videos receiving the most attention.",
+        results: "Most viewed videos",
+        resultDescription: "Popular videos from the available feed.",
+        sort: "popularity",
+        days: "30",
+        feedCategory: ""
     },
 
     latest: {
-        name: "Latest",
-        label: "Latest releases",
-        description:
-            "Stay up to date with the newest entertainment added to the platform.",
-        resultText:
-            "The newest additions to AfterDarkX."
+        title: "Latest",
+        label: "Latest additions",
+        description: "The newest videos added to AfterDarkX.",
+        results: "Latest videos",
+        resultDescription: "The newest videos currently available.",
+        sort: "post_date",
+        days: "7",
+        feedCategory: ""
+    },
+
+
+    // ========================================================
+    // REAL FEED CATEGORIES
+    // ========================================================
+
+    african: {
+        title: "African",
+        label: "African collection",
+        description: "Explore videos from the African category.",
+        results: "African videos",
+        resultDescription: "Videos available in the African category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "African"
+    },
+
+    amateur: {
+        title: "Amateur",
+        label: "Amateur collection",
+        description: "Browse videos from the Amateur category.",
+        results: "Amateur videos",
+        resultDescription: "Videos available in the Amateur category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Amateur"
+    },
+
+    asian: {
+        title: "Asian",
+        label: "Asian collection",
+        description: "Browse videos from the Asian category.",
+        results: "Asian videos",
+        resultDescription: "Videos available in the Asian category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Asian"
+    },
+
+    american: {
+        title: "American",
+        label: "American collection",
+        description: "Browse videos from the American category.",
+        results: "American videos",
+        resultDescription: "Videos available in the American category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "American"
+    },
+
+    british: {
+        title: "British",
+        label: "British collection",
+        description: "Browse videos from the British category.",
+        results: "British videos",
+        resultDescription: "Videos available in the British category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "British"
+    },
+
+    european: {
+        title: "European",
+        label: "European collection",
+        description: "Browse videos from the European category.",
+        results: "European videos",
+        resultDescription: "Videos available in the European category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "European"
+    },
+
+    indian: {
+        title: "Indian",
+        label: "Indian collection",
+        description: "Browse videos from the Indian category.",
+        results: "Indian videos",
+        resultDescription: "Videos available in the Indian category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Indian"
+    },
+
+    japanese: {
+        title: "Japanese",
+        label: "Japanese collection",
+        description: "Browse videos from the Japanese category.",
+        results: "Japanese videos",
+        resultDescription: "Videos available in the Japanese category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Japanese"
+    },
+
+    korean: {
+        title: "Korean",
+        label: "Korean collection",
+        description: "Browse videos from the Korean category.",
+        results: "Korean videos",
+        resultDescription: "Videos available in the Korean category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Korean"
+    },
+
+    latina: {
+        title: "Latina",
+        label: "Latina collection",
+        description: "Browse videos from the Latina category.",
+        results: "Latina videos",
+        resultDescription: "Videos available in the Latina category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Latina"
+    },
+
+    lesbian: {
+        title: "Lesbian",
+        label: "Lesbian collection",
+        description: "Browse videos from the Lesbian category.",
+        results: "Lesbian videos",
+        resultDescription: "Videos available in the Lesbian category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Lesbian"
+    },
+
+    mature: {
+        title: "Mature",
+        label: "Mature collection",
+        description: "Browse videos from the Mature category.",
+        results: "Mature videos",
+        resultDescription: "Videos available in the Mature category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Mature"
+    },
+
+    cosplay: {
+        title: "Cosplay",
+        label: "Cosplay collection",
+        description: "Browse videos from the Cosplay category.",
+        results: "Cosplay videos",
+        resultDescription: "Videos available in the Cosplay category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Cosplay"
+    },
+
+    webcam: {
+        title: "Webcam",
+        label: "Webcam collection",
+        description: "Browse videos from the Webcam category.",
+        results: "Webcam videos",
+        resultDescription: "Videos available in the Webcam category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Webcam"
+    },
+
+    vintage: {
+        title: "Vintage",
+        label: "Vintage collection",
+        description: "Browse videos from the Vintage category.",
+        results: "Vintage videos",
+        resultDescription: "Videos available in the Vintage category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Vintage"
+    },
+
+    outdoor: {
+        title: "Outdoor",
+        label: "Outdoor collection",
+        description: "Browse videos from the Outdoor category.",
+        results: "Outdoor videos",
+        resultDescription: "Videos available in the Outdoor category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Outdoor"
+    },
+
+    couples: {
+        title: "Couples",
+        label: "Couples collection",
+        description: "Browse videos from the Couples category.",
+        results: "Couples videos",
+        resultDescription: "Videos available in the Couples category.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "Couple"
+    },
+
+    hd: {
+        title: "HD",
+        label: "HD collection",
+        description: "Browse high-definition videos.",
+        results: "HD videos",
+        resultDescription: "High-definition videos available through the feed.",
+        sort: "post_date",
+        days: "30",
+        feedCategory: "HD"
     }
 
 };
 
 
-/*
-=========================================================
-HTML ESCAPE
-=========================================================
-*/
+// ============================================================
+// GET CURRENT CATEGORY
+// ============================================================
+
+function getCategory() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const requested =
+        (
+            params.get("category") ||
+            "featured"
+        )
+        .trim()
+        .toLowerCase();
+
+    return categories[requested]
+        ? requested
+        : "featured";
+
+}
+
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
 
 function escapeHtml(value) {
 
-    return String(value ?? "")
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1903,21 +2178,60 @@ function escapeHtml(value) {
 }
 
 
-/*
-=========================================================
-CSV PARSER
-=========================================================
-*/
+// ============================================================
+// THUMBNAIL
+// ============================================================
 
-function parseCSV(csv) {
+function getThumbnail(video) {
+
+    if (
+        video.thumbnail &&
+        video.thumbnail.trim()
+    ) {
+
+        return video.thumbnail.trim();
+
+    }
+
+
+    if (
+        video.thumbnails &&
+        video.thumbnails.trim()
+    ) {
+
+        const thumbnails =
+            video.thumbnails
+                .split(",")
+                .map(item => item.trim())
+                .filter(Boolean);
+
+        if (thumbnails.length) {
+            return thumbnails[0];
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+// ============================================================
+// CSV PARSER
+// ============================================================
+
+function parseCSV(text) {
 
     const lines =
-        csv
+        text
             .split(/\r?\n/)
-            .filter(line => line.trim());
+            .filter(
+                line => line.trim()
+            );
 
 
-    if (lines.length < 2) {
+    if (!lines.length) {
         return [];
     }
 
@@ -1925,7 +2239,9 @@ function parseCSV(csv) {
     const headers =
         lines[0]
             .split("|")
-            .map(header => header.trim());
+            .map(
+                header => header.trim()
+            );
 
 
     return lines
@@ -1942,7 +2258,9 @@ function parseCSV(csv) {
                 (header, index) => {
 
                     record[header] =
-                        values[index] || "";
+                        values[index] !== undefined
+                            ? values[index].trim()
+                            : "";
 
                 }
             );
@@ -1951,267 +2269,192 @@ function parseCSV(csv) {
             return {
 
                 id:
-                    record.ID || "",
+                    record["ID"] || "",
 
                 title:
-                    record.Title ||
+                    record["Title"] ||
                     "Untitled",
 
                 description:
-                    record.Description ||
+                    record["Description"] ||
+                    "",
+
+                link:
+                    record["Website link"] ||
                     "",
 
                 duration:
-                    record.Duration ||
+                    record["Duration"] ||
                     "",
 
                 rating:
-                    record.Rating ||
+                    record["Rating"] ||
                     "",
 
-                date:
+                postDate:
                     record["Publish date, time"] ||
                     "",
 
-                category:
-                    record.Categories ||
-                    "Featured",
+                categories:
+                    record["Categories"] ||
+                    "",
+
+                tags:
+                    record["Tags"] ||
+                    "",
+
+                embed:
+                    record["Embed code"] ||
+                    "",
 
                 thumbnail:
                     record["Main thumbnail"] ||
                     "",
 
                 thumbnails:
-                    record.Thumbnails ||
-                    "",
-
-                embed:
-                    record["Embed code"] ||
+                    record["Thumbnails"] ||
                     ""
 
             };
 
         })
-        .filter(video => video.id);
-
-}
-
-
-/*
-=========================================================
-GET THUMBNAIL
-=========================================================
-*/
-
-function getThumbnail(video) {
-
-    if (video.thumbnail) {
-        return video.thumbnail;
-    }
-
-
-    if (video.thumbnails) {
-
-        const first =
-            video.thumbnails
-                .split(",")
-                .map(item => item.trim())
-                .find(Boolean);
-
-
-        if (first) {
-            return first;
-        }
-
-    }
-
-
-    return "";
-
-}
-
-
-/*
-=========================================================
-GET CATEGORY FROM URL
-=========================================================
-*/
-
-function getCategory() {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
+        .filter(
+            video => video.id
         );
 
-
-    const requested =
-        params.get("category");
+}
 
 
-    if (
-        requested &&
-        categories[requested]
-    ) {
+// ============================================================
+// REMOVE DUPLICATES
+// ============================================================
 
-        return requested;
+function uniqueVideos(videos) {
 
-    }
+    const seen =
+        new Set();
 
+    return videos.filter(
+        video => {
 
-    return "featured";
+            if (!video.id) {
+                return false;
+            }
+
+            if (
+                seen.has(video.id)
+            ) {
+                return false;
+            }
+
+            seen.add(video.id);
+
+            return true;
+
+        }
+    );
 
 }
 
 
-/*
-=========================================================
-CATEGORY -> TUBECORPORATE CATEGORY
-=========================================================
-*/
+// ============================================================
+// BUILD API URL
+// ============================================================
 
-function getFeedCategory(categoryKey) {
+function buildApiUrl(
+    categoryKey,
+    sortOverride = ""
+) {
 
-    /*
-    These are actual feed categories.
-    The other page categories use sorting instead.
-    */
+    const config =
+        categories[categoryKey] ||
+        categories.featured;
 
-    const categoryMap = {
-
-        african: "African",
-
-        amateur: "Amateur",
-
-        asian: "Asian",
-
-        american: "American",
-
-        british: "British",
-
-        european: "European",
-
-        indian: "Indian",
-
-        japanese: "Japanese",
-
-        korean: "Korean",
-
-        latina: "Latina",
-
-        lesbian: "Lesbian",
-
-        mature: "Mature",
-
-        cosplay: "Cosplay",
-
-        webcam: "Webcam",
-
-        vintage: "Vintage",
-
-        outdoor: "Outdoor",
-
-        couples: "Couple",
-
-        hd: "HD"
-
-    };
-
-
-    return categoryMap[
-        categoryKey.toLowerCase()
-    ] || "";
-
-}
-
-
-/*
-=========================================================
-BUILD API URL
-=========================================================
-*/
-
-function buildApiUrl() {
 
     const params =
         new URLSearchParams();
 
 
-    /*
-    Real TubeCorporate category
-    */
+    // Real TubeCorporate category
 
-    const feedCategory =
-        getFeedCategory(
-            currentCategory
-        );
-
-
-    if (feedCategory) {
+    if (config.feedCategory) {
 
         params.set(
             "category",
-            feedCategory
+            config.feedCategory
         );
 
     }
 
 
-    /*
-    Sorting
-    */
+    let sort =
+        sortOverride ||
+        config.sort ||
+        "post_date";
 
-    const sort =
-        document.getElementById(
-            "sortSelect"
-        ).value;
+
+    let days =
+        config.days ||
+        "7";
+
+
+    // Special page types
+
+    if (
+        categoryKey === "trending" ||
+        categoryKey === "popular" ||
+        categoryKey === "most-viewed"
+    ) {
+
+        sort = "popularity";
+
+        days = "30";
+
+    }
 
 
     if (
-        currentCategory === "trending" ||
-        currentCategory === "most-viewed" ||
-        currentCategory === "popular" ||
-        sort === "popular"
+        sortOverride === "latest"
     ) {
 
-        params.set(
-            "sort",
-            "popularity"
-        );
+        sort = "post_date";
 
-        params.set(
-            "days",
-            "30"
-        );
-
-    } else if (
-        sort === "rating"
-    ) {
-
-        params.set(
-            "sort",
-            "rating"
-        );
-
-        params.set(
-            "days",
-            "30"
-        );
-
-    } else {
-
-        params.set(
-            "sort",
-            "post_date"
-        );
-
-        params.set(
-            "days",
-            "7"
-        );
+        days = "7";
 
     }
 
+
+    if (
+        sortOverride === "popularity"
+    ) {
+
+        sort = "popularity";
+
+        days = "30";
+
+    }
+
+
+    if (
+        sortOverride === "rating"
+    ) {
+
+        sort = "rating";
+
+        days = "30";
+
+    }
+
+
+    params.set(
+        "sort",
+        sort
+    );
+
+    params.set(
+        "days",
+        days
+    );
 
     params.set(
         "limit",
@@ -2219,218 +2462,223 @@ function buildApiUrl() {
     );
 
 
-    return `${API_ENDPOINT}?${params.toString()}`;
+    return (
+        `${API_ENDPOINT}?${params.toString()}`
+    );
 
 }
 
 
-/*
-=========================================================
-LOAD VIDEOS
-=========================================================
-*/
+// ============================================================
+// FETCH VIDEOS
+// ============================================================
 
-async function loadVideos() {
+async function fetchVideos(
+    categoryKey,
+    sortOverride = ""
+) {
 
-    const grid =
-        document.getElementById(
-            "videoGrid"
-        );
-
-    const loading =
-        document.getElementById(
-            "loadingGrid"
-        );
-
-    const empty =
-        document.getElementById(
-            "emptyState"
+    const url =
+        buildApiUrl(
+            categoryKey,
+            sortOverride
         );
 
 
-    loading.style.display =
-        "grid";
+    console.log(
+        "AfterDarkX feed:",
+        url
+    );
 
 
-    grid.innerHTML =
-        "";
-
-
-    empty.style.display =
-        "none";
-
-
-    try {
-
-        const url =
-            buildApiUrl();
-
-
-        console.log(
-            "AfterDarkX category feed:",
-            url
+    const response =
+        await fetch(
+            url,
+            {
+                cache: "no-store"
+            }
         );
 
 
-        const response =
-            await fetch(
-                url,
-                {
-                    cache: "no-store"
-                }
-            );
+    if (!response.ok) {
+
+        throw new Error(
+            `Feed request failed: ${response.status}`
+        );
+
+    }
 
 
-        if (!response.ok) {
+    const text =
+        await response.text();
 
-            throw new Error(
-                `Feed returned ${response.status}`
-            );
 
+    return uniqueVideos(
+        parseCSV(text)
+    );
+
+}
+
+
+// ============================================================
+// DATE
+// ============================================================
+
+function formatDate(date) {
+
+    if (!date) {
+        return "";
+    }
+
+
+    const parsed =
+        new Date(date);
+
+
+    if (
+        Number.isNaN(
+            parsed.getTime()
+        )
+    ) {
+
+        return date;
+
+    }
+
+
+    return parsed.toLocaleDateString(
+        undefined,
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
         }
+    );
+
+}
 
 
-        const csv =
-            await response.text();
+// ============================================================
+// UPDATE PAGE TEXT
+// ============================================================
+
+function updateCategoryPage() {
+
+    const categoryKey =
+        getCategory();
+
+    const config =
+        categories[categoryKey];
 
 
-        videos =
-            parseCSV(csv);
+    document.title =
+        `${config.title} | AfterDarkX`;
 
 
-        /*
-        Remove duplicate IDs
-        */
+    const categoryName =
+        document.getElementById(
+            "categoryName"
+        );
 
-        const seen =
-            new Set();
+    const breadcrumbName =
+        document.getElementById(
+            "breadcrumbName"
+        );
 
+    const heroLabel =
+        document.getElementById(
+            "heroLabel"
+        );
 
-        videos =
-            videos.filter(video => {
+    const categoryDescription =
+        document.getElementById(
+            "categoryDescription"
+        );
 
-                if (
-                    !video.id ||
-                    seen.has(video.id)
-                ) {
+    const resultsTitle =
+        document.getElementById(
+            "resultsTitle"
+        );
 
-                    return false;
-
-                }
-
-
-                seen.add(
-                    video.id
-                );
-
-
-                return true;
-
-            });
-
-
-        loading.style.display =
-            "none";
-
-
-        if (!videos.length) {
-
-            showEmpty();
-
-            return;
-
-        }
-
-
-        renderFeatured();
-
-
-        renderVideos();
-
-
-    } catch (error) {
-
-        console.error(
-            "AfterDarkX category error:",
-            error
+    const resultsDescription =
+        document.getElementById(
+            "resultsDescription"
         );
 
 
-        loading.style.display =
-            "none";
+    if (categoryName) {
+
+        categoryName.textContent =
+            config.title;
+
+    }
 
 
-        grid.innerHTML = "";
+    if (breadcrumbName) {
+
+        breadcrumbName.textContent =
+            config.title;
+
+    }
 
 
-        empty.style.display =
-            "block";
+    if (heroLabel) {
+
+        heroLabel.textContent =
+            config.label;
+
+    }
 
 
-        empty.querySelector("h3").textContent =
-            "Unable to load videos";
+    if (categoryDescription) {
+
+        categoryDescription.textContent =
+            config.description;
+
+    }
 
 
-        empty.querySelector("p").textContent =
-            "Please refresh the page and try again.";
+    if (resultsTitle) {
+
+        resultsTitle.textContent =
+            config.results;
+
+    }
+
+
+    if (resultsDescription) {
+
+        resultsDescription.textContent =
+            config.resultDescription;
 
     }
 
 }
 
 
-/*
-=========================================================
-EMPTY STATE
-=========================================================
-*/
+// ============================================================
+// RENDER FEATURED
+// ============================================================
 
-function showEmpty() {
+function renderFeatured(video) {
 
-    const grid =
-        document.getElementById(
-            "videoGrid"
-        );
-
-    const empty =
-        document.getElementById(
-            "emptyState"
-        );
-
-
-    grid.innerHTML =
-        "";
-
-
-    empty.style.display =
-        "block";
-
-
-    empty.querySelector("h3").textContent =
-        "Nothing here yet";
-
-
-    empty.querySelector("p").textContent =
-        "This collection does not have available videos right now.";
-
-}
-
-
-/*
-=========================================================
-RENDER FEATURED VIDEO
-=========================================================
-*/
-
-function renderFeatured() {
-
-    if (!videos.length) {
+    if (!video) {
         return;
     }
 
 
-    const video =
-        videos[0];
+    const featured =
+        document.getElementById(
+            "featuredVideo"
+        );
+
+
+    const image =
+        featured
+            ? featured.querySelector(
+                ".featured-image"
+            )
+            : null;
 
 
     const title =
@@ -2445,100 +2693,76 @@ function renderFeatured() {
         );
 
 
-    const featured =
-        document.getElementById(
-            "featuredVideo"
-        );
-
-
-    const imageBox =
-        featured.querySelector(
-            ".featured-image"
-        );
-
-
-    const watchButton =
-        featured.querySelector(
-            ".watch-featured"
-        );
+    const button =
+        featured
+            ? featured.querySelector(
+                ".watch-featured"
+            )
+            : null;
 
 
     const thumbnail =
         getThumbnail(video);
 
 
-    /*
-    Put real thumbnail into featured area
-    */
+    // REAL THUMBNAIL
 
-    if (thumbnail) {
+    if (
+        image &&
+        thumbnail
+    ) {
 
-        imageBox.style.backgroundImage =
-            `url("${thumbnail}")`;
+        image.style.backgroundImage =
+            `
+            linear-gradient(
+                90deg,
+                rgba(8,9,11,.10),
+                rgba(8,9,11,.20)
+            ),
+            url("${thumbnail}")
+            `;
 
-        imageBox.style.backgroundSize =
+        image.style.backgroundSize =
             "cover";
 
-        imageBox.style.backgroundPosition =
+        image.style.backgroundPosition =
             "center";
-
-    } else {
-
-        imageBox.style.backgroundImage =
-            "linear-gradient(135deg,#1b1621,#26121a,#111318)";
 
     }
 
 
-    title.textContent =
-        video.title;
+    if (title) {
+
+        title.textContent =
+            video.title;
+
+    }
 
 
-    description.textContent =
-        video.description ||
-        "Discover this selection from the AfterDarkX video collection.";
+    if (description) {
+
+        description.textContent =
+            video.description ||
+            "Watch this video on AfterDarkX.";
+
+    }
 
 
-    /*
-    Connect Watch Now
-    */
+    if (button) {
 
-    watchButton.href =
-        `watch.html?id=${encodeURIComponent(video.id)}`;
+        button.href =
+            `watch.html?id=${encodeURIComponent(video.id)}`;
 
-
-    /*
-    Clicking featured area opens video
-    */
-
-    featured.onclick =
-        function(event) {
-
-            if (
-                event.target.closest(
-                    ".watch-featured"
-                )
-            ) {
-                return;
-            }
-
-
-            openVideo(
-                video.id
-            );
-
-        };
+    }
 
 }
 
 
-/*
-=========================================================
-RENDER VIDEO GRID
-=========================================================
-*/
+// ============================================================
+// RENDER VIDEO GRID
+// ============================================================
 
-function renderVideos() {
+function renderVideos(videos) {
 
     const grid =
         document.getElementById(
@@ -2546,183 +2770,171 @@ function renderVideos() {
         );
 
 
+    const loading =
+        document.getElementById(
+            "loadingGrid"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+    if (!grid) {
+        return;
+    }
+
+
     if (!videos.length) {
 
-        showEmpty();
+        grid.innerHTML = "";
+
+        if (empty) {
+            empty.style.display =
+                "block";
+        }
 
         return;
 
     }
 
 
-    grid.innerHTML = "";
+    if (empty) {
+
+        empty.style.display =
+            "none";
+
+    }
 
 
-    videos.forEach(
-        video => {
+    grid.innerHTML =
+        videos
+            .map(video => {
 
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-
-            card.className =
-                "video-card";
+                const thumbnail =
+                    getThumbnail(video);
 
 
-            card.addEventListener(
-                "click",
-                function() {
-
-                    openVideo(
-                        video.id
-                    );
-
-                }
-            );
+                const category =
+                    video.categories
+                        ? video.categories
+                            .split(",")[0]
+                            .trim()
+                        : "18+";
 
 
-            const thumbnail =
-                getThumbnail(video);
+                return `
 
+                    <article
+                        class="video-card"
+                        onclick="openVideo('${escapeHtml(video.id)}')"
+                    >
 
-            card.innerHTML = `
-
-                <div class="thumbnail">
-
-                    ${
-                        thumbnail
-                            ? `
-                                <img
-                                    src="${escapeHtml(thumbnail)}"
-                                    alt=""
-                                    loading="lazy"
-                                    style="
-                                        position:absolute;
-                                        inset:0;
-                                        width:100%;
-                                        height:100%;
-                                        object-fit:cover;
-                                        display:block;
-                                    "
-                                >
-                              `
-                            : `
-                                <div
-                                    class="thumbnail-pattern"
-                                ></div>
-                              `
-                    }
-
-
-                    <div class="play-small">
-
-                        <i
-                            class="fa-solid fa-play"
-                        ></i>
-
-                    </div>
-
-
-                    <span class="quality">
-
-                        HD
-
-                    </span>
-
-
-                    <span class="duration">
-
-                        ${escapeHtml(
-                            video.duration || "—"
-                        )}
-
-                    </span>
-
-                </div>
-
-
-                <div class="video-info">
-
-                    <div class="video-title">
-
-                        ${escapeHtml(
-                            video.title
-                        )}
-
-                    </div>
-
-
-                    <div class="video-sub">
-
-                        <span>
+                        <div class="thumbnail">
 
                             ${
-                                video.category
-                                    ? escapeHtml(
-                                        video.category
-                                    )
-                                    : "Video"
+                                thumbnail
+                                ? `
+                                    <img
+                                        src="${escapeHtml(thumbnail)}"
+                                        alt="${escapeHtml(video.title)}"
+                                        loading="lazy"
+                                        class="thumbnail-image"
+                                    >
+                                `
+                                : `
+                                    <div
+                                        class="thumbnail-pattern"
+                                    ></div>
+                                `
                             }
 
-                        </span>
 
+                            <div class="play-small">
 
-                        <span>
+                                <i class="fa-solid fa-play"></i>
+
+                            </div>
+
 
                             ${
-                                video.rating
-                                    ? "★ " +
-                                      escapeHtml(
-                                          video.rating
-                                      )
-                                    : "HD"
+                                video.duration
+                                ? `
+                                    <span class="duration">
+                                        ${escapeHtml(video.duration)}
+                                    </span>
+                                `
+                                : ""
                             }
 
-                        </span>
 
-                    </div>
+                            <span class="quality">
+                                HD
+                            </span>
 
-                </div>
-
-            `;
+                        </div>
 
 
-            grid.appendChild(
-                card
-            );
+                        <div class="video-info">
 
-        }
-    );
+                            <div class="video-title">
+
+                                ${escapeHtml(video.title)}
+
+                            </div>
+
+
+                            <div class="video-sub">
+
+                                <span>
+                                    ${escapeHtml(category)}
+                                </span>
+
+
+                                <span>
+
+                                    ${
+                                        video.rating
+                                        ? `
+                                            <i
+                                                class="fa-solid fa-star"
+                                                style="color:#ff4779;"
+                                            ></i>
+
+                                            ${escapeHtml(video.rating)}
+                                        `
+                                        : ""
+                                    }
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            })
+            .join("");
 
 }
 
 
-/*
-=========================================================
-SORT
-=========================================================
-*/
-
-function sortVideos() {
-
-    /*
-    Reload from the API so sorting is real.
-
-    We do NOT use random sorting or reverse().
-    */
-
-    loadVideos();
-
-}
-
-
-/*
-=========================================================
-OPEN VIDEO
-=========================================================
-*/
+// ============================================================
+// OPEN VIDEO
+// ============================================================
 
 function openVideo(id) {
 
@@ -2737,165 +2949,313 @@ function openVideo(id) {
 }
 
 
-/*
-=========================================================
-UPDATE PAGE TEXT
-=========================================================
-*/
+// ============================================================
+// SORT
+// ============================================================
 
-function updateCategoryPage() {
+async function sortVideos() {
 
-    currentCategory =
+    const select =
+        document.getElementById(
+            "sortSelect"
+        );
+
+
+    const selected =
+        select
+            ? select.value
+            : "featured";
+
+
+    const categoryKey =
         getCategory();
 
 
-    const category =
-        categories[
-            currentCategory
-        ] ||
-        categories.featured;
+    let sortOverride = "";
 
 
-    document.title =
-        `${category.name} | AfterDarkX`;
+    if (
+        selected === "latest"
+    ) {
 
-
-    const breadcrumb =
-        document.getElementById(
-            "breadcrumbName"
-        );
-
-
-    const heroLabel =
-        document.getElementById(
-            "heroLabel"
-        );
-
-
-    const categoryName =
-        document.getElementById(
-            "categoryName"
-        );
-
-
-    const description =
-        document.getElementById(
-            "categoryDescription"
-        );
-
-
-    const resultsTitle =
-        document.getElementById(
-            "resultsTitle"
-        );
-
-
-    const resultsDescription =
-        document.getElementById(
-            "resultsDescription"
-        );
-
-
-    if (breadcrumb) {
-
-        breadcrumb.textContent =
-            category.name;
+        sortOverride =
+            "latest";
 
     }
 
 
-    if (heroLabel) {
+    if (
+        selected === "popular"
+    ) {
 
-        heroLabel.textContent =
-            category.label;
-
-    }
-
-
-    if (categoryName) {
-
-        categoryName.textContent =
-            category.name;
+        sortOverride =
+            "popularity";
 
     }
 
 
-    if (description) {
+    if (
+        selected === "rating"
+    ) {
 
-        description.textContent =
-            category.description;
-
-    }
-
-
-    if (resultsTitle) {
-
-        resultsTitle.textContent =
-            `${category.name} videos`;
+        sortOverride =
+            "rating";
 
     }
 
 
-    if (resultsDescription) {
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
 
-        resultsDescription.textContent =
-            category.resultText;
+
+    if (grid) {
+
+        grid.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    padding:60px;
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                ></i>
+
+                Loading videos...
+
+            </div>
+
+        `;
+
+    }
+
+
+    try {
+
+        const videos =
+            await fetchVideos(
+                categoryKey,
+                sortOverride
+            );
+
+
+        renderFeatured(
+            videos[0]
+        );
+
+
+        renderVideos(
+            videos
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "AfterDarkX sorting error:",
+            error
+        );
+
+        showFeedError();
 
     }
 
 }
 
 
-/*
-=========================================================
-MOBILE MENU
-=========================================================
-*/
+// ============================================================
+// LOAD CATEGORY
+// ============================================================
 
-function toggleMenu() {
+async function loadCategory() {
 
-    document
-        .getElementById(
-            "mainNav"
-        )
-        .classList.toggle(
-            "open"
+    updateCategoryPage();
+
+
+    const grid =
+        document.getElementById(
+            "videoGrid"
         );
+
+
+    if (grid) {
+
+        grid.innerHTML = "";
+
+    }
+
+
+    try {
+
+        const categoryKey =
+            getCategory();
+
+
+        console.log(
+            "Loading category:",
+            categoryKey
+        );
+
+
+        const videos =
+            await fetchVideos(
+                categoryKey
+            );
+
+
+        console.log(
+            `AfterDarkX loaded ${videos.length} videos`
+        );
+
+
+        renderFeatured(
+            videos[0]
+        );
+
+
+        renderVideos(
+            videos
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "AfterDarkX category error:",
+            error
+        );
+
+
+        showFeedError();
+
+    }
 
 }
 
 
-/*
-=========================================================
-AGE GATE
-=========================================================
-*/
+// ============================================================
+// ERROR
+// ============================================================
 
-function enterSite() {
+function showFeedError() {
 
-    localStorage.setItem(
-        "afterDarkXAgeVerified",
-        "true"
-    );
-
-
-    const ageGate =
+    const grid =
         document.getElementById(
-            "ageGate"
+            "videoGrid"
         );
 
 
-    if (ageGate) {
+    const loading =
+        document.getElementById(
+            "loadingGrid"
+        );
 
-        ageGate.style.display =
+
+    if (loading) {
+
+        loading.style.display =
             "none";
 
     }
 
 
-    document.body.classList.remove(
-        "no-scroll"
+    if (grid) {
+
+        grid.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    padding:70px 20px;
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        font-size:28px;
+                        margin-bottom:15px;
+                        color:#ff4779;
+                    "
+                ></i>
+
+                <h3
+                    style="
+                        color:#ddd;
+                        margin-bottom:8px;
+                    "
+                >
+                    Unable to load videos
+                </h3>
+
+                <p>
+                    Please try again in a moment.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// MOBILE MENU
+// ============================================================
+
+function toggleMenu() {
+
+    const nav =
+        document.getElementById(
+            "mainNav"
+        );
+
+
+    if (nav) {
+
+        nav.classList.toggle(
+            "open"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// AGE GATE
+// ============================================================
+
+function enterSite() {
+
+    localStorage.setItem(
+        "afterdarkx_age_verified",
+        "true"
     );
+
+
+    const gate =
+        document.getElementById(
+            "ageGate"
+        );
+
+
+    if (gate) {
+
+        gate.style.display =
+            "none";
+
+    }
 
 }
 
@@ -2908,44 +3268,48 @@ function leaveSite() {
 }
 
 
-/*
-=========================================================
-INITIALIZE
-=========================================================
-*/
+// ============================================================
+// AGE GATE INITIALIZATION
+// ============================================================
+
+function setupAgeGate() {
+
+    const gate =
+        document.getElementById(
+            "ageGate"
+        );
+
+
+    if (!gate) {
+        return;
+    }
+
+
+    if (
+        localStorage.getItem(
+            "afterdarkx_age_verified"
+        ) === "true"
+    ) {
+
+        gate.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ============================================================
+// INITIALIZE
+// ============================================================
 
 document.addEventListener(
     "DOMContentLoaded",
-    async function() {
+    () => {
 
-        updateCategoryPage();
+        setupAgeGate();
 
-
-        const verified =
-            localStorage.getItem(
-                "afterDarkXAgeVerified"
-            );
-
-
-        if (
-            verified === "true"
-        ) {
-
-            document.getElementById(
-                "ageGate"
-            ).style.display =
-                "none";
-
-        } else {
-
-            document.body.classList.add(
-                "no-scroll"
-            );
-
-        }
-
-
-        await loadVideos();
+        loadCategory();
 
     }
 );
